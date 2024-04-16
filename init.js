@@ -58,8 +58,8 @@ var AllCategoryNUM = {
 	servents['rider'].length, servents['caster'].length, servents['assassin'].length, servents['berserker'].length,
 	servents['ruler'].length, servents['avenger'].length, servents['alterego'].length, servents['foreigner'].length, servents['mooncancer'].length, servents['pretender'].length,servents['beast'].length,servents['shielder'].length],
 	// 台服
-	"tw": [17, 11, 12,
-		15, 14, 10, 12,
+	"tw": [17, 12, 12,
+		16, 14, 10, 12,
 		8, 6, 8, 8, 3, 1, 0],
 	// 自選
 	"z":  [3,4,4,6,5,3,4,1,0,1,0,1,0],
