@@ -435,13 +435,13 @@ function init(state = 0){
 	// eighthBtn = document.getElementById('eighth_button');
 	// btns.push(eighthBtn);
 	// 23'新年
-	// newyearBtn_1 = document.getElementById('newyear_23_up');
-	// newyearBtn_2 = document.getElementById('newyear_23_down');
+	newyearBtn_1 = document.getElementById('newyear_23_up');
+	newyearBtn_2 = document.getElementById('newyear_23_down');
 	// // 24'新年
 	// newyearBtn_1 = document.getElementById('newyear_24_up');
 	// newyearBtn_2 = document.getElementById('newyear_24_down');
-	// btns.push(newyearBtn_1);
-	// btns.push(newyearBtn_2);
+	btns.push(newyearBtn_1);
+	btns.push(newyearBtn_2);
 	Checked(btns, getCheckedBtn(country));
 	window.sessionStorage.setItem("r_country", country);
 	// 中間欄
@@ -508,19 +508,19 @@ function init(state = 0){
 	// 		init(1);
 	// 	}
 	// }
-	// 24'新年
-	// newyearBtn_1.onclick = function(){
-	// 	if(country != "newyear_24_up"){
-	// 		country = 'newyear_24_up';
-	// 		init(1);
-	// 	}
-	// };
-	// newyearBtn_2.onclick = function(){
-	// 	if(country != "newyear_24_down"){
-	// 		country = 'newyear_24_down';
-	// 		init(1);
-	// 	}
-	// };
+	// 23'新年
+	newyearBtn_1.onclick = function(){
+		if(country != "newyear_23_up"){
+			country = 'newyear_23_up';
+			init(1);
+		}
+	};
+	newyearBtn_2.onclick = function(){
+		if(country != "newyear_23_down"){
+			country = 'newyear_23_down';
+			init(1);
+		}
+	};
 
 	//
 	setButton.onclick = function(){
