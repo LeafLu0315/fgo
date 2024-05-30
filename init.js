@@ -63,11 +63,6 @@ var AllCategoryNUM = {
 		9, 6, 8, 8, 4, 2, 0],
 	// 自選
 	"z":  [3,4,4,6,5,3,4,1,0,1,0,1,0],
-	// 七周年
-	"seventh_up":[6,7,4,3,4,3,3,4,5,4],
-	"seventh_down":[4,3,4,3,4,5,6,5,5,6],
-	// 22'新年
-	"newyear_22": [5,5,7,8,5,6,6,5,7,6,5,5,5,5],
 	// 23'新年
 	"newyear_23_up": [7,6,3,4,4,5,3,4,6,3],
 	"newyear_23_down": [3,5,3,6,6,6,6,6,5,5],
@@ -104,43 +99,6 @@ var z = {saber:[8, 2, 76],
 		ruler:[59],
 		alterego:[224],
 		mooncancer:[244]};
-// 六周年
-var sixth= {saber:[68, 90, 91, 12, 88, 70],
-			archer:[108, 86, 112, 51, 114, 93, 96, 106],
-			lancer:[160, 153, 129, 142, 156, 128],
-			rider:[136, 150, 127, 139, 154, 155, 161, 167, 163],
-			caster:[213, 196, 173, 209, 195, 198],
-			assassin:[179, 205, 215, 175, 199],
-			berserker:[234, 216, 229, 250, 238, 220],
-			ruler:[241, 237, 239, 247],
-			avenger:[276, 272, 280, 270],
-			alterego:[253, 261, 265, 268, 275, 281],
-			foreigner:[299, 302, 312, 292, 297, 285, 289, 295],
-			mooncancer:[284, 307, 309, 305, 303]};
-// 七周年
-var seventh_up =
-	{saber:[213, 68, 91, 160, 153, 90],
-	archer:[337, 234, 317, 343, 302, 270, 299],
-	lancer:[142, 12, 129, 156],
-	rider:[272, 276, 216],
-	caster:[70, 196, 88, 128],
-	assassin:[280, 312, 329],
-	berserker:[108, 179, 205],
-	ruler:[241, 349, 342, 253],
-	avenger:[127, 175, 150, 215, 136],
-	alterego:[307, 284, 327, 237]};
-
-var seventh_down =
-	{saber:[154, 86, 112, 139],
-	archer:[199, 314, 239],
-	lancer:[51, 114, 155, 161],
-	rider:[261, 309, 247],
-	caster:[173, 93, 96, 106],
-	assassin:[229, 265, 268, 250, 220],
-	berserker:[346, 305, 321, 303, 285, 292],
-	ruler:[198, 195, 163, 167, 209],
-	avenger:[275, 295, 281, 289, 238],
-	alterego:[324, 336, 334, 316, 339, 297]};
 
 //八週年
 var eighth = {
@@ -157,23 +115,6 @@ var eighth = {
 	foreigner:[342, 329, 316, 343, 346],
 	mooncancer:[369, 375, 371],
 };
-
-// 22'新年
-var newyear_22 =
-{saber:[317, 70, 68, 276, 270],
-archer:[179, 86, 327, 155, 239],
-lancer:[297, 96, 305, 281, 163, 303, 324],
-rider:[302, 129, 90, 91, 329, 234, 216, 312],
-caster:[253, 261, 112, 127, 237],
-assassin:[285, 275, 268, 321, 167, 198],
-berserker:[156, 160, 142, 88, 280, 299],
-ruler:[12, 213, 196, 153, 128],
-avenger:[161, 314, 114, 136, 139, 247, 108],
-alterego:[154, 51, 205, 175, 199, 309],
-foreigner:[316, 265, 289, 106, 209],
-mooncancer:[250, 238, 220, 195, 93],
-pretender:[295, 284, 241, 307, 229],
-beast:[272, 173, 150, 215, 292]};
 
 // 23'新年
 var newyear_23_up =
@@ -299,39 +240,13 @@ function getUnit(country){
 				units[i][j] = svt[no];
 			}
 		}
-		// 六周年
-		else if(country == 'sixth'){
-			for(j = 0; j< AllCategoryNUM[country][i]; j++){
-				no = getNo(sixth,i,j);
-				units[i][j] = svt[no];
-			}
-		}
-		// 七周年
-		else if(country == 'seventh_up'){
-			for(j = 0; j< AllCategoryNUM[country][i]; j++){
-				no = getNo(seventh_up,i,j);
-				units[i][j] = svt[no];
-			}
-		}
-		else if(country == 'seventh_down'){
-			for(j = 0; j< AllCategoryNUM[country][i]; j++){
-				no = getNo(seventh_down,i,j);
-				units[i][j] = svt[no];
-			}
-		}
 		else if(country == 'eighth'){
 			for(j = 0; j< AllCategoryNUM[country][i]; j++){
 				no = getNo(eighth,i,j);
 				units[i][j] = svt[no];
 			}
 		}
-		// 22'新年
-		else if(country == 'newyear_22'){
-			for(j = 0; j< AllCategoryNUM[country][i]; j++){
-				no = getNo(newyear_22,i,j);
-				units[i][j] = svt[no];
-			}
-		}
+		// 23'新年
 		else if(country == 'newyear_23_up'){
 			for(j = 0; j< AllCategoryNUM[country][i]; j++){
 				no = getNo(newyear_23_up,i,j);
@@ -369,14 +284,6 @@ function getCheckedBtn(country){
 		return twButton;
 	if(country == 'z')
 		return zButton;
-	if(country == 'sixth')
-		return sixButton;
-	if(country == 'seventh_up')
-		return sevenButton_1;
-	if(country == 'seventh_down')
-		return sevenButton_2;
-	if(country == 'newyear_22')
-		return newyearBtn_1;
 	if(country == 'newyear_23_up' || country == 'newyear_24_up')
 		return newyearBtn_1;
 	if(country == 'newyear_23_down' || country == 'newyear_24_down')
@@ -426,11 +333,6 @@ function init(state = 0){
 	// 自選
 	zButton = document.getElementById('z-button');
 	btns.push(zButton);
-	// 七週年
-	sevenButton_1 = document.getElementById('seventh-button-1');
-	btns.push(sevenButton_1);
-	sevenButton_2 = document.getElementById('seventh-button-2');
-	btns.push(sevenButton_2);
 	// 八週年
 	// eighthBtn = document.getElementById('eighth_button');
 	// btns.push(eighthBtn);
@@ -485,22 +387,6 @@ function init(state = 0){
 			init(1);
 		}
 	};
-	// 新年
-	// 七週年
-	sevenButton_1.onclick = function(){
-		if(country != "seventh_up"){
-			country = 'seventh_up';
-			Checked(btns,sevenButton_1);
-			init(1);
-		}
-	}
-	sevenButton_2.onclick = function(){
-		if(country != "seventh_down"){
-			country = 'seventh_down';
-			Checked(btns,sevenButton_2);
-			init(1);
-		}
-	}
 	// 八週年
 	// eighthBtn.onclick = function(){
 	// 	if(country != 'eighth'){
@@ -596,16 +482,10 @@ function init(state = 0){
 			canvas.height -= CELL_SIZE * class_size * 2;
 			break;
 		// 10個職階
-		case 'seventh_up':
-		case 'seventh_down':
 		case 'newyear_23_up':
 		case 'newyear_23_down':
 			canvas.width += CELL_SIZE;
 			canvas.height -= CELL_SIZE * 6.5 * class_size * 0.8;
-			break;
-		// 14個職階
-		case 'newyear_22':
-			canvas.height += CELL_SIZE * 0.2 * class_size;
 			break;
 		// 少偽職 & EX
 		case 'newyear_24_up':
@@ -644,7 +524,6 @@ function init(state = 0){
 	function getImg(country){
 		arr = [];
 		switch(country){
-			case "newyear_22":
 			case "newyear_24_up":
 			case "newyear_24_down":
 				return 99;
@@ -654,14 +533,6 @@ function init(state = 0){
 			case "newyear_23_down":
 				arr = [6,6,7,7,99,99,99,99,99,99];
 				return arr;
-			case "seventh_up":
-				arr = [1,1,2,2,3,3,4,4,5,5];
-				return arr;
-			case "seventh_down":
-				arr = [6,6,7,7,1001,1001,1001,1001,1001,1001];
-				return arr;
-			case "sixth":
-				return 666;
 		}
 		return arr;
 	}
@@ -676,14 +547,10 @@ function init(state = 0){
 			if(country == 'jp' || country == 'tw' || country == 'z'){
 				drawImage(0, i-pass, categoryImages[i]);
 			}
-			else if(country == 'seventh_up' || country == 'seventh_down'){
-				img = getImgNo(classes, arr[i]);
-				drawImage(0, i-pass, categoryImages[img]);
-			}
 			else if(country == 'eighth'){
 				drawImage(0, i-pass, categoryImages[i]);
 			}
-			else if(country == 'newyear_22' || country == 'newyear_24_up' || country == 'newyear_24_down'){
+			else if(country == 'newyear_24_up' || country == 'newyear_24_down'){
 				img = getImgNo(classes, arr);
 				drawImage(0, i-pass, categoryImages[img]);
 			}
