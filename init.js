@@ -31,7 +31,7 @@ var servents = {
 	'foreigner': [195, 198, 275, 281, 289, 295, 324, 334, 373, 393, 413],
 	'mooncancer': [220, 244, 285, 351],
 	'pretender': [316, 353],
-	'beast': [377],
+	'beast': [377, 417],
 	'shielder': []
 }
 
@@ -71,6 +71,9 @@ var AllCategoryNUM = {
 	"newyear_24_down": [5,5,4,4,4,3,5,4,3,3,4,3,5,4],
 	// 八週年
 	"eighth":[4,4,4,3,3,4,4,4,4,3,5,3],
+	// 九週年
+	"nineth_up":[3,4,4,3,4,3,3,3,4,3],
+	"nineth_down":[3,3,3,3,4,4,3],
 }
 /* 版型
 var foo =
@@ -114,6 +117,29 @@ var eighth = {
 	alterego:[297, 302, 303],
 	foreigner:[342, 329, 316, 343, 346],
 	mooncancer:[369, 375, 371],
+};
+
+var nineth_up = {
+	saber:[303, 299, 297],
+	archer:[316, 309, 312, 284],
+	lancer:[346, 343, 342, 374],
+	rider:[314, 371, 373],
+	caster:[368, 383, 384, 409],
+	assassin:[393, 324, 295],
+	berserker:[349, 365, 307],
+	ruler:[317, 416, 337],
+	avenger:[369, 334, 402, 302],
+	alterego:[406, 336, 305],
+};
+
+var nineth_down = {
+	saber:[289, 321, 285],
+	archer:[355, 357, 353],
+	lancer:[386, 390, 385],
+	rider:[292, 329, 327],
+	caster:[375, 362, 397, 400],
+	assassin:[394, 351, 376, 339],
+	berserker:[415, 403, 413]
 };
 
 // 23'新年
@@ -271,6 +297,18 @@ function getUnit(country){
 				units[i][j] = svt[no];
 			}
 		}
+		else if(country == 'nineth_up'){
+			for(j = 0; j< AllCategoryNUM[country][i]; j++){
+				no = getNo(nineth_up,i,j);
+				units[i][j] = svt[no];
+			}
+		}
+		else if(country == 'nineth_down'){
+			for(j = 0; j< AllCategoryNUM[country][i]; j++){
+				no = getNo(nineth_down,i,j);
+				units[i][j] = svt[no];
+			}
+		}
 	}
 
 	addUnitsNo(units);
@@ -290,6 +328,10 @@ function getCheckedBtn(country){
 		return newyearBtn_2;
 	if(country == 'eighth')
 		return eighthBtn;
+	if(country == 'nineth_up')
+		return nineBtn_1;
+	if(country == 'nineth_down')
+		return nineBtn_2;
 	return twButton;
 }
 
@@ -336,6 +378,11 @@ function init(state = 0){
 	// 八週年
 	// eighthBtn = document.getElementById('eighth_button');
 	// btns.push(eighthBtn);
+	// 九週年
+	nineBtn_1 = document.getElementById('nineth_up');
+	nineBtn_2 = document.getElementById('nineth_down');
+	btns.push(nineBtn_1);
+	btns.push(nineBtn_2);
 	// 23'新年
 	newyearBtn_1 = document.getElementById('newyear_23_up');
 	newyearBtn_2 = document.getElementById('newyear_23_down');
@@ -394,6 +441,19 @@ function init(state = 0){
 	// 		init(1);
 	// 	}
 	// }
+	// 九週年
+	nineBtn_1.onclick = function(){
+		if(country != "nineth_up"){
+			country = 'nineth_up';
+			init(1);
+		}
+	};
+	nineBtn_2.onclick = function(){
+		if(country != "nineth_down"){
+			country = 'nineth_down';
+			init(1);
+		}
+	};
 	// 23'新年
 	newyearBtn_1.onclick = function(){
 		if(country != "newyear_23_up"){
@@ -487,6 +547,13 @@ function init(state = 0){
 			canvas.width += CELL_SIZE;
 			canvas.height -= CELL_SIZE * 6.5 * class_size * 0.8;
 			break;
+		// 九週年 10+7
+		case 'nineth_up':
+			canvas.height -= CELL_SIZE * 6.5 * class_size * 0.8;
+			break;
+		case 'nineth_down':
+			canvas.height -= CELL_SIZE * 10.5 * class_size * 0.8;
+			break;
 		// 少偽職 & EX
 		case 'newyear_24_up':
 			break;
@@ -524,6 +591,8 @@ function init(state = 0){
 	function getImg(country){
 		arr = [];
 		switch(country){
+			case "nineth_up":
+			case "nineth_down":
 			case "newyear_24_up":
 			case "newyear_24_down":
 				return 99;
@@ -550,7 +619,7 @@ function init(state = 0){
 			else if(country == 'eighth'){
 				drawImage(0, i-pass, categoryImages[i]);
 			}
-			else if(country == 'newyear_24_up' || country == 'newyear_24_down'){
+			else if(country == 'newyear_24_up' || country == 'newyear_24_down' || country == 'nineth_up' || country == 'nineth_down'){
 				img = getImgNo(classes, arr);
 				drawImage(0, i-pass, categoryImages[img]);
 			}
