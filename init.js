@@ -29,7 +29,7 @@ var servents = {
 	'avenger': [96, 106, 250, 268, 303, 321, 370, 403, 407, 409],
 	'alterego': [163, 167, 209, 224, 238, 297, 336, 339, 369, 376, 416],
 	'foreigner': [195, 198, 275, 281, 289, 295, 324, 334, 373, 393, 413],
-	'mooncancer': [220, 244, 285, 351],
+	'mooncancer': [220, 244, 285, 351, 418],
 	'pretender': [316, 353],
 	'beast': [377, 417],
 	'shielder': []
@@ -379,10 +379,10 @@ function init(state = 0){
 	// eighthBtn = document.getElementById('eighth_button');
 	// btns.push(eighthBtn);
 	// 九週年
-	nineBtn_1 = document.getElementById('nineth_up');
-	nineBtn_2 = document.getElementById('nineth_down');
-	btns.push(nineBtn_1);
-	btns.push(nineBtn_2);
+	// nineBtn_1 = document.getElementById('nineth_up');
+	// nineBtn_2 = document.getElementById('nineth_down');
+	// btns.push(nineBtn_1);
+	// btns.push(nineBtn_2);
 	// 23'新年
 	newyearBtn_1 = document.getElementById('newyear_23_up');
 	newyearBtn_2 = document.getElementById('newyear_23_down');
@@ -442,18 +442,18 @@ function init(state = 0){
 	// 	}
 	// }
 	// 九週年
-	nineBtn_1.onclick = function(){
-		if(country != "nineth_up"){
-			country = 'nineth_up';
-			init(1);
-		}
-	};
-	nineBtn_2.onclick = function(){
-		if(country != "nineth_down"){
-			country = 'nineth_down';
-			init(1);
-		}
-	};
+	// nineBtn_1.onclick = function(){
+	// 	if(country != "nineth_up"){
+	// 		country = 'nineth_up';
+	// 		init(1);
+	// 	}
+	// };
+	// nineBtn_2.onclick = function(){
+	// 	if(country != "nineth_down"){
+	// 		country = 'nineth_down';
+	// 		init(1);
+	// 	}
+	// };
 	// 23'新年
 	newyearBtn_1.onclick = function(){
 		if(country != "newyear_23_up"){
