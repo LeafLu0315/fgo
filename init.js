@@ -231,7 +231,7 @@ for(var i = 0 ; i < Marks.length ; ++ i){
 }
 
 //設定職階圖
-classes = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,666,1001,99];
+classes = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,666,1001,99, 888];
 for(var i = 0 ; i < classes.length ; i++){
 	categoryImages[i] = new Image();
 	categoryImages[i].src = "images/class/class_" + classes[i] + ".png";
@@ -377,8 +377,8 @@ function init(state = 0){
 	zButton = document.getElementById('z-button');
 	btns.push(zButton);
 	// 八週年
-	// eighthBtn = document.getElementById('eighth_button');
-	// btns.push(eighthBtn);
+	eighthBtn = document.getElementById('eighth_button');
+	btns.push(eighthBtn);
 	// 九週年
 	// nineBtn_1 = document.getElementById('nineth_up');
 	// nineBtn_2 = document.getElementById('nineth_down');
@@ -436,12 +436,12 @@ function init(state = 0){
 		}
 	};
 	// 八週年
-	// eighthBtn.onclick = function(){
-	// 	if(country != 'eighth'){
-	// 		country = 'eighth';
-	// 		init(1);
-	// 	}
-	// }
+	eighthBtn.onclick = function(){
+		if(country != 'eighth'){
+			country = 'eighth';
+			init(1);
+		}
+	}
 	// 九週年
 	// nineBtn_1.onclick = function(){
 	// 	if(country != "nineth_up"){
@@ -592,6 +592,8 @@ function init(state = 0){
 	function getImg(country){
 		arr = [];
 		switch(country){
+			case "eighth":
+				return 888;
 			case "nineth_up":
 			case "nineth_down":
 			case "newyear_24_up":
@@ -617,10 +619,7 @@ function init(state = 0){
 			if(country == 'jp' || country == 'tw' || country == 'z'){
 				drawImage(0, i-pass, categoryImages[i]);
 			}
-			else if(country == 'eighth'){
-				drawImage(0, i-pass, categoryImages[i]);
-			}
-			else if(country == 'newyear_24_up' || country == 'newyear_24_down' || country == 'nineth_up' || country == 'nineth_down'){
+			else if(country == 'eighth' || country == 'newyear_24_up' || country == 'newyear_24_down' || country == 'nineth_up' || country == 'nineth_down'){
 				img = getImgNo(classes, arr);
 				drawImage(0, i-pass, categoryImages[img]);
 			}
