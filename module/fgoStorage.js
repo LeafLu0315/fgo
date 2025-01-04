@@ -1,23 +1,51 @@
 var FGO_STORAGE = "FGO_Storage";
+var ACCOUNT_KEY = "FGO_Account";
+
+function onAccountChange(select) {
+  switchAccount(select.value);
+  location.reload(); // Refresh the page to load data for the selected account
+}
+
+function getCurrentAccount() {
+  const account = localStorage.getItem(ACCOUNT_KEY);
+  return account ? account : "account1"; // Default to account1
+}
+
+function switchAccount(accountName) {
+  if (accountName) {
+    localStorage.setItem(ACCOUNT_KEY, accountName);
+  }
+}
+
+function migrateOldData() {
+  const oldData = localStorage.getItem(FGO_STORAGE);
+  if (oldData && !localStorage.getItem(`${FGO_STORAGE}_account1`)) {
+    localStorage.setItem(`${FGO_STORAGE}_account1`, oldData);
+    console.log("舊資料已遷移到帳號1");
+  }
+}
 
 function getData(configName) {
-  const item = localStorage.getItem(configName);
+  const account = getCurrentAccount();
+  const item = localStorage.getItem(`${configName}_${account}`);
   return item == null ? [] : JSON.parse(item);
 }
 
 function setData(configName, configContent) {
+  const account = getCurrentAccount();
   if (configContent)
-    localStorage.setItem(configName, JSON.stringify(configContent));
+    localStorage.setItem(`${configName}_${account}`, JSON.stringify(configContent));
 }
 
 function deleteData(configName) {
-  localStorage.removeItem(configName);
+  const account = getCurrentAccount();
+  localStorage.removeItem(`${configName}_${account}`);
 }
 
 function updateData(units) {
   if (!units) return;
 
-  //store units where np >= 0
+  // Store units where np >= 0
   let newData = units.flat(2).filter((x) => x.npLv >= 0);
 
   if (!newData || newData.length == 0) return;
@@ -31,7 +59,7 @@ function updateData(units) {
 
   let storage = [];
 
-  //Step1. update storage if exist
+  // Step 1. Update storage if exist
   cLoop: for (let i = 0; i < currentData.length; i++) {
     for (let j = 0; j < newData.length; j++) {
       if (newData[j].no && newData[j].no == currentData[i].no) {
@@ -47,11 +75,11 @@ function updateData(units) {
     }
   }
 
-  //Step2. add new
+  // Step 2. Add new
   nLoop: for (let i = 0; i < newData.length; i++) {
     for (let j = 0; j < storage.length; j++) {
       if (storage[j].no && newData[i].no == storage[j].no) {
-        //already added in Step1.
+        // Already added in Step 1.
         continue nLoop;
       }
     }
@@ -88,3 +116,6 @@ function addUnitsNo(units) {
     }
   }
 }
+
+// Migrate old data on script load
+migrateOldData();

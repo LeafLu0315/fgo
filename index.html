@@ -41,13 +41,20 @@
 		</div>
 		<canvas id="canvas" width="0" height="0" align="center"></canvas>
 		<div id="footer">
-			<h2>Copyright © 2020 by mgneko, maintained by LeafLu © 2024 ver 2.2</h2>
+			<h2>Copyright © 2020 by mgneko, maintained by LeafLu © 2025 ver 3.0</h2>
 			<h2>
 				<a href="https://leaflu0315.github.io/fgo4s/">FGO持有四星英靈一覽表</a>
 			更新紀錄: <a href = "https://www.ptt.cc/bbs/FATE_GO/M.1617339267.A.A2A.html">#1WPgE3eg (FATE_GO)</a>
 			問題回報: <a href="https://forms.gle/78p1Luysj2qoMEts5" target="_blank">表單</a>
 			</h2>
-			<h2><p style="color:blue;">最近更新: 預設最高寶具等級=8改回6</p></h2>
+			<div style="text-align: right; margin: 10px;">
+				<label for="account-select">切換帳號:</label>
+				<select id="account-select" onchange="onAccountChange(this)">
+					<option value="account1">帳號1</option>
+					<option value="account2">帳號2</option>
+				</select>
+			</div>
+			<h2><p style="color:blue;">最近更新: 按鈕響應式設計、切換帳號功能</p></h2>
 		</div>
 	</body>
 </html>
