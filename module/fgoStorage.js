@@ -5,7 +5,9 @@ var ACCOUNT_KEY = "FGO_Account";
 window.onload = function() {
   const selectedAccount = localStorage.getItem('selectedAccount');
   if (selectedAccount) {
-    document.getElementById('account-select').value = selectedAccount;
+    const selectElement = document.getElementById('account-select');
+    selectElement.value = selectedAccount; // 設置 select 元素的選擇
+    switchAccount(selectedAccount);
   }
 };
 
@@ -14,9 +16,10 @@ function onAccountChange(select) {
   const selectedAccount = select.value;
   localStorage.setItem('selectedAccount', selectedAccount); // 儲存選擇的帳號
   switchAccount(selectedAccount); // 切換帳號
-  location.reload(); // 刷新頁面以加載新帳號的資料
+  setTimeout(() => {
+    location.reload(); // 稍作延遲後刷新頁面
+  }, 100); // 延遲100毫秒後刷新
 }
-
 
 function getCurrentAccount() {
   const account = localStorage.getItem(ACCOUNT_KEY);
