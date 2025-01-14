@@ -60,7 +60,7 @@ var AllCategoryNUM = {
 	// 台服
 	"tw": [17, 13, 13,
 		16, 14, 12, 14,
-		10, 7, 9, 9, 4, 2, 0],
+		10, 7, 10, 9, 4, 2, 1],
 	// 自選
 	"z":  [4,5,5,9,5,4,5,1,1,1,0,1,0],
 	// 24'新年
@@ -574,8 +574,8 @@ function init(state = 0){
 		case 'jp':
 			canvas.height -= CELL_SIZE * class_size * 1;
 			break;
-		case 'tw':	//少BEAST
-			canvas.height -= CELL_SIZE * class_size * 2;
+		case 'tw':
+			canvas.height -= CELL_SIZE * class_size * 1;
 			break;
 		// 10個職階
 		case 'newyear_23_up':
