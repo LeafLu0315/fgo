@@ -416,12 +416,12 @@ function init(state = 0){
 	// btns.push(newyearBtn_1);
 	// btns.push(newyearBtn_2);
 	// 25'新年
-	newyearBtn_1 = document.getElementById('newyear_25_up');
-	newyearBtn_2 = document.getElementById('newyear_25_down');
-	newyearBtn_3 = document.getElementById('newyear_25_white');
-	btns.push(newyearBtn_1);
-	btns.push(newyearBtn_2);
-	btns.push(newyearBtn_3);
+	// newyearBtn_1 = document.getElementById('newyear_25_up');
+	// newyearBtn_2 = document.getElementById('newyear_25_down');
+	// newyearBtn_3 = document.getElementById('newyear_25_white');
+	// btns.push(newyearBtn_1);
+	// btns.push(newyearBtn_2);
+	// btns.push(newyearBtn_3);
 	Checked(btns, getCheckedBtn(country));
 	window.sessionStorage.setItem("r_country", country);
 	// 中間欄
@@ -486,24 +486,24 @@ function init(state = 0){
 	// 	}
 	// };
 	// 新年福袋
-	newyearBtn_1.onclick = function(){
-		if(country != 'newyear_25_up'){
-			country = 'newyear_25_up';
-			init(1);
-		}
-	}
-	newyearBtn_2.onclick = function(){
-		if(country != 'newyear_25_down'){
-			country = 'newyear_25_down';
-			init(1);
-		}
-	}
-	newyearBtn_3.onclick = function(){
-		if(country != 'newyear_25_white'){
-			country = 'newyear_25_white';
-			init(1);
-		}
-	}
+	// newyearBtn_1.onclick = function(){
+	// 	if(country != 'newyear_25_up'){
+	// 		country = 'newyear_25_up';
+	// 		init(1);
+	// 	}
+	// }
+	// newyearBtn_2.onclick = function(){
+	// 	if(country != 'newyear_25_down'){
+	// 		country = 'newyear_25_down';
+	// 		init(1);
+	// 	}
+	// }
+	// newyearBtn_3.onclick = function(){
+	// 	if(country != 'newyear_25_white'){
+	// 		country = 'newyear_25_white';
+	// 		init(1);
+	// 	}
+	// }
 	//
 	setButton.onclick = function(){
 		mode = 0;
