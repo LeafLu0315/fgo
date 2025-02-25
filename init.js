@@ -59,7 +59,7 @@ var AllCategoryNUM = {
 	servents['ruler'].length, servents['avenger'].length, servents['alterego'].length, servents['foreigner'].length, servents['mooncancer'].length, servents['pretender'].length,servents['beast'].length,servents['shielder'].length],
 	// 台服
 	"tw": [17, 13, 13,
-		16, 14, 12, 14,
+		16, 14, 13, 14,
 		10, 7, 10, 9, 4, 2, 1],
 	// 自選
 	"z":  [4,5,5,9,5,4,5,1,1,1,0,1,0],
