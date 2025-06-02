@@ -59,8 +59,8 @@ var AllCategoryNUM = {
 	servents['ruler'].length, servents['avenger'].length, servents['alterego'].length, servents['foreigner'].length, servents['mooncancer'].length, servents['pretender'].length,servents['beast'].length,servents['shielder'].length],
 	// 台服
 	"tw": [18, 14, 14,
-		16, 15, 13, 14,
-		10, 7, 10, 9, 4, 2, 1],
+		16, 15, 13, 15,
+		11, 7, 10, 9, 4, 2, 1],
 	// 自選
 	"z":  [4,5,5,9,5,4,5,1,1,1,0,1,0],
 	// 24'新年
