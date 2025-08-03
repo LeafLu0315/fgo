@@ -32,6 +32,7 @@ var servents = {
 	'mooncancer': [220, 244, 285, 351, 418, 421],
 	'pretender': [316, 353, 431, 437, 441],
 	'beast': [377, 417],
+	'unbeast':[444],
 	'shielder': []
 }
 
@@ -50,13 +51,14 @@ var Category = [
 	'mooncancer',		// 月
 	'pretender',		// 偽
 	'beast',			// 獸
+	'unbeast',			// 反獸
 	'shielder'			// 盾
 ];
 // 設定數量
 var AllCategoryNUM = {
 	'jp': [servents['saber'].length, servents['archer'].length, servents['lancer'].length,
 	servents['rider'].length, servents['caster'].length, servents['assassin'].length, servents['berserker'].length,
-	servents['ruler'].length, servents['avenger'].length, servents['alterego'].length, servents['foreigner'].length, servents['mooncancer'].length, servents['pretender'].length,servents['beast'].length,servents['shielder'].length],
+	servents['ruler'].length, servents['avenger'].length, servents['alterego'].length, servents['foreigner'].length, servents['mooncancer'].length, servents['pretender'].length,servents['beast'].length,servents['unbeast'].length,servents['shielder'].length],
 	// 台服
 	"tw": [18, 14, 14,
 		16, 15, 13, 15,
@@ -75,6 +77,10 @@ var AllCategoryNUM = {
 	"newyear_25_up": [4,3,5,4,4,4,5,4,4,4,4,4,4,5],
 	"newyear_25_down": [5,4,4,3,4,4,4,3,4,3],
 	"newyear_25_white": [3,5,3,3,3,3,3,3,3,3,5],
+	//十週年
+	"tenth_up":[4,4,4,4,5,3,4,5,3,3],
+	"tenth_down":[3,3,3,3,3,3,3,3,3,3,5,3,3],
+	"tenth_ex":[5,4,3,3,3,4,4,3,3,4,3,3,3,4,4],
 }
 /* 版型
 var foo =
@@ -91,7 +97,8 @@ alterego:[],
 foreigner:[],
 mooncancer:[],
 pretender:[],
-beast:[]};
+beast:[]
+unbeast:[]};
 */
 var z = {saber:[8, 2, 76, 278],
 		archer:[84, 60, 212, 77, 350],
@@ -221,6 +228,51 @@ var newyear_25_white ={
 	alterego:[316,397,247],
 	foreigner:[229,173,272,342,150]};
 
+var tenth_up ={
+	saber:[68, 213, 90, 153],
+	archer:[270, 337, 234, 384],
+	lancer:[160, 299, 302, 91],
+	rider:[317, 343, 402, 432],
+	caster:[129, 156, 272, 427, 394],
+	assassin:[142, 12, 216],
+	berserker:[276, 375, 383, 394],
+	ruler:[312, 70, 128, 433, 88],
+	avenger:[196, 280, 312],
+	alterego:[442, 329, 368],
+};
+
+	var tenth_down ={
+	saber:[179, 342, 241],
+	archer:[205, 108, 253],
+	lancer:[406, 349, 397],
+	rider:[136, 215, 150],
+	caster:[284, 327, 307],
+	assassin:[175, 237, 127],
+	berserker:[435, 385, 415],
+	ruler:[239, 86, 154],
+	avenger:[139, 112, 199],
+	alterego:[365, 371, 314],
+	foreigner:[51, 155, 386, 161, 440],
+	mooncancer:[247, 114, 261],
+	pretender:[355, 362, 309]};
+
+	var tenth_ex ={
+	saber:[400, 409, 106, 303, 418],
+	archer:[229, 173, 292, 421],
+	lancer:[93, 96, 220],
+	rider:[265, 268, 250],
+	caster:[305, 321, 285],
+	assassin:[374, 357, 346, 351],
+	berserker:[438, 390, 403, 421],
+	ruler:[163, 195, 275],
+	avenger:[339, 393, 431],
+	alterego:[336, 413, 295, 353],
+	foreigner:[209, 167, 198],
+	mooncancer:[238, 289, 281],
+	pretender:[297, 324, 316],
+	beast:[369, 376, 373, 334],
+	unbeast:[416, 426, 413, 441]};
+
 var Marks = [
 	'hiclipart',
 	'heart'
@@ -250,7 +302,7 @@ for(var i = 0 ; i < Marks.length ; ++ i){
 }
 
 //設定職階圖
-classes = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,666,1001,99, 888];
+classes = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,19,666,1001,99, 888];
 for(var i = 0 ; i < classes.length ; i++){
 	categoryImages[i] = new Image();
 	categoryImages[i].src = "images/class/class_" + classes[i] + ".png";
@@ -334,6 +386,28 @@ function getUnit(country){
 				units[i][j] = svt[no];
 			}
 		}
+		else if(country == 'tenth_up'){
+			for(j = 0; j< AllCategoryNUM[country][i]; j++){
+				no = getNo(tenth_up,i,j);
+				units[i][j] = svt[no];
+			}
+		}
+		else if(country == 'tenth_down'){
+			for(j = 0; j< AllCategoryNUM[country][i]; j++){
+				no = getNo(tenth_down,i,j);
+				units[i][j] = svt[no];
+			}
+		}
+		else if(country == 'tenth_ex'){
+			for(j = 0; j< AllCategoryNUM[country][i]; j++){
+				no = getNo(tenth_ex,i,j);
+				units[i][j] = svt[no];
+			}
+		}
+		else{
+			alert("錯誤的國家代碼");
+			return;
+		}
 	}
 
 	addUnitsNo(units);
@@ -359,6 +433,12 @@ function getCheckedBtn(country){
 		return nineBtn_1;
 	if(country == 'nineth_down')
 		return nineBtn_2;
+	if(country == 'tenth_up')
+		return tenthBtn_1;
+	if(country == 'tenth_down')
+		return tenthBtn_2;
+	if(country == 'tenth_ex')
+		return tenthBtn_3;
 	return twButton;
 }
 
@@ -422,6 +502,13 @@ function init(state = 0){
 	// btns.push(newyearBtn_1);
 	// btns.push(newyearBtn_2);
 	// btns.push(newyearBtn_3);
+	// 十週年
+	tenthBtn_1 = document.getElementById('tenth_up');
+	tenthBtn_2 = document.getElementById('tenth_down');
+	tenthBtn_3 = document.getElementById('tenth_ex');
+	btns.push(tenthBtn_1);
+	btns.push(tenthBtn_2);
+	btns.push(tenthBtn_3);
 	Checked(btns, getCheckedBtn(country));
 	window.sessionStorage.setItem("r_country", country);
 	// 中間欄
@@ -518,6 +605,26 @@ function init(state = 0){
 	// 	}
 	// }
 	//
+	// 十週年
+	tenthBtn_1.onclick = function(){
+		if(country != 'tenth_up'){
+			country = 'tenth_up';
+			init(1);
+		}
+	}
+	tenthBtn_2.onclick = function(){
+		if(country != 'tenth_down'){
+			country = 'tenth_down';
+			init(1);
+		}
+	}
+	tenthBtn_3.onclick = function(){
+		if(country != 'tenth_ex'){
+			country = 'tenth_ex';
+			init(1);
+		}
+	}
+
 	setButton.onclick = function(){
 		mode = 0;
 		setButton.classList.remove("btn--primary");
@@ -618,6 +725,12 @@ function init(state = 0){
 		case 'newyear_25_white':
 			canvas.height -= CELL_SIZE * 4 * class_size;
 			break;
+		case 'tenth_up':
+			canvas.height -= CELL_SIZE * 6 * class_size;
+			break;
+		case 'tenth_ex':
+			canvas.height -= CELL_SIZE * 1 * class_size;
+			break;
 		default:
 			canvas.height -= CELL_SIZE * 3 * class_size;
 			break;
@@ -665,6 +778,14 @@ function init(state = 0){
 			case "newyear_23_down":
 				arr = [6,6,7,7,99,99,99,99,99,99];
 				return arr;
+			case "tenth_up":
+				arr = [1,1,1,1,2,2,2,3,3,3]
+				return arr;
+			case "tenth_down":
+				arr = [4,4,4,5,5,5,5,6,6,6,7,7,7];
+				return arr;
+			case "tenth_ex":
+				return 99;
 		}
 		return arr;
 	}
@@ -679,11 +800,11 @@ function init(state = 0){
 			if(country == 'jp' || country == 'tw' || country == 'z'){
 				drawImage(0, i-pass, categoryImages[i]);
 			}
-			else if(country == 'eighth' || country == 'newyear_24_up' || country == 'newyear_24_down' || country == 'nineth_up' || country == 'nineth_down' || country == 'newyear_25_up' || country == 'newyear_25_down' || country == 'newyear_25_white'){
+			else if(country == 'eighth' || country == 'newyear_24_up' || country == 'newyear_24_down' || country == 'nineth_up' || country == 'nineth_down' || country == 'newyear_25_up' || country == 'newyear_25_down' || country == 'newyear_25_white'  || country == 'tenth_ex'){
 				img = getImgNo(classes, arr);
 				drawImage(0, i-pass, categoryImages[img]);
 			}
-			else if(country == 'newyear_23_up' || country == 'newyear_23_down'){
+			else if(country == 'newyear_23_up' || country == 'newyear_23_down' || country == 'tenth_up' || country == 'tenth_down'){
 				img = getImgNo(classes, arr[i]);
 				drawImage(0, i-pass, categoryImages[img]);
 			}
