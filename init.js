@@ -244,8 +244,9 @@ function mainLogic(state = 0){
     if (currentActiveButton) Checked(allModeButtons, currentActiveButton);
 
     const visibleRows = CategoryNum.filter(num => num > 0).length;
-    canvas.width  = luckyBag ? (Math.max.apply(null,CategoryNum) + 1) * (CELL_SIZE + col_padding) + caculateField : (Math.max.apply(null,CategoryNum) + 1) * (CELL_SIZE + col_padding);
-	if(canvas.width < 1200) canvas.width = 1200;
+    const iconWidth = luckyBag ? (Math.max.apply(null,CategoryNum) + 1) * (CELL_SIZE + col_padding) + caculateField : (Math.max.apply(null,CategoryNum) + 1) * (CELL_SIZE + col_padding);
+    const MIN_CANVAS_WIDTH = 850; // 設定一個合理的最小寬度以容納底部文字
+    canvas.width = Math.max(iconWidth, MIN_CANVAS_WIDTH);
     canvas.height = visibleRows * (CELL_SIZE + row_padding) + marginTop + FOOTER_HEIGHT;
 
     applyLanguage(currentLang);
@@ -439,10 +440,12 @@ function fillNPText(x, y, msg) {
     context.fillText(msg, xPos, yPos);
     context.textBaseline = 'alphabetic';
 }
+
 function fillTotalText() {
-    // 新的字體函式
+    // 使用新的字體函式
     context.font = getFontString(20);
 
+    // 1. 計算統計數據
     var totalHave = 0, totalNP = 0, total = 0;
     for (let i = 0; i < CategoryLen; i++) {
         total += CategoryNum[i];
@@ -455,42 +458,53 @@ function fillTotalText() {
     }
     var percent = total > 0 ? (totalHave / total) * 100 : 0;
 
-    context.textAlign = 'left';
-    const line1 = `${i18n.totalOwned[currentLang]}: ${totalHave}/${total}`;
-    const line2_label = `${i18n.ownedRate[currentLang]}: `;
-    const line2_value = `${percent.toFixed(2)}%`;
-    const line2 = line2_label + line2_value;
-    const line3 = `${i18n.totalNPLevel[currentLang]}: ${totalNP}`;
-
-    const maxWidth = Math.max(
-        context.measureText(line1).width,
-        context.measureText(line2).width,
-        context.measureText(line3).width
-    );
-
-    const rightPadding = 20;
-    const xPos = canvas.width - maxWidth - rightPadding;
-
+    // 2. 定義一個固定的繪圖區域，並清除它
+    const boxWidth = 250; 
+    const boxHeight = 90;
+    const boxX = canvas.width - boxWidth;
+    const boxY = canvas.height - 120;
     context.fillStyle = bgcolor;
-    context.fillRect(xPos - 10, canvas.height - 120, maxWidth + 20, 90);
+    context.fillRect(boxX, boxY, boxWidth, boxHeight);
 
+    // 3. 設定文字靠左對齊，並在固定區域內繪製
+    context.textAlign = 'left';
     context.fillStyle = font_color;
+    const xPos = boxX + 10; // 從清除區的左邊界+10px內距開始畫
+
+    // 繪製第一行：英靈持有數
+    const line1 = `${i18n.totalOwned[currentLang]}: ${totalHave}/${total}`;
     context.fillText(line1, xPos, canvas.height - 105);
 
+    // 繪製第二行：英靈持有率
+    const line2_label = `${i18n.ownedRate[currentLang]}: `;
+    const line2_value = `${percent.toFixed(2)}%`;
+    
+    // 根據百分比設定數值的顏色
+    let valueColor = font_color;
+    if (percent >= 100) valueColor = "gold";
+    else if (percent >= 90) valueColor = "red";
+    else if (percent >= 75) valueColor = "purple";
+    else if (percent >= 50) valueColor = "blue";
+    else if (percent >= 25) valueColor = "green";
+    
+    // 先畫標籤
+    context.fillStyle = font_color;
     context.fillText(line2_label, xPos, canvas.height - 80);
-    if (percent >= 100) context.fillStyle = "gold";
-    else if (percent >= 90) context.fillStyle = "red";
-    else if (percent >= 75) context.fillStyle = "purple";
-    else if (percent >= 50) context.fillStyle = "blue";
-    else if (percent >= 25) context.fillStyle = "green";
+    
+    // 接著在標籤右邊畫上色的數值
     const labelWidth = context.measureText(line2_label).width;
+    context.fillStyle = valueColor;
     context.fillText(line2_value, xPos + labelWidth, canvas.height - 80);
 
-    context.fillStyle = font_color;
+    // 繪製第三行：總寶數
+    context.fillStyle = font_color; // 恢復預設顏色
+    const line3 = `${i18n.totalNPLevel[currentLang]}: ${totalNP}`;
     context.fillText(line3, xPos, canvas.height - 55);
 
+    // 恢復預設對齊方式，避免影響其他繪圖函式
     context.textAlign = 'start';
 }
+
 function getCoordinates(e){ const rect = e.target.getBoundingClientRect(); const scaleX = canvas.width / rect.width; const scaleY = canvas.height / rect.height; return {'x': (e.clientX - rect.left) * scaleX, 'y': (e.clientY - rect.top) * scaleY}; }
 function getCategory(y){ return Math.floor((y - marginTop) / (CELL_SIZE + row_padding)); }
 function getAttribute(x){ return Math.floor((x - marginLeft) / (CELL_SIZE + col_padding)); }
