@@ -459,7 +459,7 @@ function fillTotalText() {
     var percent = total > 0 ? (totalHave / total) * 100 : 0;
 
     // 2. 定義一個固定的繪圖區域，並清除它
-    const boxWidth = 250; 
+    const boxWidth = 320; 
     const boxHeight = 90;
     const boxX = canvas.width - boxWidth;
     const boxY = canvas.height - 120;
