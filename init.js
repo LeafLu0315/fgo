@@ -208,12 +208,29 @@ function getUnit(country) {
     return newUnits;
 }
 
-function init(){
-    preloadStaticImages(() => {
-        ImagePreloader.init(() => {
-            mainLogic();
+async function init() {
+    try {
+        // 等待 'Noto Sans TC' 和 'Noto Sans JP' 字體載入完成
+        // 我們只需要載入一個權重和大小，瀏覽器會處理好其他的
+        await document.fonts.load('20px "Noto Sans TC"');
+        await document.fonts.load('20px "Noto Sans JP"');
+        console.log("Fonts loaded successfully.");
+
+        // 字體載入後，繼續執行原本的圖片預載入和主邏輯
+        preloadStaticImages(() => {
+            ImagePreloader.init(() => {
+                mainLogic();
+            });
         });
-    });
+    } catch (error) {
+        console.error("Font loading failed:", error);
+        // 即使字體載入失敗，也嘗試繼續執行，瀏覽器會使用備用字體
+        preloadStaticImages(() => {
+            ImagePreloader.init(() => {
+                mainLogic();
+            });
+        });
+    }
 }
 
 function mainLogic(state = 0){
@@ -312,7 +329,7 @@ function bindActionButtons() {
  */
 function getFontString(size = 20) {
     if (currentLang === 'zh-TW') {
-        return `${size}px 'Microsoft JhengHei', '微軟正黑體', sans-serif`;
+        return `${size}px 'Noto Sans TC', 'Microsoft JhengHei', '微軟正黑體', sans-serif`;
     }
     return `${size}px 'Noto Sans JP', sans-serif`;
 }
@@ -458,8 +475,23 @@ function fillTotalText() {
     }
     var percent = total > 0 ? (totalHave / total) * 100 : 0;
 
+    // *** 關鍵修改：根據語言動態設定寬度 ***
+    let boxWidth;
+    switch (currentLang) {
+        case 'zh-TW':
+            boxWidth = 200;
+            break;
+        case 'en':
+            boxWidth = 250;
+            break;
+        case 'ja':
+            boxWidth = 280;
+            break;
+        default:
+            boxWidth = 200; // 預設值
+    }
+
     // 2. 定義一個固定的繪圖區域，並清除它
-    const boxWidth = 320; 
     const boxHeight = 90;
     const boxX = canvas.width - boxWidth;
     const boxY = canvas.height - 120;

@@ -1,9 +1,29 @@
-/* 修正問題1: 引入 Google Fonts 的 Noto Sans 字型 */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Noto+Sans+TC:wght@400;700&display=swap');
+/* 1. 移除 @import 規則 */
+/* @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Noto+Sans+TC:wght@400;700&display=swap'); */
+
+/* 2. 新增 @font-face 規則來載入本地字型檔 */
+@font-face {
+  font-family: 'Noto Sans TC';
+  /* 請確保您的字型檔路徑和名稱正確 */
+  src: url('./fonts/NotoSansTC-Regular.ttf') format('truetype'); 
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap; /* 讓文字先顯示，字體載入後再替換 */
+}
+
+@font-face {
+  font-family: 'Noto Sans JP';
+  /* 請確保您的字型檔路徑和名稱正確 */
+  src: url('./fonts/NotoSansJP-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 
 body {
 	background-color: #999;
-	/* 修正問題1: 設定新字型，優先使用日文和繁中字型 */
+	/* 3. font-family 規則維持不變，它會使用上面 @font-face 定義的字體 */
 	font-family: 'Noto Sans JP', 'Noto Sans TC', "微軟正黑體", sans-serif;
 	-moz-user-select: none;
 	-webkit-user-select: none;
