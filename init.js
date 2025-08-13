@@ -44,6 +44,7 @@ var mode = 0, luckyBag = 0;
 var CategoryNum;
 var bgcolor = "rgb(176, 176, 176)", mask = "rgb(0, 0, 0, 0.6)", font_color = "rgb(0, 0, 0)";
 var init_npLv = 6, npLv = init_npLv;
+var jpFontLoaded = false; // 【修改點】新增一個旗標來追蹤日文字型是否已載入
 
 const Category = ['saber', 'archer', 'lancer', 'rider', 'caster', 'assassin', 'berserker',
 				  'ruler', 'avenger', 'alterego', 'foreigner', 'mooncancer', 'pretender', 'beast', 'unbeast', 'shielder'];
@@ -210,11 +211,9 @@ function getUnit(country) {
 
 async function init() {
     try {
-        // 等待 'Noto Sans TC' 和 'Noto Sans JP' 字體載入完成
-        // 我們只需要載入一個權重和大小，瀏覽器會處理好其他的
+        // 【修改點】預設只載入繁中字型
         await document.fonts.load('20px "Noto Sans TC"');
-        await document.fonts.load('20px "Noto Sans JP"');
-        console.log("Fonts loaded successfully.");
+        console.log("Default font (Noto Sans TC) loaded successfully.");
 
         // 字體載入後，繼續執行原本的圖片預載入和主邏輯
         preloadStaticImages(() => {
@@ -223,7 +222,7 @@ async function init() {
             });
         });
     } catch (error) {
-        console.error("Font loading failed:", error);
+        console.error("Default font loading failed:", error);
         // 即使字體載入失敗，也嘗試繼續執行，瀏覽器會使用備用字體
         preloadStaticImages(() => {
             ImagePreloader.init(() => {
@@ -234,7 +233,7 @@ async function init() {
 }
 
 function mainLogic(state = 0){
-    // 【修改點】檢查儲存的模式是否已下架，若已下架則預設為 'jp'
+    // 檢查儲存的模式是否已下架，若已下架則預設為 'jp'
     const currentCountryData = FGO_DATA[country];
     if (!currentCountryData || !currentCountryData.isReleased) {
         console.log(`Saved mode "${country}" is not available. Defaulting to "jp".`); // 用於除錯
@@ -254,11 +253,8 @@ function mainLogic(state = 0){
             const buttonId = ['jp', 'tw', 'z'].includes(modeKey) ? `${modeKey}-button` : modeKey;
             const button = document.getElementById(buttonId);
             if (button) {
-                // *** 關鍵修改 ***
-                // 找到按鈕的父層 <li> 元素
                 const listItem = button.parentElement;
                 if (listItem) {
-                    // 根據 isReleased 的值來顯示或隱藏整個 <li>
                     listItem.style.display = modeData.isReleased ? '' : 'none';
                 }
 
@@ -315,7 +311,6 @@ function drawCanvas() {
     }
     fillTotalText();
     if (luckyBag) fillCaculate();
-    // 使用新的字體函式
     context.font = getFontString(20);
 	context.fillStyle = mask;
 	context.fillText("This image was made by mgneko, maintained by LeafLu @ ptt", marginLeft, canvas.height - 15);
@@ -336,17 +331,12 @@ function bindActionButtons() {
 // 3. 輔助與繪圖函式區 (Helper & Drawing Functions)
 // ===================================================================================
 
-/**
- * **修改點 1**: 新增的共用字體函式
- * 根據當前語言返回對應的字體字串
- * @param {number} size - 字體大小 (預設 20)
- * @returns {string} - CSS 字體字串
- */
 function getFontString(size = 20) {
     if (currentLang === 'zh-TW') {
         return `${size}px 'Noto Sans TC', 'Microsoft JhengHei', '微軟正黑體', sans-serif`;
     }
-    return `${size}px 'Noto Sans JP', sans-serif`;
+    // 對於日文和其他語言，優先使用 Noto Sans JP
+    return `${size}px 'Noto Sans JP', 'Noto Sans TC', sans-serif`;
 }
 
 function switchAccount() {
@@ -418,7 +408,6 @@ function drawPlaceholder(xPos, yPos) {
 }
 
 function fillCaculate(){
-    // **修改點 1**: 使用新的字體函式
 	context.font = getFontString(12);
 	var have = 0, haveFull = 0, like = 0, percent = 0, ex = 0;
 	var lucky_bag = (country != 'jp' && country != 'tw' && country != 'z');
@@ -461,7 +450,6 @@ function fillCaculate(){
 function fillRect(x, y, color){ context.fillStyle = color; context.fillRect ((x + 1) * (CELL_SIZE + col_padding) + marginLeft, y * (CELL_SIZE + row_padding) + marginTop, CELL_SIZE, CELL_SIZE); }
 function fillTextMask(x, y, color){ context.fillStyle = color; context.fillRect(x * (CELL_SIZE + col_padding) + marginLeft, (y + 1) * (CELL_SIZE + row_padding) - row_padding  + marginTop, CELL_SIZE, row_padding); }
 function fillNPText(x, y, msg) {
-    // 新的字體函式
     context.font = getFontString(20);
     let number = msg.match(/\d+/)[0];
     context.fillStyle = (number == 5) ? "rgb(255, 255, 0)" : (number >= 6) ? "rgb(255, 0, 0)" : font_color;
@@ -474,7 +462,6 @@ function fillNPText(x, y, msg) {
 }
 
 function fillTotalText() {
-    // 使用新的字體函式
     context.font = getFontString(20);
 
     // 1. 計算統計數據
@@ -490,7 +477,6 @@ function fillTotalText() {
     }
     var percent = total > 0 ? (totalHave / total) * 100 : 0;
 
-    // *** 關鍵修改：根據語言動態設定寬度 ***
     let boxWidth;
     switch (currentLang) {
         case 'zh-TW':
@@ -506,27 +492,22 @@ function fillTotalText() {
             boxWidth = 200; // 預設值
     }
 
-    // 2. 定義一個固定的繪圖區域，並清除它
     const boxHeight = 90;
     const boxX = canvas.width - boxWidth;
     const boxY = canvas.height - 120;
     context.fillStyle = bgcolor;
     context.fillRect(boxX, boxY, boxWidth, boxHeight);
 
-    // 3. 設定文字靠左對齊，並在固定區域內繪製
     context.textAlign = 'left';
     context.fillStyle = font_color;
-    const xPos = boxX + 10; // 從清除區的左邊界+10px內距開始畫
+    const xPos = boxX + 10; 
 
-    // 繪製第一行：英靈持有數
     const line1 = `${i18n.totalOwned[currentLang]}: ${totalHave}/${total}`;
     context.fillText(line1, xPos, canvas.height - 105);
 
-    // 繪製第二行：英靈持有率
     const line2_label = `${i18n.ownedRate[currentLang]}: `;
     const line2_value = `${percent.toFixed(2)}%`;
     
-    // 根據百分比設定數值的顏色
     let valueColor = font_color;
     if (percent >= 100) valueColor = "gold";
     else if (percent >= 90) valueColor = "red";
@@ -534,21 +515,17 @@ function fillTotalText() {
     else if (percent >= 50) valueColor = "blue";
     else if (percent >= 25) valueColor = "green";
     
-    // 先畫標籤
     context.fillStyle = font_color;
     context.fillText(line2_label, xPos, canvas.height - 80);
     
-    // 接著在標籤右邊畫上色的數值
     const labelWidth = context.measureText(line2_label).width;
     context.fillStyle = valueColor;
     context.fillText(line2_value, xPos + labelWidth, canvas.height - 80);
 
-    // 繪製第三行：總寶數
-    context.fillStyle = font_color; // 恢復預設顏色
+    context.fillStyle = font_color; 
     const line3 = `${i18n.totalNPLevel[currentLang]}: ${totalNP}`;
     context.fillText(line3, xPos, canvas.height - 55);
 
-    // 恢復預設對齊方式，避免影響其他繪圖函式
     context.textAlign = 'start';
 }
 
@@ -616,12 +593,31 @@ function getLanguage() {
     if (browserLang.startsWith('en')) return 'en';
     return 'zh-TW';
 }
-function setLanguage(lang) {
+
+// 【修改點】將 setLanguage 改為 async 函式，並在內部處理字型載入
+async function setLanguage(lang) {
+    // 檢查是否為日文且字型尚未載入
+    if (lang === 'ja' && !jpFontLoaded) {
+        try {
+            console.log("Loading Noto Sans JP font...");
+            await document.fonts.load('20px "Noto Sans JP"');
+            jpFontLoaded = true; // 標記為已載入
+            console.log("Noto Sans JP font loaded successfully.");
+        } catch (error) {
+            console.error("Noto Sans JP font loading failed:", error);
+        }
+    }
+
     currentLang = lang;
     localStorage.setItem('fgo5s-lang', lang);
     applyLanguage(lang);
-    drawCanvas();
+
+    // 確保 Canvas 在所有語言相關設定更新後再重新繪製
+    if (canvas && context) {
+        drawCanvas();
+    }
 }
+
 function applyLanguage(lang) {
     document.querySelectorAll('[data-i18n-key]').forEach(el => {
         const key = el.getAttribute('data-i18n-key');
