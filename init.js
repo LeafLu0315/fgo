@@ -112,9 +112,9 @@ const FGO_DATA = {
     'newyear_25_up': {servants: newyear_25_up_servants, type: 'luckyBag', isReleased: false, classIconImg: '99', labelKey: 'newyear_25_up_label'},
     'newyear_25_down': {servants: newyear_25_down_servants, type: 'luckyBag', isReleased: false, classIconImg: '99', labelKey: 'newyear_25_down_label'},
     'newyear_25_white': {servants: newyear_25_white_servants, type: 'luckyBag', isReleased: false, classIconImg: '99', labelKey: 'newyear_25_white_label'},
-    'tenth_up': {servants: tenth_up_servants, type: 'luckyBag', isReleased: true, classIconImg: [1,1,1,1,2,2,2,3,3,3], labelKey: 'tenth_up_label'},
-    'tenth_down': {servants: tenth_down_servants, type: 'luckyBag', isReleased: true, classIconImg: [4,4,4,5,5,5,5,6,6,6,7,7,7], labelKey: 'tenth_down_label'},
-    'tenth_ex': {servants: tenth_ex_servants, type: 'luckyBag', isReleased: true, classIconImg: '99', labelKey: 'tenth_ex_label'},
+    'tenth_up': {servants: tenth_up_servants, type: 'luckyBag', isReleased: false, classIconImg: [1,1,1,1,2,2,2,3,3,3], labelKey: 'tenth_up_label'},
+    'tenth_down': {servants: tenth_down_servants, type: 'luckyBag', isReleased: false, classIconImg: [4,4,4,5,5,5,5,6,6,6,7,7,7], labelKey: 'tenth_down_label'},
+    'tenth_ex': {servants: tenth_ex_servants, type: 'luckyBag', isReleased: false, classIconImg: '99', labelKey: 'tenth_ex_label'},
 };
 
 // ===================================================================================
@@ -246,7 +246,14 @@ function mainLogic(state = 0){
             const buttonId = ['jp', 'tw', 'z'].includes(modeKey) ? `${modeKey}-button` : modeKey;
             const button = document.getElementById(buttonId);
             if (button) {
-                button.style.display = modeData.isReleased ? '' : 'none';
+                // *** 關鍵修改 ***
+                // 找到按鈕的父層 <li> 元素
+                const listItem = button.parentElement;
+                if (listItem) {
+                    // 根據 isReleased 的值來顯示或隱藏整個 <li>
+                    listItem.style.display = modeData.isReleased ? '' : 'none';
+                }
+
                 allModeButtons.push(button);
                 button.onclick = () => { if (country !== modeKey) { country = modeKey; localStorage.setItem("r_country", country); mainLogic(1); } };
             }
