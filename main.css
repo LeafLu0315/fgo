@@ -1,30 +1,29 @@
-/* 1. 移除 @import 規則 */
-/* @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Noto+Sans+TC:wght@400;700&display=swap'); */
-
-/* 2. 新增 @font-face 規則來載入本地字型檔 */
+/* 【修改點】移除所有 @font-face 規則，不再載入任何網頁字型 */
+/*
 @font-face {
   font-family: 'Noto Sans TC';
-  /* 請確保您的字型檔路徑和名稱正確 */
   src: url('./fonts/NotoSansTC-Regular.woff2') format('woff2'); 
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap; /* 讓文字先顯示，字體載入後再替換 */
-}
-
-@font-face {
-  font-family: 'Noto Sans JP';
-  /* 請確保您的字型檔路徑和名稱正確 */
-  src: url('./fonts/NotoSansJP-Regular.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Noto Sans JP';
+  src: url('./fonts/NotoSansJP-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+*/
 
 body {
 	background-color: #999;
-	/* 3. font-family 規則維持不變，它會使用上面 @font-face 定義的字體 */
-	font-family: 'Noto Sans JP', 'Noto Sans TC', "微軟正黑體", sans-serif;
+	/* 【修改點】更新 font-family 規則，使用一個更全面的系統字型組合。
+	  這個順序會為不同作業系統（Apple, Windows）和不同語言（英文、繁中、日文）
+	  提供最優先且美觀的預設字型。
+	*/
+	font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei", "微軟正黑體", "Segoe UI", Roboto, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "游ゴシック Medium", "Yu Gothic Medium", "メイリオ", Meiryo, sans-serif;
 	-moz-user-select: none;
 	-webkit-user-select: none;
 	-ms-user-select: none;

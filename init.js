@@ -44,7 +44,6 @@ var mode = 0, luckyBag = 0;
 var CategoryNum;
 var bgcolor = "rgb(176, 176, 176)", mask = "rgb(0, 0, 0, 0.6)", font_color = "rgb(0, 0, 0)";
 var init_npLv = 6, npLv = init_npLv;
-var jpFontLoaded = false; // 【修改點】新增一個旗標來追蹤日文字型是否已載入
 
 const Category = ['saber', 'archer', 'lancer', 'rider', 'caster', 'assassin', 'berserker',
 				  'ruler', 'avenger', 'alterego', 'foreigner', 'mooncancer', 'pretender', 'beast', 'unbeast', 'shielder'];
@@ -209,27 +208,14 @@ function getUnit(country) {
     return newUnits;
 }
 
-async function init() {
-    try {
-        // 【修改點】預設只載入繁中字型
-        await document.fonts.load('20px "Noto Sans TC"');
-        console.log("Default font (Noto Sans TC) loaded successfully.");
-
-        // 字體載入後，繼續執行原本的圖片預載入和主邏輯
-        preloadStaticImages(() => {
-            ImagePreloader.init(() => {
-                mainLogic();
-            });
+// 【修改點】移除 async 和所有字型載入邏輯
+function init() {
+    // 直接開始預載入圖片和執行主邏輯
+    preloadStaticImages(() => {
+        ImagePreloader.init(() => {
+            mainLogic();
         });
-    } catch (error) {
-        console.error("Default font loading failed:", error);
-        // 即使字體載入失敗，也嘗試繼續執行，瀏覽器會使用備用字體
-        preloadStaticImages(() => {
-            ImagePreloader.init(() => {
-                mainLogic();
-            });
-        });
-    }
+    });
 }
 
 function mainLogic(state = 0){
@@ -332,11 +318,19 @@ function bindActionButtons() {
 // ===================================================================================
 
 function getFontString(size = 20) {
-    if (currentLang === 'zh-TW') {
-        return `${size}px 'Noto Sans TC', 'Microsoft JhengHei', '微軟正黑體', sans-serif`;
+    // 【修改點】針對不同語言回傳最佳的系統字體組合 (font stack)
+    switch (currentLang) {
+        case 'ja':
+            // 優先使用日本系統字型，若無則依序遞補
+            return `${size}px -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', '游ゴシック Medium', 'Yu Gothic Medium', 'メイリオ', Meiryo, sans-serif`;
+        case 'en':
+            // 使用歐美系統預設字型
+            return `${size}px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif`;
+        case 'zh-TW':
+        default:
+            // 【修改點】直接使用高品質的繁體中文系統字型
+            return `${size}px -apple-system, BlinkMacSystemFont, 'PingFang TC', 'Microsoft JhengHei', '微軟正黑體', sans-serif`;
     }
-    // 對於日文和其他語言，優先使用 Noto Sans JP
-    return `${size}px 'Noto Sans JP', 'Noto Sans TC', sans-serif`;
 }
 
 function switchAccount() {
@@ -594,20 +588,7 @@ function getLanguage() {
     return 'zh-TW';
 }
 
-// 【修改點】將 setLanguage 改為 async 函式，並在內部處理字型載入
-async function setLanguage(lang) {
-    // 檢查是否為日文且字型尚未載入
-    if (lang === 'ja' && !jpFontLoaded) {
-        try {
-            console.log("Loading Noto Sans JP font...");
-            await document.fonts.load('20px "Noto Sans JP"');
-            jpFontLoaded = true; // 標記為已載入
-            console.log("Noto Sans JP font loaded successfully.");
-        } catch (error) {
-            console.error("Noto Sans JP font loading failed:", error);
-        }
-    }
-
+function setLanguage(lang) {
     currentLang = lang;
     localStorage.setItem('fgo5s-lang', lang);
     applyLanguage(lang);
