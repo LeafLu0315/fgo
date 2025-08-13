@@ -234,6 +234,14 @@ async function init() {
 }
 
 function mainLogic(state = 0){
+    // 【修改點】檢查儲存的模式是否已下架，若已下架則預設為 'jp'
+    const currentCountryData = FGO_DATA[country];
+    if (!currentCountryData || !currentCountryData.isReleased) {
+        console.log(`Saved mode "${country}" is not available. Defaulting to "jp".`); // 用於除錯
+        country = 'jp'; // 如果當前儲存的模式無效或未發布，則重設為 'jp'
+        localStorage.setItem("r_country", 'jp'); // 同時更新 localStorage 中的儲存值
+    }
+
     units = getUnit(country);
     if (!units) return;
     canvas = document.getElementById('canvas');
