@@ -100,8 +100,8 @@ const tenth_ex_servants = {saber:[400, 409, 106, 303, 418], archer:[229, 173, 29
  */
 const FGO_DATA = {
     'jp': {servants: servents, type: 'full', isReleased: true, labelKey: 'jp_label'},
-	// 台服數量增加變動
-    'tw': {servants: servents, type: 'full', isReleased: true, categoryNumOverride: [18, 15, 14, 16, 15, 13, 15, 11, 7, 10, 10, 4, 2, 1], labelKey: 'tw_label'},
+	// 台服數量增加變動                                                              [劍, 弓, 槍, 騎, 術, 殺, 狂, 裁, 仇, 丑, 外, 月, 偽, 獸, 非獸, 盾]
+    'tw': {servants: servents, type: 'full', isReleased: true, categoryNumOverride: [18, 15, 14, 17, 15, 13, 15, 12, 7, 10, 10, 4, 2, 1], labelKey: 'tw_label'},
     'z': {servants: z_servants, type: 'partial', isReleased: true, labelKey: 'z_label'},
 	// 福袋新增
     'eighth': {servants: eighth_servants, type: 'luckyBag', isReleased: true, classIconImg: '888', labelKey: 'eighth_label'},
