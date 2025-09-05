@@ -64,9 +64,9 @@ const i18n = {
         "en": "Report Issue"
     },
     latestUpdate: {
-        "zh-TW": "最近更新: 多國語言、程式碼重構",
-        "ja": "最近の更新: 多言語対応、コードリファクタリング",
-        "en": "Recent Updates: Multi-language Support, Code Refactoring"
+        "zh-TW": "最近更新: 新增寶五持有統計",
+        "ja": "最近の更新: 宝具5所持数の統計を追加",
+        "en": "Recent Updates: Added NP5 Ownership Statistics"
     },
     // Mode Button Labels
     jp_label: { "zh-TW": "日GO", "ja": "日GO", "en": "JP Server" },
@@ -92,6 +92,8 @@ const i18n = {
     totalOwned: { "zh-TW": "英靈持有數", "ja": "サーヴァント所持数", "en": "Servants Owned" },
     ownedRate: { "zh-TW": "英靈持有率", "ja": "サーヴァント所持率", "en": "Ownership Rate" },
     totalNPLevel: { "zh-TW": "總寶數", "ja": "宝具レベル合計", "en": "Total NP Levels" },
+    totalNP5Owned: { "zh-TW": "寶五持有數", "ja": "宝具5所持数", "en": "NP5 Owned" },
+    ownedNP5Rate: { "zh-TW": "寶五持有率", "ja": "宝具5所持率", "en": "NP5 Rate" },
     // Alerts & Prompts
     alertNpLimit: {
         "zh-TW": "寶具等級上限已切換為: ",

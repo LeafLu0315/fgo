@@ -456,72 +456,108 @@ function fillNPText(x, y, msg) {
 }
 
 function fillTotalText() {
-    context.font = getFontString(20);
+    context.font = getFontString(18); // 微調字體大小以容納更多行
 
     // 1. 計算統計數據
-    var totalHave = 0, totalNP = 0, total = 0;
+    var totalHave = 0, totalNP = 0, total = 0, totalNP5 = 0;
     for (let i = 0; i < CategoryLen; i++) {
         total += CategoryNum[i];
         for (let j = 0; j < CategoryNum[i]; j++) {
             if (units[i][j]) {
-                totalNP += units[i][j].npLv;
-                if (units[i][j].npLv) totalHave++;
+                const unit = units[i][j];
+                totalNP += unit.npLv;
+                if (unit.npLv > 0) totalHave++;
+                if (unit.npLv >= 5) totalNP5++; // 計算寶五以上從者數量
             }
         }
     }
     var percent = total > 0 ? (totalHave / total) * 100 : 0;
+    var percentNP5 = total > 0 ? (totalNP5 / total) * 100 : 0; // 計算寶五持有率
 
     let boxWidth;
     switch (currentLang) {
         case 'zh-TW':
-            boxWidth = 200;
+            boxWidth = 220;
             break;
         case 'en':
-            boxWidth = 250;
+            boxWidth = 260;
             break;
         case 'ja':
-            boxWidth = 280;
+            boxWidth = 300;
             break;
         default:
-            boxWidth = 200; // 預設值
+            boxWidth = 220;
     }
 
-    const boxHeight = 90;
+    const boxHeight = 140; // 增加框的高度
     const boxX = canvas.width - boxWidth;
-    const boxY = canvas.height - 120;
+    const boxY = canvas.height - 170; // 向上移動框
     context.fillStyle = bgcolor;
     context.fillRect(boxX, boxY, boxWidth, boxHeight);
 
     context.textAlign = 'left';
     context.fillStyle = font_color;
-    const xPos = boxX + 10; 
+    const xPos = boxX + 10;
+    const lineSpacing = 25; // 設定行距
 
-    const line1 = `${i18n.totalOwned[currentLang]}: ${totalHave}/${total}`;
-    context.fillText(line1, xPos, canvas.height - 105);
+    // --- 繪製每一行 ---
+    let currentY = boxY + 15;
 
-    const line2_label = `${i18n.ownedRate[currentLang]}: `;
-    const line2_value = `${percent.toFixed(2)}%`;
-    
+    // Line 1 : 寶五持有數
+    const line_np5_owned = `${i18n.totalNP5Owned[currentLang]}: ${totalNP5}/${total}`;
+    context.fillText(line_np5_owned, xPos, currentY);
+    currentY += lineSpacing;
+
+    // Line 2 : 寶五持有率
+    const line_np5_rate_label = `${i18n.ownedNP5Rate[currentLang]}: `;
+    const line_np5_rate_value = `${percentNP5.toFixed(2)}%`;
+    let valueColorNP5 = font_color;
+    if (percentNP5 >= 100) valueColorNP5 = "gold";
+    else if (percentNP5 >= 90) valueColorNP5 = "red";
+    else if (percentNP5 >= 75) valueColorNP5 = "purple";
+    else if (percentNP5 >= 50) valueColorNP5 = "blue";
+    else if (percentNP5 >= 25) valueColorNP5 = "green";
+
+    context.fillStyle = font_color;
+    context.fillText(line_np5_rate_label, xPos, currentY);
+    const labelWidthNP5 = context.measureText(line_np5_rate_label).width;
+    context.fillStyle = valueColorNP5;
+    context.fillText(line_np5_rate_value, xPos + labelWidthNP5, currentY);
+    currentY += lineSpacing;
+
+    // Line 3 : 英靈持有數
+    context.fillStyle = font_color;
+    const line_total_owned = `${i18n.totalOwned[currentLang]}: ${totalHave}/${total}`;
+    context.fillText(line_total_owned, xPos, currentY);
+    currentY += lineSpacing;
+
+    // Line 4 : 英靈持有率
+    const line_owned_rate_label = `${i18n.ownedRate[currentLang]}: `;
+    const line_owned_rate_value = `${percent.toFixed(2)}%`;
     let valueColor = font_color;
     if (percent >= 100) valueColor = "gold";
     else if (percent >= 90) valueColor = "red";
     else if (percent >= 75) valueColor = "purple";
     else if (percent >= 50) valueColor = "blue";
     else if (percent >= 25) valueColor = "green";
-    
-    context.fillStyle = font_color;
-    context.fillText(line2_label, xPos, canvas.height - 80);
-    
-    const labelWidth = context.measureText(line2_label).width;
-    context.fillStyle = valueColor;
-    context.fillText(line2_value, xPos + labelWidth, canvas.height - 80);
 
-    context.fillStyle = font_color; 
-    const line3 = `${i18n.totalNPLevel[currentLang]}: ${totalNP}`;
-    context.fillText(line3, xPos, canvas.height - 55);
+    context.fillStyle = font_color;
+    context.fillText(line_owned_rate_label, xPos, currentY);
+    const labelWidthOwned = context.measureText(line_owned_rate_label).width;
+    context.fillStyle = valueColor;
+    context.fillText(line_owned_rate_value, xPos + labelWidthOwned, currentY);
+    currentY += lineSpacing;
+
+    // Line 5 : 總寶數
+    context.fillStyle = font_color;
+    const line_total_np = `${i18n.totalNPLevel[currentLang]}: ${totalNP}`;
+    context.fillText(line_total_np, xPos, currentY);
+
 
     context.textAlign = 'start';
 }
+
+
 
 function getCoordinates(e){ const rect = e.target.getBoundingClientRect(); const scaleX = canvas.width / rect.width; const scaleY = canvas.height / rect.height; return {'x': (e.clientX - rect.left) * scaleX, 'y': (e.clientY - rect.top) * scaleY}; }
 function getCategory(y){ return Math.floor((y - marginTop) / (CELL_SIZE + row_padding)); }
@@ -617,3 +653,4 @@ function applyLanguage(lang) {
         }
     });
 }
+
