@@ -311,6 +311,11 @@ function bindActionButtons() {
     document.getElementById('reset-mark').onclick = () => { if (confirm(i18n.confirmResetMark[currentLang])) { let data = getData(FGO_STORAGE); data.forEach(u => u.mark = 0); setData(FGO_STORAGE, data.filter(u => u.npLv > 0)); location.reload(); } };
     document.getElementById('breakthrough').onclick = () => { npLv = (npLv === init_npLv) ? 20 : init_npLv; alert(`${i18n.alertNpLimit[currentLang]}${npLv}`); };
     document.getElementById('open-image-btn').onclick = openImage;
+    // 綁定導入導出功能
+    const importFile = document.getElementById('import-file');
+    document.getElementById('import-button').onclick = () => importFile.click(); // 讓匯入按鈕點擊隱藏的 file input
+    document.getElementById('export-button').onclick = exportData;
+    importFile.onchange = importData;
 }
 
 // ===================================================================================
@@ -604,6 +609,67 @@ function handleUnitInteraction(event, isRightClick = false) {
 }
 function rightClick(e){ handleUnitInteraction(e, true); }
 function onCanvasClick(e){ handleUnitInteraction(e, false); }
+
+/**
+ * 匯出目前帳號的資料為 JSON 檔案
+ */
+function exportData() {
+    const accountName = getCurrentAccount();
+    const data = getData(FGO_STORAGE);
+    if (data.length === 0) {
+        alert("目前帳號沒有資料可匯出。");
+        return;
+    }
+
+    const jsonString = JSON.stringify(data, null, 2); // 格式化 JSON，方便閱讀
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `fgo_5star_data_${accountName}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+/**
+ * 處理選擇的檔案並匯入資料
+ * @param {Event} event - 檔案輸入框的 change 事件
+ */
+function importData(event) {
+    const file = event.target.files[0];
+    if (!file) {
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const importedData = JSON.parse(e.target.result);
+
+            // 簡單驗證一下格式是否正確
+            if (!Array.isArray(importedData)) {
+                throw new Error("Data is not an array.");
+            }
+
+            if (confirm(i18n.confirmImport[currentLang])) {
+                setData(FGO_STORAGE, importedData);
+                alert(i18n.successImport[currentLang]);
+                location.reload();
+            }
+        } catch (error) {
+            console.error("Import failed:", error);
+            alert(i18n.errorImport[currentLang]);
+        } finally {
+            // 清空 file input 的值，確保下次選擇同一個檔案也能觸發 change 事件
+            event.target.value = null;
+        }
+    };
+    reader.readAsText(file);
+}
+
 function openImage(){
 	try{
 		const image = new Image();
@@ -653,4 +719,3 @@ function applyLanguage(lang) {
         }
     });
 }
-

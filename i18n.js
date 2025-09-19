@@ -53,6 +53,16 @@ const i18n = {
         "ja": "画像生成",
         "en": "Generate Image"
     },
+    importData: {
+        "zh-TW": "匯入資料",
+        "ja": "インポート",
+        "en": "Import Data"
+    },
+    exportData: {
+        "zh-TW": "匯出資料",
+        "ja": "エクスポート",
+        "en": "Export Data"
+    },
     fourStarLink: {
         "zh-TW": "FGO持有四星英靈一覽表",
         "ja": "FGO所持星4サーヴァント一覧",
@@ -64,9 +74,9 @@ const i18n = {
         "en": "Report Issue"
     },
     latestUpdate: {
-        "zh-TW": "最近更新: 新增寶五持有統計",
-        "ja": "最近の更新: 宝具5所持数の統計を追加",
-        "en": "Recent Updates: Added NP5 Ownership Statistics"
+        "zh-TW": "最近更新: 新增匯入匯出功能",
+        "ja": "最近の更新: インポート・エクスポート機能追加",
+        "en": "Recent Updates: Added Import & Export feature"
     },
     // Mode Button Labels
     jp_label: { "zh-TW": "日GO", "ja": "日GO", "en": "JP Server" },
@@ -95,6 +105,21 @@ const i18n = {
     totalNP5Owned: { "zh-TW": "寶五持有數", "ja": "宝具5所持数", "en": "NP5 Owned" },
     ownedNP5Rate: { "zh-TW": "寶五持有率", "ja": "宝具5所持率", "en": "NP5 Rate" },
     // Alerts & Prompts
+    confirmImport: {
+        "zh-TW": "確定要匯入資料嗎？這將會覆寫目前帳號的所有持有和標記資料！此操作無法復原。",
+        "ja": "データをインポートしますか？現在のアカウントのすべての所持データとマークが上書きされます！この操作は元に戻せません。",
+        "en": "Are you sure you want to import data? This will overwrite all servant data and marks for the current account! This action cannot be undone."
+    },
+    errorImport: {
+        "zh-TW": "檔案讀取或解析失敗，請確認檔案格式是否為正確的 .json 備份檔。",
+        "ja": "ファイルの読み込みまたは解析に失敗しました。ファイルが正しい.jsonバックアップファイルであることを確認してください。",
+        "en": "Failed to read or parse the file. Please ensure it is a correct .json backup file."
+    },
+    successImport: {
+        "zh-TW": "資料匯入成功！頁面將會重新整理。",
+        "ja": "データのインポートが成功しました！ページがリロードされます。",
+        "en": "Data imported successfully! The page will now reload."
+    },
     alertNpLimit: {
         "zh-TW": "寶具等級上限已切換為: ",
         "ja": "宝具レベルの上限を切り替えました: ",

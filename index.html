@@ -16,11 +16,16 @@
 			<h1 data-i18n-key="mainTitle">FGO持有五星英靈一覽表</h1>
 		</div>
 		<div id="nav">
+			<!-- 帳號相關 -->
 			<ul>
 				<li><a id="switch-account-btn" class="btn btn--primary btn--round" href="javascript:void(0);" style="color: #ff1900;" data-i18n-key="switchAccount"></a></li>
-				<!-- 已結束區域 -->
+				<li><a id="import-button" class="btn btn--primary btn--round" href="javascript:void(0);" data-i18n-key="importData"></a></li>
+				<li><a id="export-button" class="btn btn--primary btn--round" href="javascript:void(0);" data-i18n-key="exportData"></a></li>
+				<input type="file" id="import-file" accept=".json" style="display: none;">
+			</ul>
+			<!-- 福袋 -->
+			<ul>
 				<li><a id="eighth" class="btn btn--primary btn--round" href="javascript:void(0);"></a></li>
-				<!-- 福袋新增 -->
 				<li><a id="newyear_24_up" class="btn btn--primary btn--round" href="javascript:void(0);"></a></li>
 				<li><a id="newyear_24_down" class="btn btn--primary btn--round" href="javascript:void(0);"></a></li>
 				<li><a id="nineth_up" class="btn btn--primary btn--round" href="javascript:void(0);"></a></li>
@@ -36,6 +41,7 @@
 				<li><a id="jp-button" class="btn btn--primary btn--round" href="javascript:void(0);"></a></li>
 				<li><a id="z-button" class="btn btn--primary btn--round" href="javascript:void(0);"></a></li>
 			</ul>
+			<!-- 功能 -->
 			<ul>
 				<li><a id="set-button" class="btn btn--checked btn--round" href="javascript:void(0);" data-i18n-key="setAmount"></a></li>
 				<li><a id="breakthrough" class="btn btn--primary btn--round" href="javascript:void(0);" data-i18n-key="breakthroughBtn"></a></li>
@@ -52,7 +58,7 @@
 				<p data-i18n-key="howToUseNp"></p>
 			</div>
 
-			<h2>Copyright © 2020 by mgneko, maintained by LeafLu © 2025 ver 4.1</h2>
+			<h2>Copyright © 2020 by mgneko, maintained by LeafLu © 2025 ver 4.2</h2>
 			<h2>
 				<a href="https://leaflu0315.github.io/fgo4s/" data-i18n-key="fourStarLink"></a>
 				<span data-i18n-key="reportProblem"></span>: <a href="https://forms.gle/78p1Luysj2qoMEts5" target="_blank">表單</a>
