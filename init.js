@@ -122,6 +122,7 @@ const FGO_DATA = {
 // ===================================================================================
 
 var units = [], svt = {}, categoryImages = [], markImages = [], allModeButtons = [];
+var selectedClasses = new Set(); // 【新增】用來儲存被選取行的集合
 
 const ImagePreloader = {
     images: {},
@@ -219,6 +220,10 @@ function init() {
 }
 
 function mainLogic(state = 0){
+    // 當切換模式或帳號時，清除行的選取狀態
+    if (state === 1) {
+        selectedClasses.clear();
+    }
     // 檢查儲存的模式是否已下架，若已下架則預設為 'jp'
     const currentCountryData = FGO_DATA[country];
     if (!currentCountryData || !currentCountryData.isReleased) {
@@ -277,6 +282,18 @@ function drawCanvas() {
     for (let i = 0; i < CategoryLen; i++) {
         if (CategoryNum[i] > 0) {
             const yPos = i - pass;
+            const rowTopY = yPos * (CELL_SIZE + row_padding) + marginTop;
+
+            // 如果該行被選取，就繪製紅色背景
+            if (selectedClasses.has(i)) {
+                context.fillStyle = 'rgba(255, 0, 0, 0.3)'; // 半透明紅色
+                const highlightX = marginLeft - col_padding / 2;
+                const highlightY = rowTopY - row_padding / 2;
+                const highlightWidth = (CategoryNum[i] + 1) * (CELL_SIZE + col_padding);
+                const highlightHeight = CELL_SIZE + row_padding;
+                context.fillRect(highlightX, highlightY, highlightWidth, highlightHeight);
+            }
+
             let imgIndex = i;
             if (classIconInfo) {
                 let iconId = Array.isArray(classIconInfo) ? classIconInfo[i] : classIconInfo;
@@ -567,20 +584,45 @@ function fillTotalText() {
 function getCoordinates(e){ const rect = e.target.getBoundingClientRect(); const scaleX = canvas.width / rect.width; const scaleY = canvas.height / rect.height; return {'x': (e.clientX - rect.left) * scaleX, 'y': (e.clientY - rect.top) * scaleY}; }
 function getCategory(y){ return Math.floor((y - marginTop) / (CELL_SIZE + row_padding)); }
 function getAttribute(x){ return Math.floor((x - marginLeft) / (CELL_SIZE + col_padding)); }
+
+// 重構點擊處理邏輯，以支援職階圖示點擊
 function handleUnitInteraction(event, isRightClick = false) {
     const point = getCoordinates(event);
-    let categoryIndex = getCategory(point.y), attributeIndex = getAttribute(point.x);
-    let visibleCategoryIndex = 0, actualCategoryIndex = -1;
+    let categoryIndex = getCategory(point.y); // 這是可見的行索引
+    let attributeIndex = getAttribute(point.x);
+
+    // 將可見行索引映射到實際的 Category 陣列索引
+    let visibleCategoryIndex = 0;
+    let actualCategoryIndex = -1;
     for (let i = 0; i < CategoryLen; i++) {
         if (CategoryNum[i] > 0) {
-            if (visibleCategoryIndex === categoryIndex) { actualCategoryIndex = i; break; }
+            if (visibleCategoryIndex === categoryIndex) {
+                actualCategoryIndex = i;
+                break;
+            }
             visibleCategoryIndex++;
         }
     }
-    if (actualCategoryIndex === -1) return;
+    if (actualCategoryIndex === -1) return; // 點擊到無效區域
+
+    // 判斷是否點擊在職階圖示上 (第一欄)
+    if (attributeIndex === 0) {
+        if (isRightClick) return; // 右鍵點擊職階圖示不做任何事
+
+        if (selectedClasses.has(actualCategoryIndex)) {
+            selectedClasses.delete(actualCategoryIndex);
+        } else {
+            selectedClasses.add(actualCategoryIndex);
+        }
+        drawCanvas(); // 重繪整個畫布來顯示/取消 highlight
+        return; // 處理完畢，結束函式
+    }
+
+    // --- 以下為原有的英靈圖示點擊邏輯 ---
     categoryIndex = actualCategoryIndex;
     const xInCell = point.x - (attributeIndex * (CELL_SIZE + col_padding) + marginLeft);
     const yInCell = point.y - (getCategory(point.y) * (CELL_SIZE + row_padding) + marginTop);
+
     if (xInCell < CELL_SIZE && xInCell > 0 && yInCell < CELL_SIZE && yInCell > 0 && attributeIndex > 0 && attributeIndex <= CategoryNum[categoryIndex]) {
         const unit = units[categoryIndex][attributeIndex - 1];
         const yPos = getCategory(point.y);
@@ -607,6 +649,7 @@ function handleUnitInteraction(event, isRightClick = false) {
 		updateData(units);
     }
 }
+
 function rightClick(e){ handleUnitInteraction(e, true); }
 function onCanvasClick(e){ handleUnitInteraction(e, false); }
 
