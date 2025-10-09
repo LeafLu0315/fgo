@@ -284,11 +284,11 @@ function drawCanvas() {
             const yPos = i - pass;
             const rowTopY = yPos * (CELL_SIZE + row_padding) + marginTop;
 
-            // 如果該行被選取，就繪製紅色背景
+            // 【新增】如果該行被選取，就繪製紅色背景
             if (selectedClasses.has(i)) {
                 context.fillStyle = 'rgba(255, 0, 0, 0.3)'; // 半透明紅色
                 const highlightX = marginLeft - col_padding / 2;
-                const highlightY = rowTopY - row_padding / 2;
+                const highlightY = rowTopY - (row_padding / 2) + 10; // 將紅框往下偏移 10px
                 const highlightWidth = (CategoryNum[i] + 1) * (CELL_SIZE + col_padding);
                 const highlightHeight = CELL_SIZE + row_padding;
                 context.fillRect(highlightX, highlightY, highlightWidth, highlightHeight);
@@ -605,7 +605,7 @@ function handleUnitInteraction(event, isRightClick = false) {
     }
     if (actualCategoryIndex === -1) return; // 點擊到無效區域
 
-    // 判斷是否點擊在職階圖示上 (第一欄)
+    // 【新增】判斷是否點擊在職階圖示上 (第一欄)
     if (attributeIndex === 0) {
         if (isRightClick) return; // 右鍵點擊職階圖示不做任何事
 
@@ -762,3 +762,4 @@ function applyLanguage(lang) {
         }
     });
 }
+
