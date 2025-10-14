@@ -105,8 +105,8 @@ const FGO_DATA = {
     'z': {servants: z_servants, type: 'partial', isReleased: true, labelKey: 'z_label'},
 	// 福袋新增
     'eighth': {servants: eighth_servants, type: 'luckyBag', isReleased: false, classIconImg: '888', labelKey: 'eighth_label'},
-    'nineth_up': {servants: nineth_up_servants, type: 'luckyBag', isReleased: false, classIconImg: '99', labelKey: 'nineth_up_label'},
-    'nineth_down': {servants: nineth_down_servants, type: 'luckyBag', isReleased: false, classIconImg: '99', labelKey: 'nineth_down_label'},
+    'nineth_up': {servants: nineth_up_servants, type: 'luckyBag', isReleased: true, classIconImg: '99', labelKey: 'nineth_up_label'},
+    'nineth_down': {servants: nineth_down_servants, type: 'luckyBag', isReleased: true, classIconImg: '99', labelKey: 'nineth_down_label'},
     'newyear_24_up': {servants: newyear_24_up_servants, type: 'luckyBag', isReleased: true, classIconImg: '99', labelKey: 'newyear_24_up_label'},
     'newyear_24_down': {servants: newyear_24_down_servants, type: 'luckyBag', isReleased: true, classIconImg: '99', labelKey: 'newyear_24_down_label'},
     'newyear_25_up': {servants: newyear_25_up_servants, type: 'luckyBag', isReleased: false, classIconImg: '99', labelKey: 'newyear_25_up_label'},
