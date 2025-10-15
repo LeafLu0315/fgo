@@ -74,9 +74,9 @@ const i18n = {
         "en": "Report Issue"
     },
     latestUpdate: {
-        "zh-TW": "最近更新: 新增點選職階圖示顯示紅底功能",
-        "ja": "最近の更新: クラスアイコンをクリックして赤背景を表示する機能を追加",
-        "en": "Recent Updates: Added feature to click class icons to show red background"
+        "zh-TW": "最近更新: 福袋資料獨立成檔案",
+        "ja": "最近の更新: 福袋データを別ファイルに分離",
+        "en": "Recent Updates: Lucky Bag Data Moved to Separate File"
     },
     // Mode Button Labels
     jp_label: { "zh-TW": "日GO", "ja": "日GO", "en": "JP Server" },

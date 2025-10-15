@@ -50,6 +50,7 @@ const Category = ['saber', 'archer', 'lancer', 'rider', 'caster', 'assassin', 'b
 const CategoryLen = Category.length;
 const Marks = ['hiclipart', 'heart'];
 
+// 移除所有福袋的 const 變數，只保留 jp, tw, z 的基本資料
 const servents = {'saber': [2, 8, 68, 76, 90, 91, 153, 160, 213, 234, 270, 278, 299, 302, 317, 337, 343, 384, 402, 432, 445, 456],
 				'archer': [12, 60, 77, 84, 129, 142, 156, 212, 216, 272, 276, 350, 375, 383, 394, 427, 450],
 				'lancer': [70, 85, 88, 119, 128, 143, 196, 232, 280, 300, 312, 329, 368, 381, 433, 442],
@@ -67,54 +68,24 @@ const servents = {'saber': [2, 8, 68, 76, 90, 91, 153, 160, 213, 234, 270, 278, 
 				'unbeast':[444],
 				'shielder': []};
 const z_servants = {saber:[8, 2, 76, 278], archer:[84, 60, 212, 77, 350], lancer:[143, 85, 232, 119, 300], rider:[206, 274, 118, 65, 144, 99, 277, 331, 296], caster:[201, 113, 169, 37, 62], assassin:[189, 75, 235, 380], berserker:[52, 226, 97, 98, 306], ruler:[59], avenger:[370], alterego:[224], mooncancer:[244]};
-// 福袋新增
-const eighth_servants = {saber:[285, 292, 284, 289], archer:[299, 303, 297, 295], lancer:[309, 312, 307, 305], rider:[321, 314, 317], caster:[327, 334, 324], assassin:[337, 339, 349, 336], berserker:[353, 351, 355, 357], ruler:[362, 373, 365, 368], avenger:[374, 376, 384, 383], alterego:[297, 302, 303], foreigner:[342, 329, 316, 343, 346], mooncancer:[369, 375, 371]};
-const nineth_up_servants = {saber:[303, 299, 297], archer:[316, 309, 312, 284], lancer:[346, 343, 342, 374], rider:[314, 371, 373], caster:[368, 383, 384, 409], assassin:[393, 324, 295], berserker:[349, 365, 307], ruler:[317, 416, 337], avenger:[369, 334, 402, 302], alterego:[406, 336, 305]};
-const nineth_down_servants = {saber:[289, 321, 285], archer:[355, 357, 353], lancer:[386, 390, 385], rider:[292, 329, 327], caster:[375, 362, 397, 400], assassin:[394, 351, 376, 339], berserker:[415, 403, 413]};
-const newyear_24_up_servants = {saber:[86, 70, 163, 155, 68], archer:[303, 179, 239, 270], lancer:[384, 393, 336, 327], rider:[276, 297, 324, 317, 305], caster:[362, 368, 365, 357], assassin:[234, 129, 90, 275], berserker:[386, 400, 312, 337], ruler:[284, 241, 215, 229], avenger:[307, 353, 295], alterego:[127, 91, 198, 167, 112], foreigner:[253, 261, 216, 237], mooncancer:[285, 268, 321, 349], pretender:[355, 383, 390, 374], beast:[88, 136, 106, 128], shielder:[292, 195, 339, 153]};
-const newyear_24_down_servants = {saber:[142, 139, 175, 114, 196], archer:[220, 238, 209, 199, 250], lancer:[265, 299, 280, 289], rider:[314, 309, 334, 312], caster:[373, 351, 385, 376], assassin:[303, 393, 270], berserker:[297, 375, 96, 343, 281], ruler:[272, 173, 229, 150], avenger:[346, 329, 302], alterego:[369, 394, 371], foreigner:[51, 154, 161, 156], mooncancer:[213, 394, 342], pretender:[205, 12, 93, 160, 108], beast:[247, 397, 280, 316]};
-const newyear_25_up_servants = {saber:[68,70,270,276], archer:[317,368,384], lancer:[90, 129, 91,216,234], rider:[337, 312,402,383], caster:[142,88,153,128], assassin:[196,280,312,299], berserker:[327,239,179,86,155], ruler:[415,362,365,406], avenger:[112,127,237,253], alterego:[386,355,349,261], foreigner:[136,175,139,114], mooncancer:[314,385,199,309], pretender:[284,307,241,215], beast:[324,297,163,303,305]};
-const newyear_25_down_servants = {saber:[426,416,357,393,403], archer:[167,268,275,198], lancer:[285,374,390,321], rider:[413,421,400], caster:[220,209,195,106], assassin:[250,238,265,289], berserker:[334,351,339,373], ruler:[431,418,376], avenger:[292,295,336,229], alterego:[353,421,413]};
-const newyear_25_white_servants = {saber:[270,343,375], archer:[402,427,394,302,329], lancer:[156,12,160], rider:[213,394,280], caster:[96,281,297], assassin:[409,393,303], berserker:[346,371,369], ruler:[51,108,93], avenger:[161,205,154], alterego:[316,397,247], foreigner:[229,173,272,342,150]};
-const tenth_up_servants = {saber:[68, 213, 90, 153], archer:[270, 337, 234, 384], lancer:[160, 299, 302, 91], rider:[317, 343, 402, 432], caster:[129, 156, 272, 427, 394], assassin:[142, 12, 216], berserker:[276, 375, 383, 394], ruler:[312, 70, 128, 433, 88], avenger:[196, 280, 312], alterego:[442, 329, 368]};
-const tenth_down_servants = {saber:[179, 342, 241], archer:[205, 108, 253], lancer:[406, 349, 397], rider:[136, 215, 150], caster:[284, 327, 307], assassin:[175, 237, 127], berserker:[435, 385, 415], ruler:[239, 86, 154], avenger:[139, 112, 199], alterego:[365, 371, 314], foreigner:[51, 155, 386, 161, 440], mooncancer:[247, 114, 261], pretender:[355, 362, 309]};
-const tenth_ex_servants = {saber:[400, 409, 106, 303, 418], archer:[229, 173, 292, 421], lancer:[93, 96, 220], rider:[265, 268, 250], caster:[305, 321, 285], assassin:[374, 357, 346, 351], berserker:[438, 390, 403, 421], ruler:[163, 195, 275], avenger:[339, 393, 431], alterego:[336, 413, 295, 353], foreigner:[209, 167, 198], mooncancer:[238, 289, 281], pretender:[297, 324, 316], beast:[369, 376, 373, 334], unbeast:[416, 426, 413, 441]};
-/**
- * Template
- const foo = {'saber': [],
-				'archer': [],
-				'lancer': [],
-				'rider': [],
-				'caster': [],
-				'assassin': [],
-				'berserker': [],
-				'ruler': [],
-				'avenger': [],
-				'alterego': [],
-				'foreigner': [],
-				'mooncancer': [],
-				'pretender': [],
-				'beast': [],
-				'unbeast':[],
-				'shielder': []};
- */
+
+// 福袋資料改用字串當作 key，稍後會從 luckybag.json 載入並填充
 const FGO_DATA = {
     'jp': {servants: servents, type: 'full', isReleased: true, labelKey: 'jp_label'},
-	// 台服數量增加變動                                                              [劍, 弓, 槍, 騎, 術, 殺, 狂, 裁, 仇, 丑, 外, 月, 偽, 獸, 非獸, 盾]
+    // 台服數量增加變動                                                              [劍, 弓, 槍, 騎, 術, 殺, 狂, 裁, 仇, 丑, 外, 月, 偽, 獸, 非獸, 盾]
     'tw': {servants: servents, type: 'full', isReleased: true, categoryNumOverride: [19, 15, 14, 17, 15, 13, 15, 12, 7, 10, 10, 4, 2, 1], labelKey: 'tw_label'},
     'z': {servants: z_servants, type: 'partial', isReleased: true, labelKey: 'z_label'},
-	// 福袋新增
-    'eighth': {servants: eighth_servants, type: 'luckyBag', isReleased: false, classIconImg: '888', labelKey: 'eighth_label'},
-    'nineth_up': {servants: nineth_up_servants, type: 'luckyBag', isReleased: true, classIconImg: '99', labelKey: 'nineth_up_label'},
-    'nineth_down': {servants: nineth_down_servants, type: 'luckyBag', isReleased: true, classIconImg: '99', labelKey: 'nineth_down_label'},
-    'newyear_24_up': {servants: newyear_24_up_servants, type: 'luckyBag', isReleased: true, classIconImg: '99', labelKey: 'newyear_24_up_label'},
-    'newyear_24_down': {servants: newyear_24_down_servants, type: 'luckyBag', isReleased: true, classIconImg: '99', labelKey: 'newyear_24_down_label'},
-    'newyear_25_up': {servants: newyear_25_up_servants, type: 'luckyBag', isReleased: false, classIconImg: '99', labelKey: 'newyear_25_up_label'},
-    'newyear_25_down': {servants: newyear_25_down_servants, type: 'luckyBag', isReleased: false, classIconImg: '99', labelKey: 'newyear_25_down_label'},
-    'newyear_25_white': {servants: newyear_25_white_servants, type: 'luckyBag', isReleased: false, classIconImg: '99', labelKey: 'newyear_25_white_label'},
-    'tenth_up': {servants: tenth_up_servants, type: 'luckyBag', isReleased: false, classIconImg: [1,1,1,1,2,2,2,3,3,3], labelKey: 'tenth_up_label'},
-    'tenth_down': {servants: tenth_down_servants, type: 'luckyBag', isReleased: false, classIconImg: [4,4,4,5,5,5,5,6,6,6,7,7,7], labelKey: 'tenth_down_label'},
-    'tenth_ex': {servants: tenth_ex_servants, type: 'luckyBag', isReleased: false, classIconImg: '99', labelKey: 'tenth_ex_label'},
+    'eighth': {servants: "eighth_servants", type: 'luckyBag', isReleased: false, classIconImg: '888', labelKey: 'eighth_label'},
+    'nineth_up': {servants: "nineth_up_servants", type: 'luckyBag', isReleased: true, classIconImg: '99', labelKey: 'nineth_up_label'},
+    'nineth_down': {servants: "nineth_down_servants", type: 'luckyBag', isReleased: true, classIconImg: '99', labelKey: 'nineth_down_label'},
+    'newyear_24_up': {servants: "newyear_24_up_servants", type: 'luckyBag', isReleased: true, classIconImg: '99', labelKey: 'newyear_24_up_label'},
+    'newyear_24_down': {servants: "newyear_24_down_servants", type: 'luckyBag', isReleased: true, classIconImg: '99', labelKey: 'newyear_24_down_label'},
+    'newyear_25_up': {servants: "newyear_25_up_servants", type: 'luckyBag', isReleased: false, classIconImg: '99', labelKey: 'newyear_25_up_label'},
+    'newyear_25_down': {servants: "newyear_25_down_servants", type: 'luckyBag', isReleased: false, classIconImg: '99', labelKey: 'newyear_25_down_label'},
+    'newyear_25_white': {servants: "newyear_25_white_servants", type: 'luckyBag', isReleased: false, classIconImg: '99', labelKey: 'newyear_25_white_label'},
+    'tenth_up': {servants: "tenth_up_servants", type: 'luckyBag', isReleased: false, classIconImg: [1,1,1,1,2,2,2,3,3,3], labelKey: 'tenth_up_label'},
+    'tenth_down': {servants: "tenth_down_servants", type: 'luckyBag', isReleased: false, classIconImg: [4,4,4,5,5,5,5,6,6,6,7,7,7], labelKey: 'tenth_down_label'},
+    'tenth_ex': {servants: "tenth_ex_servants", type: 'luckyBag', isReleased: false, classIconImg: '99', labelKey: 'tenth_ex_label'},
 };
 
 // ===================================================================================
@@ -122,19 +93,20 @@ const FGO_DATA = {
 // ===================================================================================
 
 var units = [], svt = {}, categoryImages = [], markImages = [], allModeButtons = [];
-var selectedClasses = new Set(); // 【新增】用來儲存被選取行的集合
+var selectedClasses = new Set(); // 用來儲存被選取行的集合
 
 const ImagePreloader = {
     images: {},
     totalImages: 0,
     loadedImages: 0,
     init(callback) {
-        // 簡化邏輯：直接從 FGO_DATA 收集所有需要的從者編號
         const allServantNos = new Set();
         Object.values(FGO_DATA).forEach(data => {
-            Object.values(data.servants).forEach(noArray => {
-                noArray.forEach(no => allServantNos.add(no));
-            });
+            if (typeof data.servants === 'object') { // 確保 servants 資料已載入
+                Object.values(data.servants).forEach(noArray => {
+                    noArray.forEach(no => allServantNos.add(no));
+                });
+            }
         });
 
         this.totalImages = allServantNos.size;
@@ -146,10 +118,8 @@ const ImagePreloader = {
         const loadingText = i18n.loadingImages[currentLang];
         this.updateProgress(loadingText);
 
-        // 遍歷所有從者編號，並使用新的統一圖片路徑
         allServantNos.forEach(no => {
             const img = new Image();
-            // **修改點 2**: 使用新的圖片路徑
             img.src = `images/servents/${no}.png`;
             this.images[no] = img;
             img.onload = img.onerror = () => {
@@ -168,7 +138,6 @@ const ImagePreloader = {
         context.fillStyle = bgcolor;
         context.fillRect(0, 0, canvas.width, canvas.height);
         context.fillStyle = font_color;
-        // 使用新的字體函式
         context.font = getFontString(30);
         context.textAlign = "center";
         context.fillText(`${loadingText}${percentage}%`, canvas.width / 2, canvas.height / 2);
@@ -179,7 +148,10 @@ const ImagePreloader = {
 
 function getUnit(country) {
     const currentData = FGO_DATA[country];
-    if (!currentData) { alert("錯誤的資料代碼：" + country); return []; }
+    if (!currentData || typeof currentData.servants !== 'object') { // 檢查資料是否已載入
+         alert("資料載入錯誤或尚未完成，請稍後再試： " + country);
+         return [];
+    }
     const sourceServants = currentData.servants;
     CategoryNum = Category.map((className, index) => {
         if (currentData.categoryNumOverride) {
@@ -195,7 +167,6 @@ function getUnit(country) {
         if (sourceServants[className] && CategoryNum[i] > 0) {
             for (let j = 0; j < CategoryNum[i]; j++) {
                 const no = sourceServants[className][j];
-                // 直接從預載入的圖片快取中建立物件
                 const unitInstance = {
                     no: no,
                     image: ImagePreloader.images[no],
@@ -209,27 +180,55 @@ function getUnit(country) {
     return newUnits;
 }
 
-// 【修改點】移除 async 和所有字型載入邏輯
-function init() {
-    // 直接開始預載入圖片和執行主邏輯
-    preloadStaticImages(() => {
+// 載入福袋 JSON 資料
+async function loadLuckyBagData() {
+    try {
+        const response = await fetch('luckybag.json'); // 發出請求
+        if (!response.ok) {
+            throw new Error('無法載入 luckybag.json: ' + response.statusText);
+        }
+        const luckyBags = await response.json(); // 解析 JSON
+
+        // 將載入的資料填回 FGO_DATA 物件中
+        Object.keys(FGO_DATA).forEach(key => {
+            const modeData = FGO_DATA[key];
+            const servantsKey = modeData.servants;
+            if (typeof servantsKey === 'string' && luckyBags[servantsKey]) {
+                modeData.servants = luckyBags[servantsKey];
+            }
+        });
+        console.log("福袋資料載入成功！");
+    } catch (error) {
+        console.error("載入福袋資料失敗:", error);
+        alert("錯誤：無法載入福袋資料，部分福袋模式可能無法使用。");
+    }
+}
+
+// 將 init 函式改為 async，以便使用 await
+async function init() {
+    // 靜態圖片（職階圖示）可以先載入
+    preloadStaticImages(async () => {
+        // 在載入英靈圖片前，先等待福袋資料載入完成
+        await loadLuckyBagData();
+
+        // 接著，根據完整的 FGO_DATA 載入所有需要的英靈圖片
         ImagePreloader.init(() => {
+            // 所有資料和圖片都準備好後，才執行主邏輯
             mainLogic();
         });
     });
 }
 
+
 function mainLogic(state = 0){
-    // 當切換模式或帳號時，清除行的選取狀態
     if (state === 1) {
         selectedClasses.clear();
     }
-    // 檢查儲存的模式是否已下架，若已下架則預設為 'jp'
     const currentCountryData = FGO_DATA[country];
     if (!currentCountryData || !currentCountryData.isReleased) {
-        console.log(`Saved mode "${country}" is not available. Defaulting to "jp".`); // 用於除錯
-        country = 'jp'; // 如果當前儲存的模式無效或未發布，則重設為 'jp'
-        localStorage.setItem("r_country", 'jp'); // 同時更新 localStorage 中的儲存值
+        console.log(`Saved mode "${country}" is not available. Defaulting to "jp".`);
+        country = 'jp';
+        localStorage.setItem("r_country", 'jp');
     }
 
     units = getUnit(country);
@@ -264,7 +263,7 @@ function mainLogic(state = 0){
 
     const visibleRows = CategoryNum.filter(num => num > 0).length;
     const iconWidth = luckyBag ? (Math.max.apply(null,CategoryNum) + 1) * (CELL_SIZE + col_padding) + caculateField : (Math.max.apply(null,CategoryNum) + 1) * (CELL_SIZE + col_padding);
-    const MIN_CANVAS_WIDTH = 850; // 設定一個合理的最小寬度以容納底部文字
+    const MIN_CANVAS_WIDTH = 850;
     canvas.width = Math.max(iconWidth, MIN_CANVAS_WIDTH);
     canvas.height = visibleRows * (CELL_SIZE + row_padding) + marginTop + FOOTER_HEIGHT;
 
@@ -284,11 +283,10 @@ function drawCanvas() {
             const yPos = i - pass;
             const rowTopY = yPos * (CELL_SIZE + row_padding) + marginTop;
 
-            // 【新增】如果該行被選取，就繪製紅色背景
             if (selectedClasses.has(i)) {
-                context.fillStyle = 'rgba(255, 0, 0, 0.3)'; // 半透明紅色
+                context.fillStyle = 'rgba(255, 0, 0, 0.3)';
                 const highlightX = marginLeft - col_padding / 2;
-                const highlightY = rowTopY - (row_padding / 2) + 10; // 將紅框往下偏移 10px
+                const highlightY = rowTopY - (row_padding / 2) + 10;
                 const highlightWidth = (CategoryNum[i] + 1) * (CELL_SIZE + col_padding);
                 const highlightHeight = CELL_SIZE + row_padding;
                 context.fillRect(highlightX, highlightY, highlightWidth, highlightHeight);
@@ -328,9 +326,8 @@ function bindActionButtons() {
     document.getElementById('reset-mark').onclick = () => { if (confirm(i18n.confirmResetMark[currentLang])) { let data = getData(FGO_STORAGE); data.forEach(u => u.mark = 0); setData(FGO_STORAGE, data.filter(u => u.npLv > 0)); location.reload(); } };
     document.getElementById('breakthrough').onclick = () => { npLv = (npLv === init_npLv) ? 20 : init_npLv; alert(`${i18n.alertNpLimit[currentLang]}${npLv}`); };
     document.getElementById('open-image-btn').onclick = openImage;
-    // 綁定導入導出功能
     const importFile = document.getElementById('import-file');
-    document.getElementById('import-button').onclick = () => importFile.click(); // 讓匯入按鈕點擊隱藏的 file input
+    document.getElementById('import-button').onclick = () => importFile.click();
     document.getElementById('export-button').onclick = exportData;
     importFile.onchange = importData;
 }
@@ -340,17 +337,13 @@ function bindActionButtons() {
 // ===================================================================================
 
 function getFontString(size = 20) {
-    // 【修改點】針對不同語言回傳最佳的系統字體組合 (font stack)
     switch (currentLang) {
         case 'ja':
-            // 優先使用日本系統字型，若無則依序遞補
             return `${size}px -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', '游ゴシック Medium', 'Yu Gothic Medium', 'メイリオ', Meiryo, sans-serif`;
         case 'en':
-            // 使用歐美系統預設字型
             return `${size}px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif`;
         case 'zh-TW':
         default:
-            // 【修改點】直接使用高品質的繁體中文系統字型
             return `${size}px -apple-system, BlinkMacSystemFont, 'PingFang TC', 'Microsoft JhengHei', '微軟正黑體', sans-serif`;
     }
 }
@@ -478,9 +471,8 @@ function fillNPText(x, y, msg) {
 }
 
 function fillTotalText() {
-    context.font = getFontString(18); // 微調字體大小以容納更多行
+    context.font = getFontString(18);
 
-    // 1. 計算統計數據
     var totalHave = 0, totalNP = 0, total = 0, totalNP5 = 0;
     for (let i = 0; i < CategoryLen; i++) {
         total += CategoryNum[i];
@@ -489,48 +481,38 @@ function fillTotalText() {
                 const unit = units[i][j];
                 totalNP += unit.npLv;
                 if (unit.npLv > 0) totalHave++;
-                if (unit.npLv >= 5) totalNP5++; // 計算寶五以上從者數量
+                if (unit.npLv >= 5) totalNP5++;
             }
         }
     }
     var percent = total > 0 ? (totalHave / total) * 100 : 0;
-    var percentNP5 = total > 0 ? (totalNP5 / total) * 100 : 0; // 計算寶五持有率
+    var percentNP5 = total > 0 ? (totalNP5 / total) * 100 : 0;
 
     let boxWidth;
     switch (currentLang) {
-        case 'zh-TW':
-            boxWidth = 220;
-            break;
-        case 'en':
-            boxWidth = 260;
-            break;
-        case 'ja':
-            boxWidth = 300;
-            break;
-        default:
-            boxWidth = 220;
+        case 'zh-TW': boxWidth = 220; break;
+        case 'en': boxWidth = 260; break;
+        case 'ja': boxWidth = 300; break;
+        default: boxWidth = 220;
     }
 
-    const boxHeight = 140; // 增加框的高度
+    const boxHeight = 140;
     const boxX = canvas.width - boxWidth;
-    const boxY = canvas.height - 170; // 向上移動框
+    const boxY = canvas.height - 170;
     context.fillStyle = bgcolor;
     context.fillRect(boxX, boxY, boxWidth, boxHeight);
 
     context.textAlign = 'left';
     context.fillStyle = font_color;
     const xPos = boxX + 10;
-    const lineSpacing = 25; // 設定行距
+    const lineSpacing = 25;
 
-    // --- 繪製每一行 ---
     let currentY = boxY + 15;
 
-    // Line 1 : 寶五持有數
     const line_np5_owned = `${i18n.totalNP5Owned[currentLang]}: ${totalNP5}/${total}`;
     context.fillText(line_np5_owned, xPos, currentY);
     currentY += lineSpacing;
 
-    // Line 2 : 寶五持有率
     const line_np5_rate_label = `${i18n.ownedNP5Rate[currentLang]}: `;
     const line_np5_rate_value = `${percentNP5.toFixed(2)}%`;
     let valueColorNP5 = font_color;
@@ -547,13 +529,11 @@ function fillTotalText() {
     context.fillText(line_np5_rate_value, xPos + labelWidthNP5, currentY);
     currentY += lineSpacing;
 
-    // Line 3 : 英靈持有數
     context.fillStyle = font_color;
     const line_total_owned = `${i18n.totalOwned[currentLang]}: ${totalHave}/${total}`;
     context.fillText(line_total_owned, xPos, currentY);
     currentY += lineSpacing;
 
-    // Line 4 : 英靈持有率
     const line_owned_rate_label = `${i18n.ownedRate[currentLang]}: `;
     const line_owned_rate_value = `${percent.toFixed(2)}%`;
     let valueColor = font_color;
@@ -570,7 +550,6 @@ function fillTotalText() {
     context.fillText(line_owned_rate_value, xPos + labelWidthOwned, currentY);
     currentY += lineSpacing;
 
-    // Line 5 : 總寶數
     context.fillStyle = font_color;
     const line_total_np = `${i18n.totalNPLevel[currentLang]}: ${totalNP}`;
     context.fillText(line_total_np, xPos, currentY);
@@ -585,13 +564,11 @@ function getCoordinates(e){ const rect = e.target.getBoundingClientRect(); const
 function getCategory(y){ return Math.floor((y - marginTop) / (CELL_SIZE + row_padding)); }
 function getAttribute(x){ return Math.floor((x - marginLeft) / (CELL_SIZE + col_padding)); }
 
-// 重構點擊處理邏輯，以支援職階圖示點擊
 function handleUnitInteraction(event, isRightClick = false) {
     const point = getCoordinates(event);
-    let categoryIndex = getCategory(point.y); // 這是可見的行索引
+    let categoryIndex = getCategory(point.y);
     let attributeIndex = getAttribute(point.x);
 
-    // 將可見行索引映射到實際的 Category 陣列索引
     let visibleCategoryIndex = 0;
     let actualCategoryIndex = -1;
     for (let i = 0; i < CategoryLen; i++) {
@@ -603,22 +580,20 @@ function handleUnitInteraction(event, isRightClick = false) {
             visibleCategoryIndex++;
         }
     }
-    if (actualCategoryIndex === -1) return; // 點擊到無效區域
+    if (actualCategoryIndex === -1) return;
 
-    // 【新增】判斷是否點擊在職階圖示上 (第一欄)
     if (attributeIndex === 0) {
-        if (isRightClick) return; // 右鍵點擊職階圖示不做任何事
+        if (isRightClick) return;
 
         if (selectedClasses.has(actualCategoryIndex)) {
             selectedClasses.delete(actualCategoryIndex);
         } else {
             selectedClasses.add(actualCategoryIndex);
         }
-        drawCanvas(); // 重繪整個畫布來顯示/取消 highlight
-        return; // 處理完畢，結束函式
+        drawCanvas();
+        return;
     }
 
-    // --- 以下為原有的英靈圖示點擊邏輯 ---
     categoryIndex = actualCategoryIndex;
     const xInCell = point.x - (attributeIndex * (CELL_SIZE + col_padding) + marginLeft);
     const yInCell = point.y - (getCategory(point.y) * (CELL_SIZE + row_padding) + marginTop);
@@ -653,9 +628,6 @@ function handleUnitInteraction(event, isRightClick = false) {
 function rightClick(e){ handleUnitInteraction(e, true); }
 function onCanvasClick(e){ handleUnitInteraction(e, false); }
 
-/**
- * 匯出目前帳號的資料為 JSON 檔案
- */
 function exportData() {
     const accountName = getCurrentAccount();
     const data = getData(FGO_STORAGE);
@@ -664,7 +636,7 @@ function exportData() {
         return;
     }
 
-    const jsonString = JSON.stringify(data, null, 2); // 格式化 JSON，方便閱讀
+    const jsonString = JSON.stringify(data, null, 2);
     const blob = new Blob([jsonString], { type: "application/json" });
     const url = URL.createObjectURL(blob);
 
@@ -677,10 +649,6 @@ function exportData() {
     URL.revokeObjectURL(url);
 }
 
-/**
- * 處理選擇的檔案並匯入資料
- * @param {Event} event - 檔案輸入框的 change 事件
- */
 function importData(event) {
     const file = event.target.files[0];
     if (!file) {
@@ -691,12 +659,9 @@ function importData(event) {
     reader.onload = function(e) {
         try {
             const importedData = JSON.parse(e.target.result);
-
-            // 簡單驗證一下格式是否正確
             if (!Array.isArray(importedData)) {
                 throw new Error("Data is not an array.");
             }
-
             if (confirm(i18n.confirmImport[currentLang])) {
                 setData(FGO_STORAGE, importedData);
                 alert(i18n.successImport[currentLang]);
@@ -706,7 +671,6 @@ function importData(event) {
             console.error("Import failed:", error);
             alert(i18n.errorImport[currentLang]);
         } finally {
-            // 清空 file input 的值，確保下次選擇同一個檔案也能觸發 change 事件
             event.target.value = null;
         }
     };
@@ -738,7 +702,6 @@ function setLanguage(lang) {
     localStorage.setItem('fgo5s-lang', lang);
     applyLanguage(lang);
 
-    // 確保 Canvas 在所有語言相關設定更新後再重新繪製
     if (canvas && context) {
         drawCanvas();
     }
@@ -762,4 +725,3 @@ function applyLanguage(lang) {
         }
     });
 }
-
