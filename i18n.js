@@ -156,9 +156,9 @@ const i18n = {
         "en": "Loading image assets... "
     },
     howToUseNp: {
-        "zh-TW": "設定寶具等級: 左鍵增加，右鍵減少。 (從者為寶具0時，右鍵點擊會設為最高等級)，點擊職階圖可有紅底顯示。",
-        "ja": "宝具レベル設定: 左クリックで増加、右クリックで減少します。(宝具Lv.0の場合、右クリックで最大レベルに設定されます)。クラスアイコンをクリックすると赤背景が表示されます。",
-        "en": "Set NP Level: Left-click to increase, right-click to decrease. (If NP0, right-click sets to max level). Click class icon to show red background."
+        "zh-TW": "設定寶具等級: 左鍵增加，右鍵減少。 (從者為寶具0時，右鍵點擊會設為最高等級)，點擊職階圖可有紅底顯示。\n黃框代表120等，藍框代表戴冠，靛藍框代表120等且戴冠。",
+        "ja": "宝具レベル設定: 左クリックで増加、右クリックで減少します。(宝具Lv.0の場合、右クリックで最大レベルに設定されます)。クラスアイコンをクリックすると赤背景が表示されます。\n黄色の枠はLv120、青色の枠は戴冠、藍色の枠はLv120かつ戴冠を表します。",
+        "en": "Set NP Level: Left-click to increase, right-click to decrease. (If NP0, right-click sets to max level). Click class icon to show red background.\nYellow border indicates Lv 120, blue border indicates Grand, indigo border indicates both Lv 120 and Grand."
     },
     latestUpdate: {
         "zh-TW": "最近更新: 新增120等、戴冠標記框框功能",
