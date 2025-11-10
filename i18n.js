@@ -73,10 +73,15 @@ const i18n = {
         "ja": "問題報告",
         "en": "Report Issue"
     },
-    latestUpdate: {
-        "zh-TW": "最近更新: 福袋資料獨立成檔案",
-        "ja": "最近の更新: 福袋データを別ファイルに分離",
-        "en": "Recent Updates: Lucky Bag Data Moved to Separate File"
+    setLv120: {
+        "zh-TW": "設定120等",
+        "ja": "Lv120設定",
+        "en": "Set Lv 120"
+    },
+    setCrowned: {
+        "zh-TW": "設定戴冠",
+        "ja": "戴冠設定",
+        "en": "Set Grand"
     },
     // Mode Button Labels
     jp_label: { "zh-TW": "日GO", "ja": "日GO", "en": "JP Server" },
@@ -154,5 +159,10 @@ const i18n = {
         "zh-TW": "設定寶具等級: 左鍵增加，右鍵減少。 (從者為寶具0時，右鍵點擊會設為最高等級)，點擊職階圖可有紅底顯示。",
         "ja": "宝具レベル設定: 左クリックで増加、右クリックで減少します。(宝具Lv.0の場合、右クリックで最大レベルに設定されます)。クラスアイコンをクリックすると赤背景が表示されます。",
         "en": "Set NP Level: Left-click to increase, right-click to decrease. (If NP0, right-click sets to max level). Click class icon to show red background."
+    },
+    latestUpdate: {
+        "zh-TW": "最近更新: 新增120等、戴冠標記框框功能",
+        "ja": "最近の更新: Lv120と戴冠マーク機能を追加",
+        "en": "Recent Updates: Added Lv 120 and Grand Mark features"
     },
 };

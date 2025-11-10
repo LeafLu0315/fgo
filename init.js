@@ -22,7 +22,17 @@ function updateData(units) {
   currentData.forEach(unit => { if (unit.no) storageMap.set(unit.no, unit); });
   newData.forEach(unit => {
       if (unit.no) {
-          if (unit.npLv > 0 || unit.mark > 0) storageMap.set(String(unit.no), { npLv: unit.npLv, mark: unit.mark, no: String(unit.no) });
+          // 更新儲存條件
+          if (unit.npLv > 0 || unit.mark > 0 || unit.lv120 > 0 || unit.crowned > 0) {
+              // 儲存新資料
+              storageMap.set(String(unit.no), { 
+                  npLv: unit.npLv, 
+                  mark: unit.mark, 
+                  lv120: unit.lv120,
+                  crowned: unit.crowned,
+                  no: String(unit.no) 
+              });
+          }
           else storageMap.delete(String(unit.no));
       }
   });
@@ -40,7 +50,7 @@ var marginTop = 10, marginLeft = 10;
 const FOOTER_HEIGHT = 50;
 var country = localStorage.getItem("r_country") || "jp";
 var currentLang = getLanguage();
-var mode = 0, luckyBag = 0;
+var mode = 0, luckyBag = 0; // mode 預設為 0 (設定數量)
 var CategoryNum;
 var bgcolor = "rgb(176, 176, 176)", mask = "rgb(0, 0, 0, 0.6)", font_color = "rgb(0, 0, 0)";
 var init_npLv = 6, npLv = init_npLv;
@@ -172,6 +182,8 @@ function getUnit(country) {
                     image: ImagePreloader.images[no],
                     npLv: 0,
                     mark: 0,
+                    lv120: 0,
+                    crowned: 0
                 };
                 newUnits[i][j] = unitInstance;
             }
@@ -302,8 +314,23 @@ function drawCanvas() {
             for (let j = 0; j < CategoryNum[i]; j++) {
                 const unit = units[i][j];
                 drawImage(j + 1, yPos, unit.image);
+                
+                // 遮罩與NP等級
                 if (!unit.npLv) fillRect(j, yPos, mask);
                 else fillNPText(j, yPos, `${i18n.npLevelPrefix[currentLang]}${unit.npLv}`);
+                
+                // 繪製外框 (120等, 戴冠)
+                const is120 = unit.lv120;
+                const isCrowned = unit.crowned;
+                if (is120 && isCrowned) {
+                    drawUnitBorder(j + 1, yPos, "#39C5BB"); // 兩個都有
+                } else if (is120) {
+                    drawUnitBorder(j + 1, yPos, "#FFE211"); // 只有120
+                } else if (isCrowned) {
+                    drawUnitBorder(j + 1, yPos, "#0000FF"); // 只有戴冠
+                }
+
+                // 繪製標記 (愛心等)
                 if (unit.mark) drawImage(j + 1, yPos, markImages[unit.mark - 1]);
             }
         } else {
@@ -317,13 +344,60 @@ function drawCanvas() {
 	context.fillText("This image was made by mgneko, maintained by LeafLu @ ptt", marginLeft, canvas.height - 15);
 }
 
+// 模式按鈕狀態管理函式
+function updateModeButtons(activeIndex) {
+    const modeButtons = [
+        document.getElementById('set-button'),
+        document.getElementById('mask-button'),
+        document.getElementById('lv120-button'),
+        document.getElementById('crowned-button')
+    ];
+
+    modeButtons.forEach((btn, index) => {
+        if (!btn) return; // 避免按鈕不存在時出錯
+        if (index === activeIndex) {
+            btn.classList.replace("btn--primary", "btn--checked");
+        } else {
+            btn.classList.replace("btn--checked", "btn--primary");
+        }
+    });
+}
+
 function bindActionButtons() {
     document.getElementById('switch-account-btn').onclick = switchAccount;
-    document.getElementById('set-button').onclick = () => { mode = 0; document.getElementById('set-button').classList.replace("btn--primary", "btn--checked"); document.getElementById('mask-button').classList.replace("btn--checked", "btn--primary"); };
-    document.getElementById('mask-button').onclick = () => { mode = 1; document.getElementById('mask-button').classList.replace("btn--primary", "btn--checked"); document.getElementById('set-button').classList.replace("btn--checked", "btn--primary"); };
+
+    // 使用新的 updateModeButtons 函式
+    document.getElementById('set-button').onclick = () => { 
+        mode = 0; 
+        updateModeButtons(0); 
+    };
+    document.getElementById('mask-button').onclick = () => { 
+        mode = 1; 
+        updateModeButtons(1); 
+    };
+    // 綁定新按鈕
+    document.getElementById('lv120-button').onclick = () => {
+        mode = 2;
+        updateModeButtons(2);
+    };
+    document.getElementById('crowned-button').onclick = () => {
+        mode = 3;
+        updateModeButtons(3);
+    };
+
     document.getElementById('luckyBag-button').onclick = () => { luckyBag = !luckyBag; if(luckyBag){ document.getElementById('luckyBag-button').classList.replace("btn--primary", "btn--checked"); marginLeft += caculateField; } else { document.getElementById('luckyBag-button').classList.replace("btn--checked", "btn--primary"); marginLeft -= caculateField; } mainLogic(2); };
     document.getElementById('reset').onclick = () => { if (confirm(i18n.confirmClearAll[currentLang])) { deleteData(FGO_STORAGE); localStorage.setItem("r_country", country); location.reload(); } };
-    document.getElementById('reset-mark').onclick = () => { if (confirm(i18n.confirmResetMark[currentLang])) { let data = getData(FGO_STORAGE); data.forEach(u => u.mark = 0); setData(FGO_STORAGE, data.filter(u => u.npLv > 0)); location.reload(); } };
+
+    // 更新 reset-mark 的過濾條件，避免誤刪資料
+    document.getElementById('reset-mark').onclick = () => { 
+        if (confirm(i18n.confirmResetMark[currentLang])) { 
+            let data = getData(FGO_STORAGE); 
+            data.forEach(u => u.mark = 0); 
+            setData(FGO_STORAGE, data.filter(u => u.npLv > 0 || u.lv120 > 0 || u.crowned > 0)); 
+            location.reload(); 
+        } 
+    };
+
     document.getElementById('breakthrough').onclick = () => { npLv = (npLv === init_npLv) ? 20 : init_npLv; alert(`${i18n.alertNpLimit[currentLang]}${npLv}`); };
     document.getElementById('open-image-btn').onclick = openImage;
     const importFile = document.getElementById('import-file');
@@ -364,9 +438,13 @@ function updateUnitsNPLevel(units) {
           if (saved) {
               unit.npLv = saved.npLv;
               unit.mark = saved.mark;
+              unit.lv120 = saved.lv120 || 0;
+              unit.crowned = saved.crowned || 0;
           } else {
               unit.npLv = 0;
               unit.mark = 0;
+              unit.lv120 = 0;
+              unit.crowned = 0;
           }
       }
   });
@@ -558,7 +636,23 @@ function fillTotalText() {
     context.textAlign = 'start';
 }
 
+// 繪製外框的函式 (取代 drawCrownedBorder)
+function drawUnitBorder(x, y, color) {
+    const xPos = x * (CELL_SIZE + col_padding) + marginLeft;
+    const yPos = y * (CELL_SIZE + row_padding) + marginTop;
+    context.strokeStyle = color; // 使用傳入的顏色
+    context.lineWidth = 3; // 稍粗的線條
+    // 在圖示內部繪製外框，避免清除問題
+    context.strokeRect(xPos + 1.5, yPos + 1.5, CELL_SIZE - 3, CELL_SIZE - 3);
+    context.lineWidth = 1; // 重設線條寬度
+}
 
+// 【移除】fillLv120Text 函式 (不再需要)
+/*
+function fillLv120Text(x, y) {
+...
+}
+*/
 
 function getCoordinates(e){ const rect = e.target.getBoundingClientRect(); const scaleX = canvas.width / rect.width; const scaleY = canvas.height / rect.height; return {'x': (e.clientX - rect.left) * scaleX, 'y': (e.clientY - rect.top) * scaleY}; }
 function getCategory(y){ return Math.floor((y - marginTop) / (CELL_SIZE + row_padding)); }
@@ -601,8 +695,10 @@ function handleUnitInteraction(event, isRightClick = false) {
     if (xInCell < CELL_SIZE && xInCell > 0 && yInCell < CELL_SIZE && yInCell > 0 && attributeIndex > 0 && attributeIndex <= CategoryNum[categoryIndex]) {
         const unit = units[categoryIndex][attributeIndex - 1];
         const yPos = getCategory(point.y);
+        
+        // 
         switch(mode) {
-			case 0:
+			case 0: // NP 等級
                 if (isRightClick) {
                     if (unit.npLv === 0) unit.npLv = npLv;
                     else unit.npLv--;
@@ -610,15 +706,46 @@ function handleUnitInteraction(event, isRightClick = false) {
                     unit.npLv = unit.npLv < npLv ? unit.npLv + 1 : 0;
                 }
 				break;
-		    case 1:
+		    case 1: // 標記
                 if (isRightClick) unit.mark = unit.mark > 0 ? unit.mark - 1 : Marks.length;
                 else unit.mark = (unit.mark + 1) % (Marks.length + 1);
 				break;
+            case 2: // Lv120 (左右鍵都當作開關)
+                unit.lv120 = !unit.lv120 ? 1 : 0; // 1 = true, 0 = false
+                break;
+            case 3: // 戴冠 (左右鍵都當作開關)
+                unit.crowned = !unit.crowned ? 1 : 0;
+                break;
 		}
+
+        // 點擊後的重繪邏輯
+            
+        // 1. 重繪基本圖示 (這會清除舊的疊加效果)
         drawImage(attributeIndex, yPos, unit.image);
-        if (!unit.npLv) { fillTextMask(attributeIndex, yPos, bgcolor); fillRect(attributeIndex - 1, yPos, mask); }
-        else { fillTextMask(attributeIndex, yPos, bgcolor); fillNPText(attributeIndex - 1, yPos, `${i18n.npLevelPrefix[currentLang]}${unit.npLv}`); }
+        
+        // 2. 繪製遮罩或NP等級
+        if (!unit.npLv) { 
+            fillTextMask(attributeIndex, yPos, bgcolor); // 清除NP文字區域
+            fillRect(attributeIndex - 1, yPos, mask); // 畫上遮罩
+        }
+        else { 
+            fillTextMask(attributeIndex, yPos, bgcolor); // 清除NP文字區域
+            fillNPText(attributeIndex - 1, yPos, `${i18n.npLevelPrefix[currentLang]}${unit.npLv}`); // 畫上NP文字
+        }
+        
+        // 繪製所有疊加效果 (戴冠、標記、120等)
+        const is120 = unit.lv120;
+        const isCrowned = unit.crowned;
+        if (is120 && isCrowned) {
+            drawUnitBorder(attributeIndex, yPos, "#39C5BB"); // 兩個都有
+        } else if (is120) {
+            drawUnitBorder(attributeIndex, yPos, "#FFE211"); // 只有120
+        } else if (isCrowned) {
+            drawUnitBorder(attributeIndex, yPos, "#0000FF"); // 只有戴冠
+        }
+
         if (unit.mark) drawImage(attributeIndex, yPos, markImages[unit.mark - 1]);
+
 		fillTotalText();
 		if(luckyBag) fillCaculate();
 		updateData(units);
