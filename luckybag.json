@@ -151,5 +151,22 @@
     "pretender": [297, 324, 316],
     "beast": [369, 376, 373, 334],
     "unbeast": [416, 426, 413, 441]
+  },
+  "svt_2025": {
+    "saber": [432, 445, 456],
+    "archer": [450],
+    "lancer": [433, 442, 457],
+    "rider": [452],
+    "caster": [435],
+    "assassin": [453],
+    "berserker": [440],
+    "ruler": [438],
+    "avenger": [],
+    "alterego": [],
+    "foreigner": [],
+    "mooncancer": [448],
+    "pretender": [437, 441, 459],
+    "beast": [],
+    "unbeast": [444]
   }
 }

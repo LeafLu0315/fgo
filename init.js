@@ -96,6 +96,7 @@ const FGO_DATA = {
     'tenth_up': {servants: "tenth_up_servants", type: 'luckyBag', isReleased: false, classIconImg: [1,1,1,1,2,2,2,3,3,3], labelKey: 'tenth_up_label'},
     'tenth_down': {servants: "tenth_down_servants", type: 'luckyBag', isReleased: false, classIconImg: [4,4,4,5,5,5,5,6,6,6,7,7,7], labelKey: 'tenth_down_label'},
     'tenth_ex': {servants: "tenth_ex_servants", type: 'luckyBag', isReleased: false, classIconImg: '99', labelKey: 'tenth_ex_label'},
+    'svt_2025': {servants: "svt_2025", type: 'full', isReleased: true, classIconImg: [1,2,3,4,5,6,7,8,12,13,15], labelKey: 'svt_2025_label'},
 };
 
 // ===================================================================================

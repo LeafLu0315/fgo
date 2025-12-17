@@ -165,4 +165,9 @@ const i18n = {
         "ja": "最近の更新: Lv120と戴冠マーク機能を追加",
         "en": "Recent Updates: Added Lv 120 and Grand Mark features"
     },
+    svt_2025_label: {
+        "zh-TW": "2025年從者",
+        "ja": "2025年サーヴァント",
+        "en": "2025 Servants"
+    },
 };
