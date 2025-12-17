@@ -1,3 +1,6 @@
 webcrawler/__pycache__/*
 backup/
-fgo_editor.exe
+build/
+fgo_editor.*
+temp*
+*_web.json
