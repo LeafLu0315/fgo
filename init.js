@@ -97,6 +97,9 @@ const FGO_DATA = {
     'tenth_down': {servants: "tenth_down_servants", type: 'luckyBag', isReleased: false, classIconImg: [4,4,4,5,5,5,5,6,6,6,7,7,7], labelKey: 'tenth_down_label'},
     'tenth_ex': {servants: "tenth_ex_servants", type: 'luckyBag', isReleased: false, classIconImg: '99', labelKey: 'tenth_ex_label'},
     'svt_2025': {servants: "svt_2025", type: 'full', isReleased: true, classIconImg: [1,2,3,4,5,6,7,8,12,13,15], labelKey: 'svt_2025_label'},
+    'newyear2026_up': {servants: "newyear2026_up_servants", type: 'luckyBag', isReleased: true, classIconImg: '99', labelKey: 'newyear2026_up_label'},
+    'newyear26_down': {servants: "newyear26_down_servants", type: 'luckyBag', isReleased: true, classIconImg: '99', labelKey: 'newyear26_down_label'},
+    'newyear26_ex': {servants: "newyear26_ex_servants", type: 'luckyBag', isReleased: true, classIconImg: '99', labelKey: 'newyear26_ex_label'},
 };
 
 // ===================================================================================

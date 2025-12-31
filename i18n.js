@@ -170,4 +170,7 @@ const i18n = {
         "ja": "2025年サーヴァント",
         "en": "2025 Servants"
     },
+    newyear2026_up_label: { "zh-TW": "26新年(上)", "ja": "", "en": "" },
+    newyear26_down_label: { "zh-TW": "26新年(下)", "ja": "", "en": "" },
+    newyear26_ex_label: { "zh-TW": "26新年EX", "ja": "", "en": "" },
 };
