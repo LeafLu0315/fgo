@@ -61,7 +61,7 @@ const CategoryLen = Category.length;
 const Marks = ['hiclipart', 'heart'];
 
 // 移除所有福袋的 const 變數，只保留 jp, tw, z 的基本資料
-const servents = {'saber': [2, 8, 68, 76, 90, 91, 153, 160, 213, 234, 270, 278, 299, 302, 317, 337, 343, 384, 402, 432, 445, 456],
+const servents = {'saber': [2, 8, 68, 76, 90, 91, 153, 160, 213, 234, 270, 278, 299, 302, 317, 337, 343, 384, 402, 432, 445, 456, 461],
 				'archer': [12, 60, 77, 84, 129, 142, 156, 212, 216, 272, 276, 350, 375, 383, 394, 427, 450],
 				'lancer': [70, 85, 88, 119, 128, 143, 196, 232, 280, 300, 312, 329, 368, 381, 433, 442, 457],
 				'rider': [65, 99, 108, 118, 144, 179, 205, 206, 241, 253, 274, 277, 296, 331, 342, 349, 397, 406, 452],
@@ -97,9 +97,9 @@ const FGO_DATA = {
     'tenth_down': {servants: "tenth_down_servants", type: 'luckyBag', isReleased: false, classIconImg: [4,4,4,5,5,5,5,6,6,6,7,7,7], labelKey: 'tenth_down_label'},
     'tenth_ex': {servants: "tenth_ex_servants", type: 'luckyBag', isReleased: false, classIconImg: '99', labelKey: 'tenth_ex_label'},
     'svt_2025': {servants: "svt_2025", type: 'full', isReleased: true, classIconImg: [1,2,3,4,5,6,7,8,12,13,15], labelKey: 'svt_2025_label'},
-    'newyear2026_up': {servants: "newyear2026_up_servants", type: 'luckyBag', isReleased: true, classIconImg: '99', labelKey: 'newyear2026_up_label'},
-    'newyear26_down': {servants: "newyear26_down_servants", type: 'luckyBag', isReleased: true, classIconImg: '99', labelKey: 'newyear26_down_label'},
-    'newyear26_ex': {servants: "newyear26_ex_servants", type: 'luckyBag', isReleased: true, classIconImg: '99', labelKey: 'newyear26_ex_label'},
+    'newyear_26_up': {servants: "newyear_26_up_servants", type: 'luckyBag', isReleased: true, classIconImg: [1,1,1,1,2,2,3,3,3,4,5,5,5,6,6], labelKey: 'newyear_26_up_label'},
+    'newyear_26_down': {servants: "newyear_26_down_servants", type: 'luckyBag', isReleased: true, classIconImg: [7,7,1004,1004,1004,1004,1004,1004,1004,1005,1005,1005,1005,1005,1005], labelKey: 'newyear_26_down_label'},
+    'newyear_26_white': {servants: "newyear_26_white_servants", type: 'luckyBag', isReleased: true, classIconImg: [1005,1,1,2,2,3,4,99,7,1004,1005,1005], labelKey: 'newyear_26_white_label'},
 };
 
 // ===================================================================================
@@ -455,7 +455,7 @@ function updateUnitsNPLevel(units) {
 }
 
 function preloadStaticImages(callback) {
-    const classIds = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,19,666,1001,99,888];
+    const classIds = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,19,666,1001,1002,1004,1005,99,888];
     let loadedCount = 0;
     const total = classIds.length + Marks.length;
     const onImageLoad = () => {
