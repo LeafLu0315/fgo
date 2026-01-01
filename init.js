@@ -56,7 +56,8 @@ var bgcolor = "rgb(176, 176, 176)", mask = "rgb(0, 0, 0, 0.6)", font_color = "rg
 var init_npLv = 6, npLv = init_npLv;
 
 const Category = ['saber', 'archer', 'lancer', 'rider', 'caster', 'assassin', 'berserker',
-				  'ruler', 'avenger', 'alterego', 'foreigner', 'mooncancer', 'pretender', 'beast', 'unbeast', 'shielder'];
+				  'ruler', 'avenger', 'alterego', 'foreigner', 'mooncancer', 'pretender', 'beast',
+                  'unbeast', 'shielder', 'luckybag1', 'luckybag2', 'luckybag3', 'luckybag4', 'luckybag5'];
 const CategoryLen = Category.length;
 const Marks = ['hiclipart', 'heart'];
 
@@ -97,9 +98,9 @@ const FGO_DATA = {
     'tenth_down': {servants: "tenth_down_servants", type: 'luckyBag', isReleased: false, classIconImg: [4,4,4,5,5,5,5,6,6,6,7,7,7], labelKey: 'tenth_down_label'},
     'tenth_ex': {servants: "tenth_ex_servants", type: 'luckyBag', isReleased: false, classIconImg: '99', labelKey: 'tenth_ex_label'},
     'svt_2025': {servants: "svt_2025", type: 'full', isReleased: true, classIconImg: [1,2,3,4,5,6,7,8,12,13,15], labelKey: 'svt_2025_label'},
-    'newyear_26_up': {servants: "newyear_26_up_servants", type: 'luckyBag', isReleased: true, classIconImg: [1,1,1,1,2,2,3,3,3,4,5,5,5,6,6], labelKey: 'newyear_26_up_label'},
-    'newyear_26_down': {servants: "newyear_26_down_servants", type: 'luckyBag', isReleased: true, classIconImg: [7,7,1004,1004,1004,1004,1004,1004,1004,1005,1005,1005,1005,1005,1005], labelKey: 'newyear_26_down_label'},
-    'newyear_26_white': {servants: "newyear_26_white_servants", type: 'luckyBag', isReleased: true, classIconImg: [1005,1,1,2,2,3,4,99,7,1004,1005,1005], labelKey: 'newyear_26_white_label'},
+    'newyear_26_up': {servants: "newyear_26_up_servants", type: 'luckyBag', isReleased: true, classIconImg: [1,1,1,1,2,2,3,3,3,4,5,5,5,6,6,7,7], labelKey: 'newyear_26_up_label'},
+    'newyear_26_down': {servants: "newyear_26_down_servants", type: 'luckyBag', isReleased: true, classIconImg: [1004,1004,1004,1004,1004,1004,1004,1005,1005,1005,1005,1005,1005,1005], labelKey: 'newyear_26_down_label'},
+    'newyear_26_white': {servants: "newyear_26_white_servants", type: 'luckyBag', isReleased: true, classIconImg: [1,1,2,2,3,4,99,7,1004,1004,1004,1005], labelKey: 'newyear_26_white_label'},
 };
 
 // ===================================================================================
@@ -318,11 +319,11 @@ function drawCanvas() {
             for (let j = 0; j < CategoryNum[i]; j++) {
                 const unit = units[i][j];
                 drawImage(j + 1, yPos, unit.image);
-                
+
                 // 遮罩與NP等級
                 if (!unit.npLv) fillRect(j, yPos, mask);
                 else fillNPText(j, yPos, `${i18n.npLevelPrefix[currentLang]}${unit.npLv}`);
-                
+
                 // 繪製外框 (120等, 戴冠)
                 const is120 = unit.lv120;
                 const isCrowned = unit.crowned;
@@ -699,8 +700,8 @@ function handleUnitInteraction(event, isRightClick = false) {
     if (xInCell < CELL_SIZE && xInCell > 0 && yInCell < CELL_SIZE && yInCell > 0 && attributeIndex > 0 && attributeIndex <= CategoryNum[categoryIndex]) {
         const unit = units[categoryIndex][attributeIndex - 1];
         const yPos = getCategory(point.y);
-        
-        // 
+
+        //
         switch(mode) {
 			case 0: // NP 等級
                 if (isRightClick) {
@@ -723,10 +724,10 @@ function handleUnitInteraction(event, isRightClick = false) {
 		}
 
         // 點擊後的重繪邏輯
-            
+
         // 1. 重繪基本圖示 (這會清除舊的疊加效果)
         drawImage(attributeIndex, yPos, unit.image);
-        
+
         // 2. 繪製遮罩或NP等級
         if (!unit.npLv) { 
             fillTextMask(attributeIndex, yPos, bgcolor); // 清除NP文字區域
@@ -736,7 +737,7 @@ function handleUnitInteraction(event, isRightClick = false) {
             fillTextMask(attributeIndex, yPos, bgcolor); // 清除NP文字區域
             fillNPText(attributeIndex - 1, yPos, `${i18n.npLevelPrefix[currentLang]}${unit.npLv}`); // 畫上NP文字
         }
-        
+
         // 繪製所有疊加效果 (戴冠、標記、120等)
         const is120 = unit.lv120;
         const isCrowned = unit.crowned;

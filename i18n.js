@@ -170,7 +170,7 @@ const i18n = {
         "ja": "2025年サーヴァント",
         "en": "2025 Servants"
     },
-    newyear_26_up_label: { "zh-TW": "26'新年福袋(紅上)", "ja": "", "en": "" },
-    newyear_26_down_label: { "zh-TW": "26'新年福袋(紅下)", "ja": "", "en": "" },
-    newyear_26_white_label: { "zh-TW": "26'新年福袋(白)", "ja": "", "en": "" },
-};
+    newyear_26_up_label: { "zh-TW": "26'新年福袋(紅上)", "ja": "26'正月福袋(赤上)", "en": "NY 26 GSSR (Red 1)" },
+    newyear_26_down_label: { "zh-TW": "26'新年福袋(紅下)", "ja": "26'正月福袋(赤下)", "en": "NY 26 GSSR (Red 2)" },
+    newyear_26_white_label: { "zh-TW": "26'新年福袋(白)", "ja": "26'正月福袋(白)", "en": "NY 26 GSSR (White)" }
+}
