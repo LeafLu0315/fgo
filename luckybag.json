@@ -13,7 +13,7 @@
     "foreigner": [342, 329, 316, 343, 346],
     "mooncancer": [369, 375, 371]
   },
-  "nineth_up_servants": {
+  "nineth_servants": {
     "saber": [303, 299, 297],
     "archer": [316, 309, 312, 284],
     "lancer": [346, 343, 342, 374],
@@ -31,15 +31,6 @@
     "unbeast": [375, 362, 397, 400],
     "shielder": [394, 351, 376, 339],
     "luckybag1": [415, 403, 413]
-  },
-  "nineth_down_servants": {
-    "saber": [289, 321, 285],
-    "archer": [355, 357, 353],
-    "lancer": [386, 390, 385],
-    "rider": [292, 329, 327],
-    "caster": [375, 362, 397, 400],
-    "assassin": [394, 351, 376, 339],
-    "berserker": [415, 403, 413]
   },
   "newyear_24_up_servants": {
     "saber": [86, 70, 163, 155, 68],

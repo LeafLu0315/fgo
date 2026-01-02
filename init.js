@@ -87,8 +87,7 @@ const FGO_DATA = {
     'tw': {servants: servents, type: 'full', isReleased: true, categoryNumOverride: [19, 15, 14, 18, 15, 13, 15, 12, 10, 10, 10, 4, 2, 1], labelKey: 'tw_label'},
     'z': {servants: z_servants, type: 'partial', isReleased: true, labelKey: 'z_label'},
     'eighth': {servants: "eighth_servants", type: 'luckyBag', isReleased: false, classIconImg: '888', labelKey: 'eighth_label'},
-    'nineth_up': {servants: "nineth_up_servants", type: 'luckyBag', isReleased: true, classIconImg: '99', labelKey: 'nineth_up_label'},
-    'nineth_down': {servants: "nineth_down_servants", type: 'luckyBag', isReleased: true, classIconImg: '99', labelKey: 'nineth_down_label'},
+    'nineth': {servants: "nineth_servants", type: 'luckyBag', isReleased: true, classIconImg: '99', labelKey: 'nineth_label'},
     'newyear_24_up': {servants: "newyear_24_up_servants", type: 'luckyBag', isReleased: false, classIconImg: '99', labelKey: 'newyear_24_up_label'},
     'newyear_24_down': {servants: "newyear_24_down_servants", type: 'luckyBag', isReleased: false, classIconImg: '99', labelKey: 'newyear_24_down_label'},
     'newyear_25_up': {servants: "newyear_25_up_servants", type: 'luckyBag', isReleased: false, classIconImg: '99', labelKey: 'newyear_25_up_label'},
@@ -200,7 +199,8 @@ function getUnit(country) {
 // 載入福袋 JSON 資料
 async function loadLuckyBagData() {
     try {
-        const response = await fetch('luckybag.json'); // 發出請求
+        // 在網址後面加上時間戳記 (?t=...) 或版本號，強迫瀏覽器認為這是新檔案
+        const response = await fetch('luckybag.json?v=' + new Date().getTime());
         if (!response.ok) {
             throw new Error('無法載入 luckybag.json: ' + response.statusText);
         }

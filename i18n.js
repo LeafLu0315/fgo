@@ -89,8 +89,7 @@ const i18n = {
     z_label: { "zh-TW": "五星自選(含3000DL)", "ja": "星5選択(3000DL含)", "en": "SSR Ticket (30M DL)" },
     // 福袋新增
     eighth_label: { "zh-TW": "[台]八週年福袋", "ja": "[台]8周年福袋", "en": "8th Anniv. GSSR" },
-    nineth_up_label: { "zh-TW": "[台]九週年福袋(上)", "ja": "[台]9周年福袋(上)", "en": "9th Anniv. GSSR (1)" },
-    nineth_down_label: { "zh-TW": "[台]九週年福袋(下)", "ja": "[台]9周年福袋(下)", "en": "9th Anniv. GSSR (2)" },
+    nineth_label: { "zh-TW": "[台]九週年福袋", "ja": "[台]9周年福袋", "en": "9th Anniv. GSSR" },
     newyear_24_up_label: { "zh-TW": "[台]24'新年福袋(上)", "ja": "[台]24'正月福袋(上)", "en": "NY 24 GSSR (1)" },
     newyear_24_down_label: { "zh-TW": "[台]24'新年福袋(下)", "ja": "[台]24'正月福袋(下)", "en": "NY 24 GSSR (2)" },
     newyear_25_up_label: { "zh-TW": "25'新年福袋(紅上)", "ja": "25'正月福袋(赤上)", "en": "NY 25 GSSR (Red 1)" },
