@@ -502,7 +502,7 @@ function fillCaculate(){
 	context.font = getFontString(12);
 	var have = 0, haveFull = 0, like = 0, percent = 0, ex = 0;
 	var lucky_bag = (country != 'jp' && country != 'tw' && country != 'z');
-	var default_cat1 = lucky_bag ? 14:7, default_cat2 = lucky_bag ? 14:6;
+	var default_cat1 = lucky_bag ? (CategoryLen - 1):7, default_cat2 = lucky_bag ? (CategoryLen - 1):6;
 	context.fillStyle = bgcolor; context.fillRect(0, 0, caculateField + 10, canvas.height); context.fillStyle = font_color;
     let pass = 0;
 	for(var category = 0; category < CategoryLen; category++){
