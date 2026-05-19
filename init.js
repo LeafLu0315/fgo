@@ -86,8 +86,6 @@ const FGO_DATA = {
     // 台服數量增加變動                                                              [劍, 弓, 槍, 騎, 術, 殺, 狂, 裁, 仇, 丑, 外, 月, 偽, 獸, 非獸, 盾]
     'tw': {servants: servents, type: 'full', isReleased: true, categoryNumOverride: [19, 15, 14, 18, 16, 13, 15, 12, 10, 11, 11, 6, 2, 2], labelKey: 'tw_label'},
     'z': {servants: z_servants, type: 'partial', isReleased: true, labelKey: 'z_label'},
-    'eighth': {servants: "eighth_servants", type: 'luckyBag', isReleased: false, classIconImg: '888', labelKey: 'eighth_label'},
-    'nineth': {servants: "nineth_servants", type: 'luckyBag', isReleased: true, classIconImg: '99', labelKey: 'nineth_label'},
     'newyear_25_up': {servants: "newyear_25_up_servants", type: 'luckyBag', isReleased: true, classIconImg: '99', labelKey: 'newyear_25_up_label'},
     'newyear_25_down': {servants: "newyear_25_down_servants", type: 'luckyBag', isReleased: true, classIconImg: '99', labelKey: 'newyear_25_down_label'},
     'newyear_25_white': {servants: "newyear_25_white_servants", type: 'luckyBag', isReleased: true, classIconImg: '99', labelKey: 'newyear_25_white_label'},
