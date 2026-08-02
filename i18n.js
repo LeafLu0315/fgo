@@ -168,5 +168,6 @@ const i18n = {
     },
     newyear_26_up_label: { "zh-TW": "26'新年福袋(紅上)", "ja": "26'正月福袋(赤上)", "en": "NY 26 GSSR (Red 1)" },
     newyear_26_down_label: { "zh-TW": "26'新年福袋(紅下)", "ja": "26'正月福袋(赤下)", "en": "NY 26 GSSR (Red 2)" },
-    newyear_26_white_label: { "zh-TW": "26'新年福袋(白)", "ja": "26'正月福袋(白)", "en": "NY 26 GSSR (White)" }
+    newyear_26_white_label: { "zh-TW": "26'新年福袋(白)", "ja": "26'正月福袋(白)", "en": "NY 26 GSSR (White)" },
+    eleventh_label: { "zh-TW": "十一週年福袋", "ja": "十一週年福袋", "en": "11th Anniv. GSSR" }
 }

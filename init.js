@@ -67,7 +67,7 @@ const servents = {'saber': [2, 8, 68, 76, 90, 91, 153, 160, 213, 234, 270, 278, 
 				'lancer': [70, 85, 88, 119, 128, 143, 196, 232, 280, 300, 312, 329, 368, 381, 433, 442, 457, 465],
 				'rider': [65, 99, 108, 118, 144, 179, 205, 206, 241, 253, 274, 277, 296, 331, 342, 349, 397, 406, 452],
 				'caster': [37, 62, 113, 127, 136, 150, 169, 175, 201, 215, 237, 284, 307, 327, 385, 415, 435, 462, 467],
-				'assassin': [75, 86, 112, 139, 154, 189, 199, 235, 239, 314, 365, 371, 380, 453],
+				'assassin': [75, 86, 112, 139, 154, 189, 199, 235, 239, 314, 365, 371, 380, 453, 474],
 				'berserker': [51, 52, 97, 98, 114, 155, 161, 226, 247, 261, 306, 309, 355, 362, 386, 429, 440],
 				'ruler': [59, 93, 173, 229, 265, 292, 305, 346, 357, 374, 390, 400, 438],
 				'avenger': [96, 106, 250, 268, 303, 321, 370, 403, 407, 409, 469],
@@ -95,6 +95,7 @@ const FGO_DATA = {
     'newyear_26_up': {servants: "newyear_26_up_servants", type: 'luckyBag', isReleased: false, classIconImg: [1,1,1,1,2,2,3,3,3,4,5,5,5,6,6,7,7], labelKey: 'newyear_26_up_label'},
     'newyear_26_down': {servants: "newyear_26_down_servants", type: 'luckyBag', isReleased: false, classIconImg: [1004,1004,1004,1004,1004,1004,1004,1005,1005,1005,1005,1005,1005,1005], labelKey: 'newyear_26_down_label'},
     'newyear_26_white': {servants: "newyear_26_white_servants", type: 'luckyBag', isReleased: false, classIconImg: [1,1,2,2,3,4,99,7,1004,1004,1004,1005], labelKey: 'newyear_26_white_label'},
+    'eleventh': {servants: "eleventh_servants", type: 'luckyBag', isReleased: true, classIconImg: '99', labelKey: 'eleventh_label'}
 };
 
 // ===================================================================================
