@@ -95,7 +95,7 @@ const FGO_DATA = {
     'newyear_26_up': {servants: "newyear_26_up_servants", type: 'luckyBag', isReleased: false, classIconImg: [1,1,1,1,2,2,3,3,3,4,5,5,5,6,6,7,7], labelKey: 'newyear_26_up_label'},
     'newyear_26_down': {servants: "newyear_26_down_servants", type: 'luckyBag', isReleased: false, classIconImg: [1004,1004,1004,1004,1004,1004,1004,1005,1005,1005,1005,1005,1005,1005], labelKey: 'newyear_26_down_label'},
     'newyear_26_white': {servants: "newyear_26_white_servants", type: 'luckyBag', isReleased: false, classIconImg: [1,1,2,2,3,4,99,7,1004,1004,1004,1005], labelKey: 'newyear_26_white_label'},
-    'eleventh': {servants: "eleventh_servants", type: 'luckyBag', isReleased: true, classIconImg: '99', labelKey: 'eleventh_label'}
+    'eleventh': {servants: "eleventh_servants", type: 'luckyBag', isReleased: false, classIconImg: '99', labelKey: 'eleventh_label'}
 };
 
 // ===================================================================================
