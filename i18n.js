@@ -53,6 +53,51 @@ const i18n = {
         "ja": "画像生成",
         "en": "Generate Image"
     },
+    uploadImage: {
+        'zh-TW': '上傳到 urusai.cc',
+        'ja': 'urusai.cc にアップロード',
+        'en': 'Upload to urusai.cc'
+    },
+    uploading: {
+        'zh-TW': '上傳中…',
+        'ja': 'アップロード中…',
+        'en': 'Uploading…'
+    },
+    errorUploadImage: {
+        'zh-TW': '上傳圖片失敗：',
+        'ja': '画像のアップロードに失敗しました：',
+        'en': 'Failed to upload image: '
+    },
+    copyImage:{
+        'zh-TW': '複製圖片到剪貼簿',
+        'ja': '画像をクリップボードにコピー',
+        'en': 'Copy Image to Clipboard'
+    },
+    copying:{
+        'zh-TW': '複製中…',
+        'ja': 'コピー中…',
+        'en': 'Copying…'
+    },
+    uploadSuccess:{
+        'zh-TW': '上傳成功，已在新分頁開啟：',
+        'ja': 'アップロード成功、新しいタブで開きました：',
+        'en': 'Upload successful, opened in a new tab:'
+    },
+    copySuccess:{
+        'zh-TW': '已複製圖片到剪貼簿',
+        'ja': '画像をクリップボードにコピーしました',
+        'en': 'Image copied to clipboard'
+    },
+    errorCopyImage:{
+        'zh-TW': '複製圖片到剪貼簿失敗：',
+        'ja': '画像をクリップボードにコピーするのに失敗しました：',
+        'en': 'Failed to copy image to clipboard:'
+    },
+    errorCopyUnsupported:{
+        'zh-TW': '此瀏覽器不支援直接複製圖片，請改用右鍵另存圖片',
+        'ja': 'このブラウザは画像の直接コピーをサポートしていません。右クリックで画像を保存してください。',
+        'en': 'This browser does not support direct image copying. Please use right-click to save the image.'
+    },
     importData: {
         "zh-TW": "匯入資料",
         "ja": "インポート",
@@ -157,9 +202,9 @@ const i18n = {
         "en": "Set NP Level: Left-click to increase, right-click to decrease. (If NP0, right-click sets to max level). Click class icon to show red background.\nYellow border indicates Lv 120, blue border indicates Grand, indigo border indicates both Lv 120 and Grand."
     },
     latestUpdate: {
-        "zh-TW": "最近更新: 新增120等、戴冠標記框框功能",
-        "ja": "最近の更新: Lv120と戴冠マーク機能を追加",
-        "en": "Recent Updates: Added Lv 120 and Grand Mark features"
+        "zh-TW": "最近更新: 新增產生圖片後可複製到剪貼簿功能&上傳到 urusai.cc 圖床功能",
+        "ja": "最近の更新: 画像生成後にクリップボードにコピーする機能と、urusai.ccへのアップロード機能を追加しました",
+        "en": "Recent Updates: Added image generation and upload features"
     },
     svt_2025_label: {
         "zh-TW": "2025年從者",
