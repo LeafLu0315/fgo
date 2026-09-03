@@ -14,32 +14,7 @@ function getCurrentAccount() { return localStorage.getItem(ACCOUNT_KEY) || "acco
 function getData(name) { const acc = getCurrentAccount(); const item = localStorage.getItem(`${name}_${acc}`); return item ? JSON.parse(item) : []; }
 function setData(name, content) { const acc = getCurrentAccount(); if (content) localStorage.setItem(`${name}_${acc}`, JSON.stringify(content)); }
 function deleteData(name) { const acc = getCurrentAccount(); localStorage.removeItem(`${name}_${acc}`); }
-function updateData(units) {
-  if (!units) return;
-  const newData = units.flat(2).filter(x => x);
-  const currentData = getData(FGO_STORAGE);
-  const storageMap = new Map();
-  currentData.forEach(unit => { if (unit.no) storageMap.set(unit.no, unit); });
-  newData.forEach(unit => {
-      if (unit.no) {
-          // 更新儲存條件
-          if (unit.npLv > 0 || unit.mark > 0 || unit.lv120 > 0 || unit.crowned > 0) {
-              // 儲存新資料
-              storageMap.set(String(unit.no), { 
-                  npLv: unit.npLv, 
-                  mark: unit.mark, 
-                  lv120: unit.lv120,
-                  crowned: unit.crowned,
-                  no: String(unit.no) 
-              });
-          }
-          else storageMap.delete(String(unit.no));
-      }
-  });
-  setData(FGO_STORAGE, Array.from(storageMap.values()));
-}
 function migrateOldData() { const oldData = localStorage.getItem(FGO_STORAGE); if (oldData && !localStorage.getItem(`${FGO_STORAGE}_account1`)) { localStorage.setItem(`${FGO_STORAGE}_account1`, oldData); console.log("舊資料已成功遷移到帳號1"); } }
-
 
 // ===================================================================================
 // 1. 全域變數與資料定義
@@ -50,7 +25,7 @@ var marginTop = 10, marginLeft = 10;
 const FOOTER_HEIGHT = 50;
 var country = localStorage.getItem("r_country") || "jp";
 var currentLang = getLanguage();
-var mode = 0, luckyBag = 0; // mode 預設為 0 (設定數量)
+var mode = 0, luckyBag = 0;
 var CategoryNum;
 var bgcolor = "rgb(176, 176, 176)", mask = "rgb(0, 0, 0, 0.6)", font_color = "rgb(0, 0, 0)";
 var init_npLv = 6, npLv = init_npLv;
@@ -61,7 +36,15 @@ const Category = ['saber', 'archer', 'lancer', 'rider', 'caster', 'assassin', 'b
 const CategoryLen = Category.length;
 const Marks = ['hiclipart', 'heart'];
 
-// 移除所有福袋的 const 變數，只保留 jp, tw, z 的基本資料
+// 統一管理職階圖片的魔法數字 (Magic Numbers)
+const CLASS_ICON_MAP = {
+    SABER: 1, ARCHER: 2, LANCER: 3, RIDER: 4, CASTER: 5, ASSASSIN: 6, BERSERKER: 7,
+    RULER: 8, AVENGER: 9, ALTEREGO: 10, FOREIGNER: 11, MOONCANCER: 12, PRETENDER: 13,
+    BEAST: 14, UNBEAST: 15, SHIELDER: 19,
+    SIXTH: 666, ALL: 1001, EXTRA: 1002,
+    EXTRAI: 1004, EXTRAII: 1005, QUESTION: 99, EIGHTH: 888
+};
+
 const servents = {'saber': [2, 8, 68, 76, 90, 91, 153, 160, 213, 234, 270, 278, 299, 302, 317, 337, 343, 384, 402, 432, 445, 456, 461, 466],
 				'archer': [12, 60, 77, 84, 129, 142, 156, 212, 216, 272, 276, 350, 375, 383, 394, 427, 450, 470],
 				'lancer': [70, 85, 88, 119, 128, 143, 196, 232, 280, 300, 312, 329, 368, 381, 433, 442, 457, 465],
@@ -80,30 +63,55 @@ const servents = {'saber': [2, 8, 68, 76, 90, 91, 153, 160, 213, 234, 270, 278, 
 				'shielder': []};
 const z_servants = {saber:[8, 2, 76, 278], archer:[84, 60, 212, 77, 350], lancer:[143, 85, 232, 119, 300], rider:[206, 274, 118, 65, 144, 99, 277, 331, 296], caster:[201, 113, 169, 37, 62], assassin:[189, 75, 235, 380], berserker:[52, 226, 97, 98, 306], ruler:[59], avenger:[370], alterego:[224], mooncancer:[244]};
 
-// 福袋資料改用字串當作 key，稍後會從 luckybag.json 載入並填充
+// 福袋資料會在 loadLuckyBagData 時動態塞入
 const FGO_DATA = {
     'jp': {servants: servents, type: 'full', isReleased: true, labelKey: 'jp_label'},
-    // 台服數量增加變動                                                              [劍, 弓, 槍, 騎, 術, 殺, 狂, 裁, 仇, 丑, 外, 月, 偽, 獸, 非獸, 盾]
     'tw': {servants: servents, type: 'full', isReleased: true, categoryNumOverride: [19, 16, 14, 18, 16, 13, 16, 12, 10, 12, 11, 6, 3, 2], labelKey: 'tw_label'},
-    'z': {servants: z_servants, type: 'partial', isReleased: true, labelKey: 'z_label'},
-    'newyear_25_up': {servants: "newyear_25_up_servants", type: 'luckyBag', isReleased: true, classIconImg: '99', labelKey: 'newyear_25_up_label'},
-    'newyear_25_down': {servants: "newyear_25_down_servants", type: 'luckyBag', isReleased: true, classIconImg: '99', labelKey: 'newyear_25_down_label'},
-    'newyear_25_white': {servants: "newyear_25_white_servants", type: 'luckyBag', isReleased: true, classIconImg: '99', labelKey: 'newyear_25_white_label'},
-    'tenth_up': {servants: "tenth_up_servants", type: 'luckyBag', isReleased: false, classIconImg: [1,1,1,1,2,2,2,3,3,3], labelKey: 'tenth_up_label'},
-    'tenth_down': {servants: "tenth_down_servants", type: 'luckyBag', isReleased: false, classIconImg: [4,4,4,5,5,5,5,6,6,6,7,7,7], labelKey: 'tenth_down_label'},
-    'tenth_ex': {servants: "tenth_ex_servants", type: 'luckyBag', isReleased: false, classIconImg: '99', labelKey: 'tenth_ex_label'},
-    'newyear_26_up': {servants: "newyear_26_up_servants", type: 'luckyBag', isReleased: false, classIconImg: [1,1,1,1,2,2,3,3,3,4,5,5,5,6,6,7,7], labelKey: 'newyear_26_up_label'},
-    'newyear_26_down': {servants: "newyear_26_down_servants", type: 'luckyBag', isReleased: false, classIconImg: [1004,1004,1004,1004,1004,1004,1004,1005,1005,1005,1005,1005,1005,1005], labelKey: 'newyear_26_down_label'},
-    'newyear_26_white': {servants: "newyear_26_white_servants", type: 'luckyBag', isReleased: false, classIconImg: [1,1,2,2,3,4,99,7,1004,1004,1004,1005], labelKey: 'newyear_26_white_label'},
-    'eleventh': {servants: "eleventh_servants", type: 'luckyBag', isReleased: false, classIconImg: '99', labelKey: 'eleventh_label'}
+    'z': {servants: z_servants, type: 'partial', isReleased: true, labelKey: 'z_label'}
 };
+
+// ===================================================================================
+// 1.5 狀態管理器 (解耦靜態資料與使用者狀態)
+// ===================================================================================
+let USER_STATE = new Map();
+
+function loadUserState() {
+    const data = getData(FGO_STORAGE);
+    USER_STATE.clear();
+    data.forEach(u => {
+        USER_STATE.set(String(u.no), {
+            npLv: u.npLv || 0,
+            mark: u.mark || 0,
+            lv120: u.lv120 || 0,
+            crowned: u.crowned || 0
+        });
+    });
+}
+
+function saveUserState() {
+    const arr = [];
+    USER_STATE.forEach((state, no) => {
+        if (state.npLv > 0 || state.mark > 0 || state.lv120 > 0 || state.crowned > 0) {
+            arr.push({ no: String(no), ...state });
+        }
+    });
+    setData(FGO_STORAGE, arr);
+}
+
+function getUnitState(no) {
+    const key = String(no);
+    if (!USER_STATE.has(key)) {
+        USER_STATE.set(key, { npLv: 0, mark: 0, lv120: 0, crowned: 0 });
+    }
+    return USER_STATE.get(key);
+}
 
 // ===================================================================================
 // 2. 核心邏輯區 (Core Logic)
 // ===================================================================================
 
 var units = [], svt = {}, categoryImages = [], markImages = [], allModeButtons = [];
-var selectedClasses = new Set(); // 用來儲存被選取行的集合
+var selectedClasses = new Set();
 
 const ImagePreloader = {
     images: {},
@@ -112,7 +120,7 @@ const ImagePreloader = {
     init(callback) {
         const allServantNos = new Set();
         Object.values(FGO_DATA).forEach(data => {
-            if (typeof data.servants === 'object') { // 確保 servants 資料已載入
+            if (typeof data.servants === 'object') {
                 Object.values(data.servants).forEach(noArray => {
                     noArray.forEach(no => allServantNos.add(no));
                 });
@@ -142,9 +150,9 @@ const ImagePreloader = {
         });
     },
     updateProgress(loadingText) {
-        const percentage = Math.round((this.loadedImages / this.totalImages) * 100);
         const canvas = document.getElementById('canvas');
         const context = canvas.getContext('2d');
+        const percentage = Math.round((this.loadedImages / this.totalImages) * 100);
         context.fillStyle = bgcolor;
         context.fillRect(0, 0, canvas.width, canvas.height);
         context.fillStyle = font_color;
@@ -158,15 +166,13 @@ const ImagePreloader = {
 
 function getUnit(country) {
     const currentData = FGO_DATA[country];
-    if (!currentData || typeof currentData.servants !== 'object') { // 檢查資料是否已載入
+    if (!currentData || typeof currentData.servants !== 'object') {
          alert("資料載入錯誤或尚未完成，請稍後再試： " + country);
          return [];
     }
     const sourceServants = currentData.servants;
     CategoryNum = Category.map((className, index) => {
-        if (currentData.categoryNumOverride) {
-            return currentData.categoryNumOverride[index] || 0;
-        }
+        if (currentData.categoryNumOverride) return currentData.categoryNumOverride[index] || 0;
         return sourceServants[className] ? sourceServants[className].length : 0;
     });
 
@@ -177,61 +183,65 @@ function getUnit(country) {
         if (sourceServants[className] && CategoryNum[i] > 0) {
             for (let j = 0; j < CategoryNum[i]; j++) {
                 const no = sourceServants[className][j];
-                const unitInstance = {
+                // 僅綁定靜態圖鑑資料，不再包含會變動的使用者狀態
+                newUnits[i][j] = {
                     no: no,
-                    image: ImagePreloader.images[no],
-                    npLv: 0,
-                    mark: 0,
-                    lv120: 0,
-                    crowned: 0
+                    image: ImagePreloader.images[no]
                 };
-                newUnits[i][j] = unitInstance;
             }
         }
     }
     return newUnits;
 }
 
-// 載入福袋 JSON 資料
+// 載入福袋 JSON 資料並動態生成 DOM
 async function loadLuckyBagData() {
     try {
-        // 在網址後面加上時間戳記 (?t=...) 或版本號，強迫瀏覽器認為這是新檔案
         const response = await fetch('luckybag.json?v=' + new Date().getTime());
-        if (!response.ok) {
-            throw new Error('無法載入 luckybag.json: ' + response.statusText);
-        }
-        const luckyBags = await response.json(); // 解析 JSON
+        if (!response.ok) throw new Error('無法載入 luckybag.json: ' + response.statusText);
 
-        // 將載入的資料填回 FGO_DATA 物件中
-        Object.keys(FGO_DATA).forEach(key => {
-            const modeData = FGO_DATA[key];
-            const servantsKey = modeData.servants;
-            if (typeof servantsKey === 'string' && luckyBags[servantsKey]) {
-                modeData.servants = luckyBags[servantsKey];
-            }
+        const luckyBags = await response.json();
+        const gssrContainer = document.getElementById('gssr-container');
+        const baseTwBtn = document.getElementById('base-tw-btn'); // 插入基準點
+
+        Object.keys(luckyBags).forEach(key => {
+            const bag = luckyBags[key];
+
+            // 寫入全域資料
+            FGO_DATA[key] = {
+                servants: bag.servants,
+                type: 'luckyBag',
+                isReleased: bag.isReleased,
+                classIconImg: bag.classIconImg,
+                label: bag.label
+            };
+
+            // 動態生成 HTML
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.id = key;
+            a.className = "btn btn--primary btn--round";
+            a.href = "javascript:void(0);";
+            a.innerText = bag.label[currentLang] || bag.label['zh-TW'];
+            li.appendChild(a);
+
+            // 插入到台版/日版/自選 按鈕之前
+            gssrContainer.insertBefore(li, baseTwBtn);
         });
-        console.log("福袋資料載入成功！");
+        console.log("福袋資料載入成功並動態建立完成！");
     } catch (error) {
         console.error("載入福袋資料失敗:", error);
-        alert("錯誤：無法載入福袋資料，部分福袋模式可能無法使用。");
     }
 }
 
-// 將 init 函式改為 async，以便使用 await
 async function init() {
-    // 靜態圖片（職階圖示）可以先載入
     preloadStaticImages(async () => {
-        // 在載入英靈圖片前，先等待福袋資料載入完成
         await loadLuckyBagData();
-
-        // 接著，根據完整的 FGO_DATA 載入所有需要的英靈圖片
         ImagePreloader.init(() => {
-            // 所有資料和圖片都準備好後，才執行主邏輯
             mainLogic();
         });
     });
 }
-
 
 function mainLogic(state = 0){
     if (state === 1) {
@@ -244,8 +254,11 @@ function mainLogic(state = 0){
         localStorage.setItem("r_country", 'jp');
     }
 
+    // 取得靜態圖鑑與讀取狀態
     units = getUnit(country);
     if (!units) return;
+    loadUserState();
+
     canvas = document.getElementById('canvas');
     context = canvas.getContext('2d');
 
@@ -257,9 +270,7 @@ function mainLogic(state = 0){
             const button = document.getElementById(buttonId);
             if (button) {
                 const listItem = button.parentElement;
-                if (listItem) {
-                    listItem.style.display = modeData.isReleased ? '' : 'none';
-                }
+                if (listItem) listItem.style.display = modeData.isReleased ? '' : 'none';
 
                 allModeButtons.push(button);
                 button.onclick = () => { if (country !== modeKey) { country = modeKey; localStorage.setItem("r_country", country); mainLogic(1); } };
@@ -287,7 +298,7 @@ function mainLogic(state = 0){
 function drawCanvas() {
     context.fillStyle = bgcolor;
 	context.fillRect (0, 0, canvas.width, canvas.height);
-    updateUnitsNPLevel(units);
+
     const currentData = FGO_DATA[country];
     const classIconInfo = currentData.classIconImg;
     let pass = 0;
@@ -312,27 +323,27 @@ function drawCanvas() {
                 if (foundIndex !== -1) imgIndex = foundIndex;
             }
             drawImage(0, yPos, categoryImages[imgIndex]);
+
             for (let j = 0; j < CategoryNum[i]; j++) {
                 const unit = units[i][j];
+                const state = getUnitState(unit.no);
+
                 drawImage(j + 1, yPos, unit.image);
 
-                // 遮罩與NP等級
-                if (!unit.npLv) fillRect(j, yPos, mask);
-                else fillNPText(j, yPos, `${i18n.npLevelPrefix[currentLang]}${unit.npLv}`);
+                if (!state.npLv) fillRect(j, yPos, mask);
+                else fillNPText(j, yPos, `${i18n.npLevelPrefix[currentLang]}${state.npLv}`);
 
-                // 繪製外框 (120等, 戴冠)
-                const is120 = unit.lv120;
-                const isCrowned = unit.crowned;
+                const is120 = state.lv120;
+                const isCrowned = state.crowned;
                 if (is120 && isCrowned) {
-                    drawUnitBorder(j + 1, yPos, "#39C5BB"); // 兩個都有
+                    drawUnitBorder(j + 1, yPos, "#39C5BB");
                 } else if (is120) {
-                    drawUnitBorder(j + 1, yPos, "#FFE211"); // 只有120
+                    drawUnitBorder(j + 1, yPos, "#FFE211"); 
                 } else if (isCrowned) {
-                    drawUnitBorder(j + 1, yPos, "#0000FF"); // 只有戴冠
+                    drawUnitBorder(j + 1, yPos, "#0000FF"); 
                 }
 
-                // 繪製標記 (愛心等)
-                if (unit.mark) drawImage(j + 1, yPos, markImages[unit.mark - 1]);
+                if (state.mark) drawImage(j + 1, yPos, markImages[state.mark - 1]);
             }
         } else {
             pass++;
@@ -345,7 +356,6 @@ function drawCanvas() {
 	context.fillText("This image was made by mgneko, maintained by LeafLu @ ptt", marginLeft, canvas.height - 15);
 }
 
-// 模式按鈕狀態管理函式
 function updateModeButtons(activeIndex) {
     const modeButtons = [
         document.getElementById('set-button'),
@@ -355,7 +365,7 @@ function updateModeButtons(activeIndex) {
     ];
 
     modeButtons.forEach((btn, index) => {
-        if (!btn) return; // 避免按鈕不存在時出錯
+        if (!btn) return;
         if (index === activeIndex) {
             btn.classList.replace("btn--primary", "btn--checked");
         } else {
@@ -367,34 +377,18 @@ function updateModeButtons(activeIndex) {
 function bindActionButtons() {
     document.getElementById('switch-account-btn').onclick = switchAccount;
 
-    // 使用新的 updateModeButtons 函式
-    document.getElementById('set-button').onclick = () => { 
-        mode = 0; 
-        updateModeButtons(0); 
-    };
-    document.getElementById('mask-button').onclick = () => { 
-        mode = 1; 
-        updateModeButtons(1); 
-    };
-    // 綁定新按鈕
-    document.getElementById('lv120-button').onclick = () => {
-        mode = 2;
-        updateModeButtons(2);
-    };
-    document.getElementById('crowned-button').onclick = () => {
-        mode = 3;
-        updateModeButtons(3);
-    };
+    document.getElementById('set-button').onclick = () => { mode = 0; updateModeButtons(0); };
+    document.getElementById('mask-button').onclick = () => { mode = 1; updateModeButtons(1); };
+    document.getElementById('lv120-button').onclick = () => { mode = 2; updateModeButtons(2); };
+    document.getElementById('crowned-button').onclick = () => { mode = 3; updateModeButtons(3); };
 
     document.getElementById('luckyBag-button').onclick = () => { luckyBag = !luckyBag; if(luckyBag){ document.getElementById('luckyBag-button').classList.replace("btn--primary", "btn--checked"); marginLeft += caculateField; } else { document.getElementById('luckyBag-button').classList.replace("btn--checked", "btn--primary"); marginLeft -= caculateField; } mainLogic(2); };
     document.getElementById('reset').onclick = () => { if (confirm(i18n.confirmClearAll[currentLang])) { deleteData(FGO_STORAGE); localStorage.setItem("r_country", country); location.reload(); } };
 
-    // 更新 reset-mark 的過濾條件，避免誤刪資料
     document.getElementById('reset-mark').onclick = () => { 
         if (confirm(i18n.confirmResetMark[currentLang])) { 
-            let data = getData(FGO_STORAGE); 
-            data.forEach(u => u.mark = 0); 
-            setData(FGO_STORAGE, data.filter(u => u.npLv > 0 || u.lv120 > 0 || u.crowned > 0)); 
+            USER_STATE.forEach(state => state.mark = 0);
+            saveUserState();
             location.reload(); 
         } 
     };
@@ -413,13 +407,9 @@ function bindActionButtons() {
 
 function getFontString(size = 20) {
     switch (currentLang) {
-        case 'ja':
-            return `${size}px -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', '游ゴシック Medium', 'Yu Gothic Medium', 'メイリオ', Meiryo, sans-serif`;
-        case 'en':
-            return `${size}px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif`;
-        case 'zh-TW':
-        default:
-            return `${size}px -apple-system, BlinkMacSystemFont, 'PingFang TC', 'Microsoft JhengHei', '微軟正黑體', sans-serif`;
+        case 'ja': return `${size}px -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', '游ゴシック Medium', 'Yu Gothic Medium', 'メイリオ', Meiryo, sans-serif`;
+        case 'en': return `${size}px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif`;
+        case 'zh-TW': default: return `${size}px -apple-system, BlinkMacSystemFont, 'PingFang TC', 'Microsoft JhengHei', '微軟正黑體', sans-serif`;
     }
 }
 
@@ -428,31 +418,8 @@ function switchAccount() {
     mainLogic(1);
 }
 
-function updateUnitsNPLevel(units) {
-  const fgoStorage = getData(FGO_STORAGE);
-  const storageMap = new Map();
-  fgoStorage.forEach(unit => storageMap.set(String(unit.no), unit));
-
-  units.flat().forEach(unit => {
-      if(unit) {
-          const saved = storageMap.get(String(unit.no));
-          if (saved) {
-              unit.npLv = saved.npLv;
-              unit.mark = saved.mark;
-              unit.lv120 = saved.lv120 || 0;
-              unit.crowned = saved.crowned || 0;
-          } else {
-              unit.npLv = 0;
-              unit.mark = 0;
-              unit.lv120 = 0;
-              unit.crowned = 0;
-          }
-      }
-  });
-}
-
 function preloadStaticImages(callback) {
-    const classIds = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,19,666,1001,1002,1004,1005,99,888];
+    const classIds = Object.values(CLASS_ICON_MAP);
     let loadedCount = 0;
     const total = classIds.length + Marks.length;
     const onImageLoad = () => {
@@ -506,8 +473,9 @@ function fillCaculate(){
         if (CategoryNum[category] === 0) { pass++; continue; }
 		if (category <= default_cat1) have = 0, haveFull = 0, like = 0;
 		for(var attribute = 0; attribute < CategoryNum[category]; attribute++){
-			if (units[category][attribute].npLv){ have++; if(units[category][attribute].npLv >= 5) haveFull++; }
-			if (units[category][attribute].mark == 2) like++;
+            const state = getUnitState(units[category][attribute].no);
+			if (state.npLv){ have++; if(state.npLv >= 5) haveFull++; }
+			if (state.mark == 2) like++;
 		}
 		if (category <= default_cat2){
 			if(attribute>0){
@@ -557,10 +525,10 @@ function fillTotalText() {
         total += CategoryNum[i];
         for (let j = 0; j < CategoryNum[i]; j++) {
             if (units[i][j]) {
-                const unit = units[i][j];
-                totalNP += unit.npLv;
-                if (unit.npLv > 0) totalHave++;
-                if (unit.npLv >= 5) totalNP5++;
+                const state = getUnitState(units[i][j].no);
+                totalNP += state.npLv;
+                if (state.npLv > 0) totalHave++;
+                if (state.npLv >= 5) totalNP5++;
             }
         }
     }
@@ -632,28 +600,17 @@ function fillTotalText() {
     context.fillStyle = font_color;
     const line_total_np = `${i18n.totalNPLevel[currentLang]}: ${totalNP}`;
     context.fillText(line_total_np, xPos, currentY);
-
-
     context.textAlign = 'start';
 }
 
-// 繪製外框的函式 (取代 drawCrownedBorder)
 function drawUnitBorder(x, y, color) {
     const xPos = x * (CELL_SIZE + col_padding) + marginLeft;
     const yPos = y * (CELL_SIZE + row_padding) + marginTop;
-    context.strokeStyle = color; // 使用傳入的顏色
-    context.lineWidth = 3; // 稍粗的線條
-    // 在圖示內部繪製外框，避免清除問題
+    context.strokeStyle = color;
+    context.lineWidth = 3;
     context.strokeRect(xPos + 1.5, yPos + 1.5, CELL_SIZE - 3, CELL_SIZE - 3);
-    context.lineWidth = 1; // 重設線條寬度
+    context.lineWidth = 1;
 }
-
-// 【移除】fillLv120Text 函式 (不再需要)
-/*
-function fillLv120Text(x, y) {
-...
-}
-*/
 
 function getCoordinates(e){ const rect = e.target.getBoundingClientRect(); const scaleX = canvas.width / rect.width; const scaleY = canvas.height / rect.height; return {'x': (e.clientX - rect.left) * scaleX, 'y': (e.clientY - rect.top) * scaleY}; }
 function getCategory(y){ return Math.floor((y - marginTop) / (CELL_SIZE + row_padding)); }
@@ -695,61 +652,55 @@ function handleUnitInteraction(event, isRightClick = false) {
 
     if (xInCell < CELL_SIZE && xInCell > 0 && yInCell < CELL_SIZE && yInCell > 0 && attributeIndex > 0 && attributeIndex <= CategoryNum[categoryIndex]) {
         const unit = units[categoryIndex][attributeIndex - 1];
+        const state = getUnitState(unit.no);
         const yPos = getCategory(point.y);
 
-        //
         switch(mode) {
-			case 0: // NP 等級
+			case 0:
                 if (isRightClick) {
-                    if (unit.npLv === 0) unit.npLv = npLv;
-                    else unit.npLv--;
+                    if (state.npLv === 0) state.npLv = npLv;
+                    else state.npLv--;
                 } else {
-                    unit.npLv = unit.npLv < npLv ? unit.npLv + 1 : 0;
+                    state.npLv = state.npLv < npLv ? state.npLv + 1 : 0;
                 }
 				break;
-		    case 1: // 標記
-                if (isRightClick) unit.mark = unit.mark > 0 ? unit.mark - 1 : Marks.length;
-                else unit.mark = (unit.mark + 1) % (Marks.length + 1);
+		    case 1:
+                if (isRightClick) state.mark = state.mark > 0 ? state.mark - 1 : Marks.length;
+                else state.mark = (state.mark + 1) % (Marks.length + 1);
 				break;
-            case 2: // Lv120 (左右鍵都當作開關)
-                unit.lv120 = !unit.lv120 ? 1 : 0; // 1 = true, 0 = false
+            case 2:
+                state.lv120 = !state.lv120 ? 1 : 0;
                 break;
-            case 3: // 戴冠 (左右鍵都當作開關)
-                unit.crowned = !unit.crowned ? 1 : 0;
+            case 3:
+                state.crowned = !state.crowned ? 1 : 0;
                 break;
 		}
 
-        // 點擊後的重繪邏輯
-
-        // 1. 重繪基本圖示 (這會清除舊的疊加效果)
         drawImage(attributeIndex, yPos, unit.image);
 
-        // 2. 繪製遮罩或NP等級
-        if (!unit.npLv) { 
-            fillTextMask(attributeIndex, yPos, bgcolor); // 清除NP文字區域
-            fillRect(attributeIndex - 1, yPos, mask); // 畫上遮罩
-        }
-        else { 
-            fillTextMask(attributeIndex, yPos, bgcolor); // 清除NP文字區域
-            fillNPText(attributeIndex - 1, yPos, `${i18n.npLevelPrefix[currentLang]}${unit.npLv}`); // 畫上NP文字
+        if (!state.npLv) { 
+            fillTextMask(attributeIndex, yPos, bgcolor);
+            fillRect(attributeIndex - 1, yPos, mask);
+        } else { 
+            fillTextMask(attributeIndex, yPos, bgcolor);
+            fillNPText(attributeIndex - 1, yPos, `${i18n.npLevelPrefix[currentLang]}${state.npLv}`); 
         }
 
-        // 繪製所有疊加效果 (戴冠、標記、120等)
-        const is120 = unit.lv120;
-        const isCrowned = unit.crowned;
+        const is120 = state.lv120;
+        const isCrowned = state.crowned;
         if (is120 && isCrowned) {
-            drawUnitBorder(attributeIndex, yPos, "#39C5BB"); // 兩個都有
+            drawUnitBorder(attributeIndex, yPos, "#39C5BB");
         } else if (is120) {
-            drawUnitBorder(attributeIndex, yPos, "#FFE211"); // 只有120
+            drawUnitBorder(attributeIndex, yPos, "#FFE211");
         } else if (isCrowned) {
-            drawUnitBorder(attributeIndex, yPos, "#0000FF"); // 只有戴冠
+            drawUnitBorder(attributeIndex, yPos, "#0000FF");
         }
 
-        if (unit.mark) drawImage(attributeIndex, yPos, markImages[unit.mark - 1]);
+        if (state.mark) drawImage(attributeIndex, yPos, markImages[state.mark - 1]);
 
 		fillTotalText();
 		if(luckyBag) fillCaculate();
-		updateData(units);
+		saveUserState();
     }
 }
 
@@ -763,11 +714,9 @@ function exportData() {
         alert("目前帳號沒有資料可匯出。");
         return;
     }
-
     const jsonString = JSON.stringify(data, null, 2);
     const blob = new Blob([jsonString], { type: "application/json" });
     const url = URL.createObjectURL(blob);
-
     const a = document.createElement('a');
     a.href = url;
     a.download = `fgo_5star_data_${accountName}.json`;
@@ -779,17 +728,12 @@ function exportData() {
 
 function importData(event) {
     const file = event.target.files[0];
-    if (!file) {
-        return;
-    }
-
+    if (!file) return;
     const reader = new FileReader();
     reader.onload = function(e) {
         try {
             const importedData = JSON.parse(e.target.result);
-            if (!Array.isArray(importedData)) {
-                throw new Error("Data is not an array.");
-            }
+            if (!Array.isArray(importedData)) throw new Error("Data is not an array.");
             if (confirm(i18n.confirmImport[currentLang])) {
                 setData(FGO_STORAGE, importedData);
                 alert(i18n.successImport[currentLang]);
@@ -822,11 +766,6 @@ function openImage(){
 	}
 }
 
-// ===================================================================================
-// 產生圖片預覽分頁的內容：內嵌「上傳到 urusai.cc」與「複製到剪貼簿」兩個按鈕。
-// 這個分頁是獨立的 document（透過 window.open() 開出來），所以工具列的邏輯必須整段
-// 寫成字串內嵌 <script>，無法直接呼叫主頁面（init.js）裡的函式。
-// ===================================================================================
 function buildImagePreviewHtml(dataUrl) {
     const t = {
         title: (i18n.pageTitle && i18n.pageTitle[currentLang]) || "FGO 五星英靈一覽表",
@@ -841,9 +780,6 @@ function buildImagePreviewHtml(dataUrl) {
         copyUnsupported: (i18n.errorCopyUnsupported && i18n.errorCopyUnsupported[currentLang]) || "此瀏覽器不支援直接複製圖片，請改用右鍵另存圖片"
     };
 
-    // Escape the few characters that could break out of the double-quoted
-    // HTML attribute / inline <script> string literals below. dataUrl is a
-    // base64 data: URL so this is mostly a defensive no-op, not user input.
     const escAttr = (s) => String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;");
     const escJs = (s) => String(s).replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/</g, "\\x3C");
 
@@ -855,20 +791,12 @@ function buildImagePreviewHtml(dataUrl) {
 <style>
   body { margin:0; padding:16px; background:#999; font-family: -apple-system, "Microsoft JhengHei", "PingFang TC", sans-serif; text-align:center; }
   .toolbar { margin-bottom:12px; display:flex; flex-wrap:wrap; justify-content:center; gap:8px; }
-  .toolbar button {
-    background:#000; color:#fff; border:none; border-radius:22px;
-    padding:12px 20px; font-size:14px; cursor:pointer;
-    letter-spacing: 1px; min-height:44px;
-  }
+  .toolbar button { background:#000; color:#fff; border:none; border-radius:22px; padding:12px 20px; font-size:14px; cursor:pointer; letter-spacing: 1px; min-height:44px; }
   .toolbar button:hover:not(:disabled) { background:#2b3033; }
   .toolbar button:disabled { background:#666; cursor:not-allowed; }
   #status { display:block; margin:0 0 12px; font-size:12px; color:#222; min-height:16px; word-break:break-all; }
   #status a { color:#00405c; }
-  #status .result-link {
-    display:inline-block; margin-top:8px; padding:9px 18px;
-    background:#000; color:#fff; text-decoration:none; border-radius:20px;
-    font-size:13px; word-break:break-all;
-  }
+  #status .result-link { display:inline-block; margin-top:8px; padding:9px 18px; background:#000; color:#fff; text-decoration:none; border-radius:20px; font-size:13px; word-break:break-all; }
   #status .result-link:hover { background:#2b3033; }
   #preview-img { max-width:100%; height:auto; display:block; margin:0 auto; box-shadow:0 0 8px rgba(0,0,0,0.4); }
 </style>
@@ -886,7 +814,6 @@ function buildImagePreviewHtml(dataUrl) {
     var statusEl = document.getElementById('status');
     var uploadBtn = document.getElementById('upload-btn');
     var copyBtn = document.getElementById('copy-btn');
-
     var LABEL_UPLOAD = '${escJs(t.upload)}';
     var LABEL_UPLOADING = '${escJs(t.uploading)}';
     var LABEL_COPY = '${escJs(t.copy)}';
@@ -898,12 +825,6 @@ function buildImagePreviewHtml(dataUrl) {
     var MSG_COPY_UNSUPPORTED = '${escJs(t.copyUnsupported)}';
 
     function setStatus(html) { statusEl.innerHTML = html || ''; }
-
-    // urusai.cc serves large files' direct link through a "l.urusai.cc"
-    // (lowercase L) domain that returns a compressed/resized rendition,
-    // alongside "i.urusai.cc" which serves the original file untouched.
-    // The path (id + extension) is identical on both, so swapping the
-    // hostname recovers the original-quality link.
     function toOriginalQualityUrl(url) {
       if (!url) return url;
       try {
@@ -933,20 +854,12 @@ function buildImagePreviewHtml(dataUrl) {
         })
         .then(function (res) {
           return res.json().then(function (json) {
-            if (!res.ok || json.status !== 'success' || !json.data) {
-              throw new Error((json && json.message) || 'upload failed');
-            }
+            if (!res.ok || json.status !== 'success' || !json.data) throw new Error((json && json.message) || 'upload failed');
             return json.data;
           });
         })
         .then(function (data) {
           var link = toOriginalQualityUrl(data.url_direct) || data.url_direct;
-          // window.open() here happens *after* the network round trip, so
-          // it's outside the click's synchronous user-activation window -
-          // many mobile browsers (and some desktop ones) will silently
-          // block it as a popup. We still try it as a convenience on
-          // browsers that allow it, but always show a proper tappable
-          // link/button underneath so it works everywhere regardless.
           try { window.open(link, '_blank'); } catch (e) {}
           setStatus(MSG_UPLOAD_SUCCESS + '<br><a class="result-link" href="' + link + '" target="_blank" rel="noopener">' + link + '</a>');
         })
@@ -964,27 +877,15 @@ function buildImagePreviewHtml(dataUrl) {
         setStatus(MSG_COPY_UNSUPPORTED);
         return;
       }
-
       copyBtn.disabled = true;
       copyBtn.textContent = LABEL_COPYING;
       setStatus('');
 
-      // Safari/iOS requires navigator.clipboard.write() to be called
-      // synchronously inside the click handler - awaiting the blob first
-      // (as a separate .then() step) loses the "user activation" state and
-      // the write silently fails. Passing a Blob *promise* straight into
-      // ClipboardItem lets the browser resolve it while still treating this
-      // call as originating directly from the click.
       const blobPromise = fetch(dataUrl).then(function (r) { return r.blob(); });
-
       navigator.clipboard
         .write([new ClipboardItem({ 'image/png': blobPromise })])
-        .then(function () {
-          setStatus(MSG_COPY_SUCCESS);
-        })
-        .catch(function (err) {
-          setStatus(MSG_COPY_FAIL + (err && err.message ? err.message : err));
-        })
+        .then(function () { setStatus(MSG_COPY_SUCCESS); })
+        .catch(function (err) { setStatus(MSG_COPY_FAIL + (err && err.message ? err.message : err)); })
         .finally(function () {
           copyBtn.disabled = false;
           copyBtn.textContent = LABEL_COPY;
@@ -1009,10 +910,7 @@ function setLanguage(lang) {
     currentLang = lang;
     localStorage.setItem('fgo5s-lang', lang);
     applyLanguage(lang);
-
-    if (canvas && context) {
-        drawCanvas();
-    }
+    if (canvas && context) drawCanvas();
 }
 
 function applyLanguage(lang) {
@@ -1024,11 +922,14 @@ function applyLanguage(lang) {
     });
     Object.keys(FGO_DATA).forEach(modeKey => {
         const modeData = FGO_DATA[modeKey];
-        if (modeData.labelKey) {
-            const buttonId = ['jp', 'tw', 'z'].includes(modeKey) ? `${modeKey}-button` : modeKey;
-            const button = document.getElementById(buttonId);
-            if (button && i18n[modeData.labelKey] && i18n[modeData.labelKey][lang]) {
+        const buttonId = ['jp', 'tw', 'z'].includes(modeKey) ? `${modeKey}-button` : modeKey;
+        const button = document.getElementById(buttonId);
+        if (button) {
+            // 支援舊版 i18n (labelKey) 與新版 JSON 動態載入 (label)
+            if (modeData.labelKey && i18n[modeData.labelKey] && i18n[modeData.labelKey][lang]) {
                 button.innerText = i18n[modeData.labelKey][lang];
+            } else if (modeData.label && modeData.label[lang]) {
+                button.innerText = modeData.label[lang];
             }
         }
     });

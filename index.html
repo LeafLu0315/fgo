@@ -15,9 +15,6 @@
 		<div id="header">
 			<h1 data-i18n-key="mainTitle">FGO持有五星英靈一覽表</h1>
 		</div>
-		<!-- <div>
-			<h2 align="center"><a href="https://forms.gle/4b4CjDAgHLyYpmPc7">繁中服雪原的聖誕快樂刷箱調查</a></h2>
-		</div> -->
 		<div id="nav">
 			<!-- 帳號相關 -->
 			<ul>
@@ -26,20 +23,11 @@
 				<li><a id="export-button" class="btn btn--primary btn--round" href="javascript:void(0);" data-i18n-key="exportData"></a></li>
 				<input type="file" id="import-file" accept=".json" style="display: none;">
 			</ul>
-			<!-- 福袋 -->
-			<ul>
-				<li><a id="newyear_25_up" class="btn btn--primary btn--round" href="javascript:void(0);"></a></li>
-				<li><a id="newyear_25_down" class="btn btn--primary btn--round" href="javascript:void(0);"></a></li>
-				<li><a id="newyear_25_white" class="btn btn--primary btn--round" href="javascript:void(0);"></a></li>
-				<li><a id="tenth_up" class="btn btn--primary btn--round" href="javascript:void(0);"></a></li>
-				<li><a id="tenth_down" class="btn btn--primary btn--round" href="javascript:void(0);"></a></li>
-				<li><a id="tenth_ex" class="btn btn--primary btn--round" href="javascript:void(0);"></a></li>
-				<li><a id="newyear_26_up" class="btn btn--primary btn--round" href="javascript:void(0);"></a></li>
-				<li><a id="newyear_26_down" class="btn btn--primary btn--round" href="javascript:void(0);"></a></li>
-				<li><a id="newyear_26_white" class="btn btn--primary btn--round" href="javascript:void(0);"></a></li>
-				<li><a id="eleventh" class="btn btn--primary btn--round" href="javascript:void(0);"></a></li>
-				<!-- 初始 -->
-				<li><a id="tw-button" class="btn btn--primary btn--round" href="javascript:void(0);"></a></li>
+			<!-- 福袋與伺服器選擇 -->
+			<ul id="gssr-container">
+				<!-- 動態福袋按鈕會透過 JS 插入在這裡 -->
+				<!-- 初始常駐按鈕 -->
+				<li id="base-tw-btn"><a id="tw-button" class="btn btn--primary btn--round" href="javascript:void(0);"></a></li>
 				<li><a id="jp-button" class="btn btn--primary btn--round" href="javascript:void(0);"></a></li>
 				<li><a id="z-button" class="btn btn--primary btn--round" href="javascript:void(0);"></a></li>
 			</ul>

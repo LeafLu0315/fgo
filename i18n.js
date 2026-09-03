@@ -1,5 +1,5 @@
 // ===================================================================================
-// 多國語言資料庫 (i18n)
+// 多國語言資料庫 (i18n) - 純 UI 介面用語
 // ===================================================================================
 const i18n = {
     // HTML Elements
@@ -128,18 +128,12 @@ const i18n = {
         "ja": "戴冠設定",
         "en": "Set Grand"
     },
-    // Mode Button Labels
+
+    // Server / Base Mode Button Labels (常駐按鈕仍保留在此)
     jp_label: { "zh-TW": "日GO", "ja": "日GO", "en": "JP Server" },
     tw_label: { "zh-TW": "台GO", "ja": "台GO", "en": "TW Server" },
     z_label: { "zh-TW": "五星自選(含3000DL)", "ja": "星5選択(3000DL含)", "en": "SSR Ticket (30M DL)" },
-    // 福袋新增
-    nineth_label: { "zh-TW": "[台]九週年福袋", "ja": "[台]9周年福袋", "en": "9th Anniv. GSSR" },
-    newyear_25_up_label: { "zh-TW": "[台]25'新年福袋(紅上)", "ja": "25'正月福袋(赤上)", "en": "NY 25 GSSR (Red 1)" },
-    newyear_25_down_label: { "zh-TW": "[台]25'新年福袋(紅下)", "ja": "25'正月福袋(赤下)", "en": "NY 25 GSSR (Red 2)" },
-    newyear_25_white_label: { "zh-TW": "[台]25'新年福袋(白)", "ja": "25'正月福袋(白)", "en": "NY 25 GSSR (White)" },
-    tenth_up_label: { "zh-TW": "[台]十週年福袋(上三)", "ja": "10周年福袋(上三)", "en": "10th Anniv. GSSR (1)" },
-    tenth_down_label: { "zh-TW": "[台]十週年福袋(下四)", "ja": "10周年福袋(下四)", "en": "10th Anniv. GSSR (2)" },
-    tenth_ex_label: { "zh-TW": "[台]十週年福袋(EXTRA)", "ja": "10周年福袋(EXTRA)", "en": "10th Anniv. GSSR (Extra)" },
+
     // Canvas Dynamic Text
     npLevelPrefix: { "zh-TW": "寶", "ja": "宝具", "en": "NP" },
     expectNew: { "zh-TW": "新", "ja": "新", "en": "New" },
@@ -150,6 +144,7 @@ const i18n = {
     totalNPLevel: { "zh-TW": "總寶數", "ja": "宝具レベル合計", "en": "Total NP Levels" },
     totalNP5Owned: { "zh-TW": "寶五持有數", "ja": "宝具5所持数", "en": "NP5 Owned" },
     ownedNP5Rate: { "zh-TW": "寶五持有率", "ja": "宝具5所持率", "en": "NP5 Rate" },
+
     // Alerts & Prompts
     confirmImport: {
         "zh-TW": "確定要匯入資料嗎？這將會覆寫目前帳號的所有持有和標記資料！此操作無法復原。",
@@ -202,17 +197,8 @@ const i18n = {
         "en": "Set NP Level: Left-click to increase, right-click to decrease. (If NP0, right-click sets to max level). Click class icon to show red background.\nYellow border indicates Lv 120, blue border indicates Grand, indigo border indicates both Lv 120 and Grand."
     },
     latestUpdate: {
-        "zh-TW": "最近更新: 新增產生圖片後可複製到剪貼簿功能&上傳到 urusai.cc 圖床功能",
-        "ja": "最近の更新: 画像生成後にクリップボードにコピーする機能と、urusai.ccへのアップロード機能を追加しました",
-        "en": "Recent Updates: Added image generation and upload features"
+        "zh-TW": "最近更新: 改寫維護邏輯，新增產生圖片後可複製到剪貼簿功能&上傳到 urusai.cc 圖床功能",
+        "ja": "最近の更新: メンテナンスロジックを改修し、画像生成後にクリップボードにコピーする機能と urusai.cc へのアップロード機能を追加しました。",
+        "en": "Recent Updates: Rewritten maintenance logic, added feature to copy generated image to clipboard & upload to urusai.cc image hosting."
     },
-    svt_2025_label: {
-        "zh-TW": "2025年從者",
-        "ja": "2025年サーヴァント",
-        "en": "2025 Servants"
-    },
-    newyear_26_up_label: { "zh-TW": "26'新年福袋(紅上)", "ja": "26'正月福袋(赤上)", "en": "NY 26 GSSR (Red 1)" },
-    newyear_26_down_label: { "zh-TW": "26'新年福袋(紅下)", "ja": "26'正月福袋(赤下)", "en": "NY 26 GSSR (Red 2)" },
-    newyear_26_white_label: { "zh-TW": "26'新年福袋(白)", "ja": "26'正月福袋(白)", "en": "NY 26 GSSR (White)" },
-    eleventh_label: { "zh-TW": "十一週年福袋", "ja": "十一週年福袋", "en": "11th Anniv. GSSR" }
 }
