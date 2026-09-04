@@ -205,6 +205,9 @@ async function loadLuckyBagData() {
         const baseTwBtn = document.getElementById('base-tw-btn'); // 插入基準點
 
         Object.keys(luckyBags).forEach(key => {
+            // 跳過底線開頭的 key（例如 _README_CLASS_ICONS），這類 key 只是給人看的說明資料，不是真正的福袋
+            if (key.startsWith('_')) return;
+
             const bag = luckyBags[key];
 
             // 寫入全域資料
