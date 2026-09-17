@@ -5,6 +5,7 @@ import { appState, CELL_SIZE, row_padding, col_padding, caculateField, marginTop
 import { migrateOldData } from './storage.js';
 import { Category, CategoryLen, FGO_DATA, loadLuckyBagData, getModeButtonId } from './gameData.js';
 import { ImagePreloader, preloadStaticImages } from './imagePreloader.js';
+import { cleanupOldImageCaches } from './imageCache.js';
 import { drawCanvas } from './render.js';
 import { onCanvasClick, rightClick } from './interaction.js';
 import { bindActionButtons, Checked } from './ui.js';
@@ -108,6 +109,9 @@ function bindLanguageSwitcher() {
 }
 
 async function init() {
+    // 清理舊版圖片快取（跟主要載入流程無關，背景執行，不等它完成）
+    cleanupOldImageCaches();
+
     preloadStaticImages(async () => {
         await loadLuckyBagData();
         ImagePreloader.init(() => {

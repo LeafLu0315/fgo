@@ -5,6 +5,7 @@ import i18n from '../i18n.js';
 import { appState, bgcolor, font_color } from './state.js';
 import { FGO_DATA, CLASS_ICON_MAP, Marks } from './gameData.js';
 import { getFontString } from './fontHelper.js';
+import { loadCachedImage } from './imageCache.js';
 
 export const categoryImages = [];
 export const markImages = [];
@@ -37,16 +38,14 @@ export const ImagePreloader = {
         this.updateProgress(loadingText);
 
         allServantNos.forEach(no => {
-            const img = new Image();
-            img.src = `images/servents/${no}.png`;
-            this.images[no] = img;
-            img.onload = img.onerror = () => {
+            loadCachedImage(`images/servents/${no}.png`).then(img => {
+                this.images[no] = img;
                 this.loadedImages++;
                 this.updateProgress(loadingText);
                 if (this.loadedImages === this.totalImages) {
                     callback();
                 }
-            };
+            });
         });
     },
     updateProgress(loadingText) {
@@ -72,14 +71,14 @@ export function preloadStaticImages(callback) {
         if (loadedCount === total) callback();
     };
 
-    // 建立一批 Image、掛上 src 跟 onload/onerror，職階圖跟標記圖的載入方式完全相同，
-    // 差別只在圖片路徑跟要塞進哪個陣列，抽成同一個函式共用兩次。
+    // 下載（或直接從快取取得）一批圖片並塞進對應陣列，職階圖跟標記圖的載入方式
+    // 完全相同，差別只在圖片路徑跟要塞進哪個陣列，抽成同一個函式共用兩次。
     function loadImagesInto(targetArray, srcList) {
         srcList.forEach((src, i) => {
-            targetArray[i] = new Image();
-            targetArray[i].src = src;
-            targetArray[i].onload = onImageLoad;
-            targetArray[i].onerror = onImageLoad;
+            loadCachedImage(src).then(img => {
+                targetArray[i] = img;
+                onImageLoad();
+            });
         });
     }
 
