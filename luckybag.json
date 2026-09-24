@@ -119,11 +119,11 @@
     }
   },
   "tenth_up": {
-    "isReleased": false,
-    "classIconImg": [1, 1, 1, 1, 2, 2, 2, 3, 3, 3],
+    "isReleased": true,
+    "classIconImg": [1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 7, 7, 7],
     "label": {
-      "zh-TW": "[台]十週年福袋(上三)",
-      "ja": "10周年福袋(上三)",
+      "zh-TW": "[台]十週年福袋(七騎士)",
+      "ja": "10周年福袋(七騎士)",
       "en": "10th Anniv. GSSR (1)"
     },
     "servants": {
@@ -136,7 +136,20 @@
       "berserker": [276, 375, 383, 394],
       "ruler": [312, 70, 128, 433, 88],
       "avenger": [196, 280, 312],
-      "alterego": [442, 329, 368]
+      "alterego": [442, 329, 368],
+      "mooncancer": [179, 342, 241],
+      "foreigner": [205, 108, 253],
+      "pretender": [406, 349, 397],
+      "beast": [136, 215, 150],
+      "unbeast": [284, 327, 307],
+      "shielder": [175, 237, 127],
+      "luckybag1": [435, 385, 415],
+      "luckybag2": [239, 86, 154],
+      "luckybag3": [139, 112, 199],
+      "luckybag4": [365, 371, 314],
+      "luckybag5": [51, 155, 386, 161, 440],
+      "luckybag6": [247, 114, 261],
+      "luckybag7": [355, 362, 309]
     }
   },
   "tenth_down": {
@@ -164,7 +177,7 @@
     }
   },
   "tenth_ex": {
-    "isReleased": false,
+    "isReleased": true,
     "classIconImg": 99,
     "label": {
       "zh-TW": "[台]十週年福袋(EXTRA)",

@@ -6,7 +6,7 @@ import { appState } from './state.js';
 export const Category = [
     'saber', 'archer', 'lancer', 'rider', 'caster', 'assassin', 'berserker',
     'ruler', 'avenger', 'alterego', 'foreigner', 'mooncancer', 'pretender', 'beast',
-    'unbeast', 'shielder', 'luckybag1', 'luckybag2', 'luckybag3', 'luckybag4', 'luckybag5'
+    'unbeast', 'shielder', 'luckybag1', 'luckybag2', 'luckybag3', 'luckybag4', 'luckybag5', 'luckybag6', 'luckybag7'
 ];
 export const CategoryLen = Category.length;
 export const Marks = ['hiclipart', 'heart'];
