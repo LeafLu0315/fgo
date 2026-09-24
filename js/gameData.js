@@ -67,7 +67,7 @@ export const FGO_DATA = {
     'tw': {
         servants: servents, type: 'full', isReleased: true,
         //                    劍, 弓, 槍,  騎, 術, 殺, 狂, 裁, 仇,  丑, 外, 月,偽,獸,非獸
-        categoryNumOverride: [19, 16, 14, 18, 16, 13, 16, 12, 10, 12, 11, 6, 3, 2],
+        categoryNumOverride: [20, 16, 14, 18, 16, 13, 16, 12, 10, 12, 11, 6, 3, 2],
         labelKey: 'tw_label'
     },
     'z': { servants: z_servants, type: 'partial', isReleased: true, labelKey: 'z_label' }
