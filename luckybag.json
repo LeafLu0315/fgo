@@ -302,10 +302,10 @@
     }
   },
   "destiny_normal": {
-    "isReleased": false,
+    "isReleased": true,
     "classIconImg": [1, 2, 3, 4, 5, 6, 7],
     "label": {
-      "zh-TW": "[台] Destiny Order(七騎士)",
+      "zh-TW": "[台] 十週年Destiny Order(七騎士)",
       "ja": "Destiny Order(七騎士)",
       "en": "Destiny Order(Normal)"
     },
@@ -320,10 +320,10 @@
     }
   },
   "destiny_EX": {
-    "isReleased": false,
+    "isReleased": true,
     "classIconImg": [8, 9, 10, 12, 11, 13, 14],
     "label": {
-      "zh-TW": "[台] Destiny Order(EXTRA)",
+      "zh-TW": "[台] 十週年Destiny Order(EXTRA)",
       "ja": "Destiny Order(EXTRA)",
       "en": "Destiny Order(Normal)"
     },
