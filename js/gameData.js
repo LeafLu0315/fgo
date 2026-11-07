@@ -50,13 +50,13 @@ export const servents = {
 export const z_servants = {
     saber: [8, 2, 76, 278],
     archer: [84, 60, 212, 77, 350],
-    lancer: [143, 85, 232, 119, 300],
+    lancer: [143, 85, 232, 119, 300, 381],
     rider: [206, 274, 118, 65, 144, 99, 277, 331, 296],
     caster: [201, 113, 169, 37, 62],
     assassin: [189, 75, 235, 380],
     berserker: [52, 226, 97, 98, 306],
     ruler: [59],
-    avenger: [370],
+    avenger: [370, 407],
     alterego: [224],
     mooncancer: [244]
 };

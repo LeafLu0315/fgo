@@ -132,7 +132,7 @@ const i18n = {
     // Server / Base Mode Button Labels (常駐按鈕仍保留在此)
     jp_label: { "zh-TW": "日GO", "ja": "日GO", "en": "JP Server" },
     tw_label: { "zh-TW": "台GO", "ja": "台GO", "en": "TW Server" },
-    z_label: { "zh-TW": "五星自選(含3000DL)", "ja": "星5選択(3000DL含)", "en": "SSR Ticket (30M DL)" },
+    z_label: { "zh-TW": "五星自選(含100MDL)", "ja": "星5選択(100MDL含)", "en": "SSR Ticket (100M DL)" },
 
     // Canvas Dynamic Text
     npLevelPrefix: { "zh-TW": "寶", "ja": "宝具", "en": "NP" },
